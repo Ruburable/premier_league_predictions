@@ -3,200 +3,182 @@ import pandas as pd
 import os
 
 
-# =====================================================
-# CONFIGURATION
-# =====================================================
-
 OUTPUT_FOLDER = "data"
 
-HISTORICAL_FILE = "historical_premier_league.csv"
-CURRENT_FILE = "premier_league_2025_26.csv"
+HISTORICAL_FILE = "historical_raw.csv"
+CURRENT_FILE = "current_raw.csv"
+SHOTS_FILE = "shots_xg_raw.csv"
+ALL_FILE = "all_matches.csv"
 
-# Historical seasons to download
 HISTORICAL_SEASONS = [
-    "2018-19",
-    "2019-20",
-    "2020-21",
-    "2021-22",
-    "2022-23",
-    "2023-24",
-    "2024-25"
+    "2018-19", "2019-20", "2020-21",
+    "2021-22", "2022-23", "2023-24", "2024-25"
 ]
 
-# Current season
 CURRENT_SEASON = "2025-26"
 
-# URLs
-FPL_FIXTURES_URL = "https://fantasy.premierleague.com/api/fixtures/"
-FPL_TEAMS_URL = "https://fantasy.premierleague.com/api/bootstrap-static/"
-OPENFOOTBALL_BASE = (
-    "https://raw.githubusercontent.com/openfootball/football.json/master/{season}/en.1.json"
-)
 
+# ----------------------------------------------------
+# HISTORICAL (OpenFootball)
+# ----------------------------------------------------
 
-# =====================================================
-# HISTORICAL DATA LOADING
-# =====================================================
+def download_openfootball(season):
+    url = f"https://raw.githubusercontent.com/openfootball/football.json/master/{season}/en.1.json"
+    r = requests.get(url)
 
-def download_historical_season(season):
-    """Download a single season from OpenFootball JSON."""
-    url = OPENFOOTBALL_BASE.format(season=season)
-    response = requests.get(url)
-
-    if response.status_code != 200:
-        print(f"Skipping season {season}: not available from OpenFootball.")
+    if r.status_code != 200:
+        print(f"Historical season missing: {season}")
         return pd.DataFrame()
 
-    data = response.json()
-    matches = data.get("matches", [])
+    data = r.json()["matches"]
+    df = pd.DataFrame(data)
 
-    df = pd.DataFrame(matches)
-    if df.empty:
-        return df
+    # FIX 1 — rename team1/team2 to home_team/away_team
+    df.rename(columns={
+        "team1": "home_team",
+        "team2": "away_team"
+    }, inplace=True)
 
-    # Expand score fields
-    df["home_goals"] = df["score"].apply(lambda s: s.get("ft", [None, None])[0])
-    df["away_goals"] = df["score"].apply(lambda s: s.get("ft", [None, None])[1])
+    # FIX 2 — handle missing score field safely
+    df["home_goals"] = df["score"].apply(lambda s: s.get("ft", [None, None])[0] if isinstance(s, dict) else None)
+    df["away_goals"] = df["score"].apply(lambda s: s.get("ft", [None, None])[1] if isinstance(s, dict) else None)
+
+    # FIX 3 — guarantee date field exists
+    if "date" not in df.columns:
+        df["date"] = pd.NaT
 
     df["season"] = season
     return df
 
 
-def load_all_historical():
-    """Load all historical seasons into a single DataFrame."""
+
+def load_historical():
     frames = []
-    for season in HISTORICAL_SEASONS:
-        print(f"Downloading historical season {season}...")
-        df = download_historical_season(season)
-        frames.append(df)
+    for s in HISTORICAL_SEASONS:
+        print(f"Downloading historical season {s}")
+        frames.append(download_openfootball(s))
 
-    historical = pd.concat(frames, ignore_index=True)
-    return historical
+    return pd.concat(frames, ignore_index=True)
 
 
-# =====================================================
-# CURRENT SEASON FROM FPL
-# =====================================================
+# ----------------------------------------------------
+# CURRENT SEASON (FPL API)
+# ----------------------------------------------------
 
 def get_team_lookup():
-    """Returns team ID → name mapping."""
-    teams = requests.get(FPL_TEAMS_URL).json()["teams"]
+    r = requests.get("https://fantasy.premierleague.com/api/bootstrap-static/").json()
+    teams = r["teams"]
     df = pd.DataFrame(teams)[["id", "name"]]
     df.columns = ["team_id", "team_name"]
     return df
 
 
-def download_current_season():
-    """Download current season fixtures/results from FPL API."""
-    fixtures = requests.get(FPL_FIXTURES_URL).json()
+def load_current_season():
+    fixtures = requests.get("https://fantasy.premierleague.com/api/fixtures/").json()
     df = pd.DataFrame(fixtures)
-
-    if df.empty:
-        return df
-
-    # Add readable score fields
-    df["home_goals"] = df["team_h_score"]
-    df["away_goals"] = df["team_a_score"]
-
-    # Add team names
     teams = get_team_lookup()
-    df = df.merge(teams, left_on="team_h", right_on="team_id", how="left")
-    df = df.rename(columns={"team_name": "home_team"}).drop(columns=["team_id"])
 
+    df = df.merge(teams, left_on="team_h", right_on="team_id", how="left")
+    df.rename(columns={"team_name": "home_team"}, inplace=True)
     df = df.merge(teams, left_on="team_a", right_on="team_id", how="left")
-    df = df.rename(columns={"team_name": "away_team"}).drop(columns=["team_id"])
+    df.rename(columns={"team_name": "away_team"}, inplace=True)
 
     df["season"] = CURRENT_SEASON
-
-    # Clean columns
-    df = df[
-        [
-            "id",
-            "event",
-            "kickoff_time",
-            "finished",
-            "team_h",
-            "home_team",
-            "team_a",
-            "away_team",
-            "home_goals",
-            "away_goals",
-            "season",
-        ]
-    ]
+    df["home_goals"] = df["team_h_score"]
+    df["away_goals"] = df["team_a_score"]
 
     return df
 
 
-# =====================================================
-# FILE MANAGEMENT
-# =====================================================
+# ----------------------------------------------------
+# SHOTS / XG (Understat)
+# ----------------------------------------------------
 
-def load_csv(path):
-    """Load CSV if it exists."""
-    if os.path.exists(path):
-        return pd.read_csv(path)
-    return pd.DataFrame()
+def load_understat(season):
+    url = f"https://understatapi.onrender.com/league?league=EPL&season={season}"
+    r = requests.get(url)
 
+    if r.status_code != 200:
+        print(f"Understat missing for {season}")
+        return pd.DataFrame()
 
-def data_changed(old_df, new_df):
-    """Return True if downloaded data contains new info."""
-    if old_df.empty:
-        return True
+    matches = r.json()["matches"]
+    df = pd.DataFrame(matches)
 
-    if len(new_df) != len(old_df):
-        return True
-
-    merged = old_df.merge(new_df, how="outer", indicator=True)
-    if any(merged["_merge"] != "both"):
-        return True
-
-    return False
+    df["season"] = season
+    return df
 
 
-def save_csv(df, path):
-    """Save DataFrame to CSV."""
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    df.to_csv(path, index=False)
-    print(f"Saved: {path}")
+def load_understat_all():
+    frames = []
+    for s in HISTORICAL_SEASONS + [CURRENT_SEASON]:
+        print(f"Downloading xG for {s}")
+        frames.append(load_understat(s))
+    return pd.concat(frames, ignore_index=True)
 
 
-# =====================================================
-# MAIN UPDATE ROUTINES
-# =====================================================
+# ----------------------------------------------------
+# COMBINE DATASETS
+# ----------------------------------------------------
 
-def update_historical():
-    """Downloads historical seasons and saves them separately."""
-    path = os.path.join(OUTPUT_FOLDER, HISTORICAL_FILE)
-    old = load_csv(path)
+def build_master_table(historical, current, shots):
+    # Minimal columns for predictions
+    base_cols = [
+        "season", "date", "home_team", "away_team",
+        "home_goals", "away_goals"
+    ]
 
-    historical = load_all_historical()
+    # Harmonize historical date column
+    if "date" not in historical.columns and "matchday" in historical.columns:
+        historical["date"] = pd.NaT
 
-    if data_changed(old, historical):
-        save_csv(historical, path)
-        print("Historical dataset updated.")
-    else:
-        print("Historical dataset is already up to date.")
+    # Create unified base
+    all_base = pd.concat([
+        historical[["season", "date", "home_team", "away_team", "home_goals", "away_goals"]],
+        current[["season", "kickoff_time", "home_team", "away_team", "home_goals", "away_goals"]]
+        .rename(columns={"kickoff_time": "date"})
+    ], ignore_index=True)
+
+    # Add xG/shots
+    shots_subset = shots[
+        ["season", "h_team", "a_team", "xG_h", "xG_a", "h_shots", "a_shots"]
+    ].rename(columns={
+        "h_team": "home_team",
+        "a_team": "away_team",
+        "xG_h": "home_xg",
+        "xG_a": "away_xg",
+        "h_shots": "home_shots",
+        "a_shots": "away_shots"
+    })
+
+    merged = all_base.merge(
+        shots_subset,
+        on=["season", "home_team", "away_team"],
+        how="left"
+    )
+
+    return merged
 
 
-def update_current_season():
-    """Downloads current 25/26 season and saves separately."""
-    path = os.path.join(OUTPUT_FOLDER, CURRENT_FILE)
-    old = load_csv(path)
-
-    current = download_current_season()
-
-    if data_changed(old, current):
-        save_csv(current, path)
-        print("Current season dataset updated.")
-    else:
-        print("Current season dataset is already up to date.")
-
-
-# =====================================================
-# MAIN ENTRY POINT
-# =====================================================
+# ----------------------------------------------------
+# MAIN
+# ----------------------------------------------------
 
 if __name__ == "__main__":
-    update_historical()
-    update_current_season()
+
+    os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+
+    # Load components
+    historical = load_historical()
+    current = load_current_season()
+    shots = load_understat_all()
+
+    historical.to_csv(os.path.join(OUTPUT_FOLDER, HISTORICAL_FILE), index=False)
+    current.to_csv(os.path.join(OUTPUT_FOLDER, CURRENT_FILE), index=False)
+    shots.to_csv(os.path.join(OUTPUT_FOLDER, SHOTS_FILE), index=False)
+
+    # Combine
+    master = build_master_table(historical, current, shots)
+    master.to_csv(os.path.join(OUTPUT_FOLDER, ALL_FILE), index=False)
+
+    print("All data saved successfully.")
