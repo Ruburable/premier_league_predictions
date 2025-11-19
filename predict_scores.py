@@ -1,26 +1,30 @@
 #!/usr/bin/env python3
 """
-predict_gameweek.py
+predict_scores.py
 
 Reads:
-  - data/understat_matches_all.csv
-  - data/understat_match_events/*.json
+  - data/matches_master.csv
+  - data/match_events/*.json
 
-Outputs:
-  - data/predictions_gameweek.csv  (one row per upcoming fixture with scores + scorers + probabilities)
-  - prints short summary to stdout
+Writes:
+  - data/predictions_gameweek.csv
 
-Requirements:
-  pip install pandas numpy scikit-learn xgboost joblib scipy
+Outputs predictions (expected goals, score probabilities, predicted scorers with probabilities)
+using:
+  - XGBoost regressors for goals
+  - Monte-Carlo simulation for scorers (default N_SIM=2000, adjustable)
+
+Notes:
+  - Script is defensive about missing fields and uses fallbacks.
+  - Use lineups/injury data later to improve scorer sampling.
 """
 
-import os
+from pathlib import Path
 import json
 import glob
 import math
 import random
-from pathlib import Path
-from collections import defaultdict
+from collections import defaultdict, Counter
 
 import numpy as np
 import pandas as pd
@@ -28,512 +32,607 @@ from scipy.stats import poisson
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 import joblib
+from tqdm import tqdm
 
-# -----------------------
-# Configuration
-# -----------------------
+# ----------------------------
+# CONFIG
+# ----------------------------
 DATA_DIR = Path("data")
-MATCHES_FILE = DATA_DIR / "understat_matches_all.csv"
-MATCH_EVENTS_DIR = DATA_DIR / "understat_match_events"
-PREDICTIONS_FILE = DATA_DIR / "predictions_gameweek.csv"
+MASTER_FILE = DATA_DIR / "matches_master.csv"
+EVENTS_GLOB = DATA_DIR / "match_events" / "*.json"
+OUTPUT_PREDICTIONS = DATA_DIR / "predictions_gameweek.csv"
 MODEL_DIR = DATA_DIR / "models"
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
-SEED = 42
-random.seed(SEED)
-np.random.seed(SEED)
 
-# Modeling hyperparams
+# Modeling & simulation settings
+FORM_WINDOW = 5               # rolling window (matches)
+N_MC_SIM = 2000               # Monte Carlo simulations for scorer probabilities
+MAX_GOALS_PER_TEAM = 6        # cap per simulation (to limit state space)
+RANDOM_SEED = 42
+np.random.seed(RANDOM_SEED)
+random.seed(RANDOM_SEED)
+
+# XGBoost parameters
 XGB_PARAMS = {
-    "n_estimators": 300,
+    "n_estimators": 500,
     "max_depth": 4,
     "learning_rate": 0.05,
     "objective": "reg:squarederror",
-    "random_state": SEED,
+    "random_state": RANDOM_SEED,
+    "verbosity": 0,
 }
 
-# Rolling window for form (number of prior matches used)
-FORM_WINDOW = 5
+# ----------------------------
+# UTIL FUNCTIONS
+# ----------------------------
 
-# Number of goals to consider for scorer sampling if predicted expected goals large
-MAX_GOALS_SAMPLING = 6
-
-# -----------------------
-# Helpers
-# -----------------------
-
-def safe_read_matches(path):
+def safe_read_master(path: Path) -> pd.DataFrame:
     if not path.exists():
-        raise FileNotFoundError(f"Matches file not found: {path}")
+        raise FileNotFoundError(f"{path} not found. Run data downloader first.")
     df = pd.read_csv(path)
-    # Normalize column names lower-case
+    # normalize column names
     df.columns = [c.strip() for c in df.columns]
-    # Ensure date parse if exists (Understat sometimes uses 'date' column)
-    for col in ("date", "kickoff_time"):
-        if col in df.columns:
+    # unify datetime column name
+    for c in ("datetime", "date", "kickoff_time"):
+        if c in df.columns:
+            df["datetime"] = pd.to_datetime(df[c], errors="coerce")
+            break
+    # unify goal columns
+    if "home_goals" not in df.columns:
+        if "home_goals" in df.columns:
+            pass
+        else:
+            # try different names or 'goals' list? if 'goals' present and is stringified list, try parse
+            if "goals" in df.columns:
+                def parse_goals(x):
+                    try:
+                        if pd.isna(x):
+                            return (None, None)
+                        if isinstance(x, str) and x.strip().startswith("["):
+                            arr = json.loads(x)
+                            return (int(arr[0]) if arr[0] is not None else None, int(arr[1]) if arr[1] is not None else None)
+                        if isinstance(x, (list, tuple)):
+                            return (int(x[0]) if x[0] is not None else None, int(x[1]) if x[1] is not None else None)
+                    except Exception:
+                        return (None, None)
+                    return (None, None)
+                parsed = df["goals"].apply(parse_goals)
+                df["home_goals"] = parsed.apply(lambda t: t[0])
+                df["away_goals"] = parsed.apply(lambda t: t[1])
+    # unify xg columns
+    if "home_xg" not in df.columns and "xG" in df.columns:
+        # if xG is list-like
+        def parse_xg(x):
             try:
-                df[col] = pd.to_datetime(df[col], errors="coerce")
+                if pd.isna(x):
+                    return (None, None)
+                if isinstance(x, str) and x.strip().startswith("["):
+                    arr = json.loads(x)
+                    return (float(arr[0]) if arr[0] is not None else None, float(arr[1]) if arr[1] is not None else None)
+                if isinstance(x, (list, tuple)):
+                    return (float(x[0]) if x[0] is not None else None, float(x[1]) if x[1] is not None else None)
             except Exception:
-                pass
+                return (None, None)
+            return (None, None)
+        parsed_xg = df["xG"].apply(parse_xg)
+        df["home_xg"] = parsed_xg.apply(lambda t: t[0])
+        df["away_xg"] = parsed_xg.apply(lambda t: t[1])
+    # ensure numeric types
+    for col in ["home_goals", "away_goals", "home_xg", "away_xg"]:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
     return df
 
-def list_event_files(events_dir):
-    return sorted(glob.glob(str(events_dir / "*.json")))
+# ----------------------------
+# PLAYER STATS FROM EVENT JSONS
+# ----------------------------
 
-def load_match_event_json(match_json_path):
-    with open(match_json_path, "r", encoding="utf-8") as fh:
-        return json.load(fh)
+def list_event_files():
+    return sorted(glob.glob(str(EVENTS_GLOB)))
 
-# -----------------------
-# Player stats aggregation
-# -----------------------
+def load_event_json(pth):
+    try:
+        with open(pth, "r", encoding="utf-8") as fh:
+            return json.load(fh)
+    except Exception:
+        return None
 
-def build_player_stats(events_dir):
+def aggregate_player_stats(events_dir_glob=EVENTS_GLOB):
     """
-    Walk per-match JSON files and aggregate player-level stats:
-      - goals
-      - shots
-      - xG (sum of shot xG)
-      - matches_played (count of matches where player had at least one event)
-    Returns DataFrame indexed by player name with columns: team, goals, shots, xg, matches
+    Returns DataFrame with per-player aggregated stats:
+      - player (name)
+      - team (last seen)
+      - goals (count)
+      - shots (count)
+      - xg (sum of shot xG)
+      - matches (count distinct matches where player had at least one shot)
+      - goals_per_match, xg_per_shot
     """
-    player = defaultdict(lambda: {"team": None, "goals": 0, "shots": 0, "xg": 0.0, "matches": set()})
-    files = list_event_files(events_dir)
-    for fpath in files:
-        try:
-            data = load_match_event_json(fpath)
-        except Exception:
+    files = list_event_files()
+    player = {}
+    # iterate events
+    for f in tqdm(files, desc="Aggregating player events", unit="file"):
+        data = load_event_json(f)
+        if not data:
             continue
-        # shotsData commonly stored under "shotsData" key
+        match_id = data.get("_match_id") or Path(f).stem
+        # shots data often under 'shotsData' key or generic keys; handle variants
         shots = data.get("shotsData") or data.get("shots") or []
-        # Attach a match id for 'matches' set
-        match_id = data.get("_match_id") or Path(fpath).stem
-        # Understat shot objects often have: player, result ('goal'/'saved' etc.), xG, h_team/a_team info
-        for s in shots:
-            # fields may be named differently across scrapes: try multiple keys
-            player_name = s.get("player") or s.get("player_name") or s.get("s") or None
-            if not player_name:
-                # sometimes structure is nested
-                player_name = s.get("player_name") if isinstance(s, dict) else None
-            if not player_name:
-                continue
-            team = s.get("h_team") or s.get("h") or s.get("team") or s.get("team_name") or None
-            # determine if it's a home shot - some shot records include 'h_a' or similar; but team field is enough
-            xg_val = s.get("xG") or s.get("xg") or s.get("shot_xg") or 0.0
+        if not isinstance(shots, list):
+            # sometimes nested structure: try extract lists
             try:
-                xg_val = float(xg_val)
+                # flatten if dict with list values
+                shots = []
+                for v in data.values():
+                    if isinstance(v, list):
+                        shots.extend(v)
             except Exception:
-                xg_val = 0.0
-            # result: goal
-            result = s.get("result") or s.get("type") or s.get("situation") or ""
-            was_goal = False
-            # Understat marks goals with 'goal' or similar strings, or 'isGoal' boolean sometimes
-            if isinstance(result, str) and "goal" in result.lower():
-                was_goal = True
+                shots = []
+        seen_in_match = set()
+        for s in shots:
+            # shot objects vary; try typical fields
+            pname = s.get("player") or s.get("player_name") or s.get("s") or s.get("playerId") or None
+            if not pname:
+                continue
+            team = s.get("h_team") or s.get("h") or s.get("team") or s.get("team_title") or s.get("team_name") or None
+            # xG fields
+            xg_val = None
+            for key in ("xG", "xg", "shot_xg"):
+                if key in s:
+                    try:
+                        xg_val = float(s.get(key) or 0.0)
+                        break
+                    except Exception:
+                        xg_val = 0.0
+            res = s.get("result") or s.get("type") or ""
+            # determine goal
+            is_goal = False
+            if isinstance(res, str) and "goal" in res.lower():
+                is_goal = True
             if s.get("isGoal") or s.get("is_goal"):
-                was_goal = True
-            # increment stats
-            rec = player[player_name]
+                is_goal = True
+            # update player record
+            rec = player.setdefault(pname, {"team": team, "goals": 0, "shots": 0, "xg": 0.0, "matches": set()})
             if team:
                 rec["team"] = team
-            if was_goal:
-                rec["goals"] += 1
             rec["shots"] += 1
-            rec["xg"] += xg_val
+            rec["xg"] += float(xg_val or 0.0)
+            if is_goal:
+                rec["goals"] += 1
             rec["matches"].add(match_id)
-    # Normalize to DataFrame
+            seen_in_match.add(pname)
+    # convert to DataFrame
     rows = []
-    for name, rec in player.items():
-        matches_played = len(rec["matches"])
+    for pname, r in player.items():
+        matches_played = len(r["matches"])
         rows.append({
-            "player": name,
-            "team": rec["team"],
-            "goals": rec["goals"],
-            "shots": rec["shots"],
-            "xg": rec["xg"],
+            "player": pname,
+            "team": r.get("team"),
+            "goals": r.get("goals", 0),
+            "shots": r.get("shots", 0),
+            "xg": r.get("xg", 0.0),
             "matches": matches_played,
-            "goals_per90": (rec["goals"] / matches_played) if matches_played > 0 else 0.0,
-            "xg_per_shot": (rec["xg"] / rec["shots"]) if rec["shots"] > 0 else 0.0
+            "goals_per_match": (r["goals"] / matches_played) if matches_played > 0 else 0.0,
+            "xg_per_shot": (r["xg"] / r["shots"]) if r["shots"] > 0 else 0.0
         })
     df = pd.DataFrame(rows)
-    # drop players without a team (rare)
-    df = df[df["team"].notna()].reset_index(drop=True)
+    if df.empty:
+        return df
+    # normalize team names (strip)
+    df["team"] = df["team"].astype(str).str.strip()
     return df
 
-# -----------------------
-# Feature engineering for matches
-# -----------------------
+# ----------------------------
+# TEAM-LEVEL LOGS & ROLLING FEATURES
+# ----------------------------
 
-def compute_team_rolling_form(matches_df, window=FORM_WINDOW):
+def build_team_logs(master_df):
     """
-    For each team produce rolling stats (goals for/against, xG for/against, points)
-    Output: DataFrame with rows per team+match (pre-match stats), columns with rolling metrics.
+    Turn match-level rows into team-level logs (one row per team per match).
+    Columns: match_id, team, opponent, is_home, goals_for, goals_against, xg_for, xg_against, date
     """
-    # Prepare match-level canonical columns
-    df = matches_df.copy()
-    # Ensure date exists and sorted
-    date_col = None
-    if "date" in df.columns:
-        date_col = "date"
-    elif "kickoff_time" in df.columns:
-        date_col = "kickoff_time"
-    if date_col:
-        df[date_col] = pd.to_datetime(df[date_col], errors="coerce")
-        df = df.sort_values(date_col)
-    else:
-        # fallback: use index order
-        df = df.reset_index(drop=True)
-
-    # Build team-match rows
     rows = []
-    for _, r in df.iterrows():
+    for _, r in master_df.iterrows():
         home = r.get("home_team")
         away = r.get("away_team")
-        season = r.get("season")
-        idxdate = r.get(date_col) if date_col else None
-        # only if team names exist
-        if pd.isna(home) or pd.isna(away):
-            continue
+        mid = r.get("id") or r.get("match_id") or r.get("matchId")
+        dt = r.get("datetime") if "datetime" in r else None
+        # handle xg fields
+        hxg = r.get("home_xg") if "home_xg" in r else r.get("home_xg")
+        axg = r.get("away_xg") if "away_xg" in r else r.get("away_xg")
         rows.append({
-            "match_id": r.get("match_id") or r.get("id") or r.get("match_id") or r.get("matchid") or r.get("id"),
+            "match_id": mid,
             "team": home,
             "opponent": away,
             "is_home": 1,
             "goals_for": r.get("home_goals"),
             "goals_against": r.get("away_goals"),
-            "home_xg": r.get("home_xg") if "home_xg" in r else r.get("hxG") if "hxG" in r else None,
-            "away_xg": r.get("away_xg") if "away_xg" in r else r.get("axG") if "axG" in r else None,
-            "date": idxdate,
-            "season": season
+            "xg_for": hxg,
+            "xg_against": axg,
+            "date": dt
         })
         rows.append({
-            "match_id": r.get("match_id") or r.get("id"),
+            "match_id": mid,
             "team": away,
             "opponent": home,
             "is_home": 0,
             "goals_for": r.get("away_goals"),
             "goals_against": r.get("home_goals"),
-            "home_xg": r.get("home_xg") if "home_xg" in r else None,
-            "away_xg": r.get("away_xg") if "away_xg" in r else None,
-            "date": idxdate,
-            "season": season
+            "xg_for": axg,
+            "xg_against": hxg,
+            "date": dt
         })
-    team_logs = pd.DataFrame(rows)
-    if team_logs.empty:
-        return pd.DataFrame()
+    logs = pd.DataFrame(rows)
+    if logs.empty:
+        return logs
+    logs["date"] = pd.to_datetime(logs["date"], errors="coerce")
+    logs = logs.sort_values(["team", "date"]).reset_index(drop=True)
+    return logs
 
-    team_logs = team_logs.sort_values(["team", "date"])
-    # rolling metrics shifted by 1 (exclude current match)
-    aggregated = []
-    for team, g in team_logs.groupby("team"):
-        g = g.reset_index(drop=True)
-        g["rolling_goals_for"] = g["goals_for"].shift(1).rolling(window, min_periods=1).mean()
-        g["rolling_goals_against"] = g["goals_against"].shift(1).rolling(window, min_periods=1).mean()
-        # points: compute from goals if possible
-        def points_row(x):
-            if pd.isna(x["goals_for"]) or pd.isna(x["goals_against"]):
+def compute_rolling_features(team_logs, window=FORM_WINDOW):
+    """
+    Compute rolling metrics per team (shifted to be pre-match):
+      - rolling_points (sum last N matches)
+      - rolling_goals_for, rolling_goals_against (mean)
+      - rolling_xg_for (mean)
+      - weighted_pts (recent match weighted)
+    """
+    frames = []
+    for team, g in team_logs.groupby("team", sort=False):
+        g = g.sort_values("date").reset_index(drop=True)
+        # compute points
+        def pts(row):
+            if pd.isna(row["goals_for"]) or pd.isna(row["goals_against"]):
                 return np.nan
-            if x["goals_for"] > x["goals_against"]:
+            if row["goals_for"] > row["goals_against"]:
                 return 3
-            if x["goals_for"] == x["goals_against"]:
+            if row["goals_for"] == row["goals_against"]:
                 return 1
             return 0
-        g["points"] = g.apply(points_row, axis=1)
+        g["points"] = g.apply(pts, axis=1)
         g["rolling_points"] = g["points"].shift(1).rolling(window, min_periods=1).sum()
-        # rolling xg if available
-        # approximate xg per team from home_xg/away_xg in the team row context:
-        g["rolling_xg_for"] = g["home_xg"].where(g["is_home"]==1, g["away_xg"]).shift(1).rolling(window, min_periods=1).mean()
-        aggregated.append(g)
-    return pd.concat(aggregated, ignore_index=True)
+        g["rolling_gf"] = g["goals_for"].shift(1).rolling(window, min_periods=1).mean()
+        g["rolling_ga"] = g["goals_against"].shift(1).rolling(window, min_periods=1).mean()
+        # rolling xg
+        g["rolling_xg"] = g["xg_for"].shift(1).rolling(window, min_periods=1).mean()
+        # weighted points (newer matches heavier)
+        weights = np.arange(1, window + 1)[::-1]  # e.g. [5,4,3,2,1]
+        def weighted_pts(series):
+            arr = series.shift(1).rolling(window, min_periods=1).apply(
+                lambda vals: np.sum(vals * weights[-len(vals):]) / np.sum(weights[-len(vals):]), raw=True
+            )
+            return arr
+        g["weighted_pts"] = weighted_pts(g["points"])
+        frames.append(g)
+    result = pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
+    return result
 
-def build_match_features(matches_df, team_rolling):
+# ----------------------------
+# BUILD MATCH-LEVEL FEATURES
+# ----------------------------
+
+def build_match_features(master_df, team_rolling):
     """
-    Produce a match-level feature frame suitable for regressing goals for home/away.
-    Features include:
+    For each match produce features:
       - home_rolling_points, away_rolling_points
-      - home_rolling_goals_for, away_rolling_goals_for
-      - home_rolling_xg_for, away_rolling_xg_for
-      - simple strength ratios
+      - home_rolling_gf, away_rolling_gf
+      - home_rolling_xg, away_rolling_xg
+      - diff features
     """
-    mf = matches_df.copy()
-    # ensure match id present
-    if "match_id" not in mf.columns:
-        if "id" in mf.columns:
-            mf["match_id"] = mf["id"]
-        elif "match_id" in mf.columns:
-            pass
-        else:
-            mf["match_id"] = mf.index.astype(str)
+    # helper to lookup last rolling row for team before given date
+    def last_before(team, date):
+        sub = team_rolling[(team_rolling["team"] == team) & (team_rolling["date"] < date)]
+        if sub.empty:
+            # fallback to most recent overall
+            sub = team_rolling[team_rolling["team"] == team]
+            if sub.empty:
+                return None
+        return sub.iloc[-1]
 
-    # Merge rolling stats (take last row before match for each team)
-    def lookup_team_stats(row, team_col, prefix):
-        team = row.get(team_col)
-        date = row.get("date") if "date" in row else row.get("kickoff_time")
-        if pd.isna(team):
-            return {f"{prefix}_rolling_points": 0.0,
-                    f"{prefix}_rolling_gf": 0.0,
-                    f"{prefix}_rolling_ga": 0.0,
-                    f"{prefix}_rolling_xg": 0.0}
-        # find team rows before date
-        cand = team_rolling[(team_rolling["team"] == team) & (team_rolling["date"] < date)]
-        if cand.empty:
-            # fallback to most recent overall for team
-            cand = team_rolling[(team_rolling["team"] == team)]
-            if cand.empty:
-                return {f"{prefix}_rolling_points": 0.0,
-                        f"{prefix}_rolling_gf": 0.0,
-                        f"{prefix}_rolling_ga": 0.0,
-                        f"{prefix}_rolling_xg": 0.0}
-        last = cand.iloc[-1]
-        return {f"{prefix}_rolling_points": float(last.get("rolling_points", 0.0) or 0.0),
-                f"{prefix}_rolling_gf": float(last.get("rolling_goals_for", 0.0) or 0.0),
-                f"{prefix}_rolling_ga": float(last.get("rolling_goals_against", 0.0) or 0.0),
-                f"{prefix}_rolling_xg": float(last.get("rolling_xg_for", 0.0) or 0.0)}
-    feats = []
-    for _, r in mf.iterrows():
-        home_stats = lookup_team_stats(r, "home_team", "home")
-        away_stats = lookup_team_stats(r, "away_team", "away")
-        # baseline league averages for normalization
-        home_xg = r.get("home_xg") if "home_xg" in r else np.nan
-        away_xg = r.get("away_xg") if "away_xg" in r else np.nan
+    rows = []
+    for _, r in master_df.iterrows():
+        date = r.get("datetime")
+        home = r.get("home_team")
+        away = r.get("away_team")
+        if (home is None) or (away is None):
+            continue
+        home_row = last_before(home, date)
+        away_row = last_before(away, date)
         row = {
-            "match_id": r["match_id"],
-            "home_team": r.get("home_team"),
-            "away_team": r.get("away_team"),
-            "date": r.get("date") if "date" in r else r.get("kickoff_time"),
-            "home_xg_observed": home_xg,
-            "away_xg_observed": away_xg,
+            "match_id": r.get("id"),
+            "datetime": date,
+            "season": r.get("season"),
+            "event": r.get("event"),
+            "home_team": home,
+            "away_team": away,
             "home_goals": r.get("home_goals"),
             "away_goals": r.get("away_goals"),
+            "home_xg_obs": r.get("home_xg"),
+            "away_xg_obs": r.get("away_xg"),
         }
-        row.update(home_stats)
-        row.update(away_stats)
-        # derived features
+        # fill features from rolling rows or zeros
+        def fill_prefix(prefix, src):
+            if src is None:
+                row[f"{prefix}_rolling_points"] = 0.0
+                row[f"{prefix}_rolling_gf"] = 0.0
+                row[f"{prefix}_rolling_ga"] = 0.0
+                row[f"{prefix}_rolling_xg"] = 0.0
+            else:
+                row[f"{prefix}_rolling_points"] = float(src.get("rolling_points") or 0.0)
+                row[f"{prefix}_rolling_gf"] = float(src.get("rolling_gf") or 0.0)
+                row[f"{prefix}_rolling_ga"] = float(src.get("rolling_ga") or 0.0)
+                row[f"{prefix}_rolling_xg"] = float(src.get("rolling_xg") or 0.0)
+        fill_prefix("home", home_row)
+        fill_prefix("away", away_row)
         row["diff_rolling_points"] = row["home_rolling_points"] - row["away_rolling_points"]
         row["diff_rolling_gf"] = row["home_rolling_gf"] - row["away_rolling_gf"]
         row["diff_rolling_xg"] = row["home_rolling_xg"] - row["away_rolling_xg"]
-        feats.append(row)
-    feat_df = pd.DataFrame(feats)
-    # fill NaNs with zeros for modeling
-    feat_df = feat_df.fillna(0.0)
-    return feat_df
+        rows.append(row)
+    feats = pd.DataFrame(rows)
+    # ensure numeric
+    feats = feats.fillna(0.0)
+    return feats
 
-# -----------------------
-# Modeling: goals prediction
-# -----------------------
+# ----------------------------
+# MODELING: training/predicting goals
+# ----------------------------
 
-def train_goal_models(feature_df):
-    """
-    Train two XGBoost regressors: one for home goals, one for away goals.
-    Returns (model_home, model_away).
-    """
-    train_df = feature_df.dropna(subset=["home_goals", "away_goals"])
-    if train_df.shape[0] < 50:
-        print("Warning: less than 50 labeled matches available; model quality may be poor.")
-    X_cols = [
+def train_goal_models(feat_df, save_models=True):
+    labeled = feat_df.dropna(subset=["home_goals", "away_goals"])
+    if len(labeled) < 30:
+        print("Warning: small training set — predictions may be poor.")
+
+    feature_cols = [
         "home_rolling_points", "away_rolling_points",
         "home_rolling_gf", "away_rolling_gf",
         "home_rolling_xg", "away_rolling_xg",
         "diff_rolling_points", "diff_rolling_gf", "diff_rolling_xg"
     ]
-    X = train_df[X_cols].values
-    y_home = train_df["home_goals"].astype(float).values
-    y_away = train_df["away_goals"].astype(float).values
+    X = labeled[feature_cols].values
+    y_home = labeled["home_goals"].astype(float).values
+    y_away = labeled["away_goals"].astype(float).values
 
-    X_train, X_val, y_train_home, y_val_home = train_test_split(X, y_home, test_size=0.12, random_state=SEED)
-    _, _, y_train_away, y_val_away = train_test_split(X, y_away, test_size=0.12, random_state=SEED)
+    # simple train/test split
+    X_train, X_val, yh_train, yh_val = train_test_split(X, y_home, test_size=0.12, random_state=RANDOM_SEED)
+    _, _, ya_train, ya_val = train_test_split(X, y_away, test_size=0.12, random_state=RANDOM_SEED)
 
     model_home = xgb.XGBRegressor(**XGB_PARAMS)
     model_away = xgb.XGBRegressor(**XGB_PARAMS)
-    model_home.fit(X_train, y_train_home, eval_set=[(X_val, y_val_home)], early_stopping_rounds=20, verbose=False)
-    model_away.fit(X_train, y_train_away, eval_set=[(X_val, y_val_away)], early_stopping_rounds=20, verbose=False)
 
-    # Save models
-    joblib.dump(model_home, MODEL_DIR / "xgb_home_goals.joblib")
-    joblib.dump(model_away, MODEL_DIR / "xgb_away_goals.joblib")
-    return model_home, model_away, X_cols
+    model_home.fit(X_train, yh_train, eval_set=[(X_val, yh_val)], early_stopping_rounds=30, verbose=False)
+    model_away.fit(X_train, ya_train, eval_set=[(X_val, ya_val)], early_stopping_rounds=30, verbose=False)
 
-def predict_expected_goals(match_feat_df, model_home, model_away, X_cols):
-    """
-    For provided match-level feature rows (including future fixtures with NaN goals),
-    predict expected goals (floats) for home and away.
-    """
-    X = match_feat_df[X_cols].values
-    pred_home = model_home.predict(X)
-    pred_away = model_away.predict(X)
-    match_feat_df = match_feat_df.copy()
-    match_feat_df["pred_home_xg"] = np.clip(pred_home, 0.03, 5.0)  # clip to reasonable ranges
-    match_feat_df["pred_away_xg"] = np.clip(pred_away, 0.03, 5.0)
-    return match_feat_df
+    if save_models:
+        joblib.dump(model_home, MODEL_DIR / "xgb_home_goals.joblib")
+        joblib.dump(model_away, MODEL_DIR / "xgb_away_goals.joblib")
 
-# -----------------------
-# Scoreline probabilities + choose scorers
-# -----------------------
+    return model_home, model_away, feature_cols
 
-def scoreline_probabilities(home_xg, away_xg, max_goals=6):
-    """
-    Compute probability table for scores 0..max_goals using independent Poisson
-    Returns: dict with p_home_win, p_draw, p_away_win, most_likely_score (tuple)
-    """
+def predict_expected_goals(models, feat_rows, feature_cols):
+    model_home, model_away = models
+    X = feat_rows[feature_cols].values
+    pred_h = model_home.predict(X)
+    pred_a = model_away.predict(X)
+    # clip and floor
+    pred_h = np.clip(pred_h, 0.03, 6.0)
+    pred_a = np.clip(pred_a, 0.03, 6.0)
+    res = feat_rows.copy()
+    res["pred_home_xg"] = pred_h
+    res["pred_away_xg"] = pred_a
+    return res
+
+# ----------------------------
+# SCORELINE PROBS & SCORER SAMPLING
+# ----------------------------
+
+def scoreline_probs_closed_form(home_xg, away_xg, max_goals=6):
     probs = np.zeros((max_goals+1, max_goals+1))
     for i in range(max_goals+1):
         for j in range(max_goals+1):
             probs[i, j] = poisson.pmf(i, home_xg) * poisson.pmf(j, away_xg)
-    p_home_win = probs[np.triu_indices(max_goals+1, k=1)].sum()
+    p_home = probs[np.triu_indices(max_goals+1, k=1)].sum()
     p_draw = np.sum(np.diag(probs))
-    p_away_win = probs[np.tril_indices(max_goals+1, k=-1)].sum()
-    # most likely score = argmax prob
+    p_away = probs[np.tril_indices(max_goals+1, k=-1)].sum()
     idx = np.unravel_index(np.argmax(probs), probs.shape)
     most_likely = (int(idx[0]), int(idx[1]))
     return {
-        "p_home_win": float(p_home_win),
+        "p_home_win": float(p_home),
         "p_draw": float(p_draw),
-        "p_away_win": float(p_away_win),
+        "p_away_win": float(p_away),
         "most_likely_score": most_likely,
         "probs_matrix": probs
     }
 
-def build_team_player_weights(player_stats_df, team_name, alpha_goals=1.0, beta_xg=1.2, min_players=3):
+def build_team_player_weights(player_stats_df, team_name, top_k=10, alpha_goals=1.0, beta_xg=1.2):
     """
-    For a team, compute scoring weights for each player in player_stats_df.
-    Score = alpha * goals_per90 + beta * xg_per_shot (or xg per match)
-    Returns two arrays: players_list, probabilities (normalized)
-    If insufficient players, create synthetic weights from team average.
+    Create probability distribution over players of a given team to be the scorer.
+    We use a linear combination of goals_per_match and xg_per_shot (or xg/match)
     """
-    team_players = player_stats_df[player_stats_df["team"] == team_name].copy()
+    if player_stats_df is None or player_stats_df.empty:
+        return [], np.array([])
+    team_players = player_stats_df[player_stats_df["team"].str.lower() == str(team_name).lower()].copy()
     if team_players.empty:
-        # fallback: use top scorers across league assigned to team as unknown (unlikely)
-        return [], []
-    # compute metric
-    # goals per match ~ goals / matches ; use goals_per90 already computed earlier as goals / matches
-    # xg_per_shot already computed as xg / shots
-    team_players["score_metric"] = team_players["goals_per90"].fillna(0.0) * alpha_goals + team_players["xg_per_shot"].fillna(0.0) * beta_xg
-    # if all zeros, fallback to goals raw or shots
+        # try fuzzy match by substring
+        team_players = player_stats_df[player_stats_df["team"].str.lower().str.contains(str(team_name).lower().split()[0])].copy()
+    if team_players.empty:
+        return [], np.array([])
+    # scoring metric
+    team_players["score_metric"] = team_players["goals_per_match"].fillna(0.0) * alpha_goals + team_players["xg_per_shot"].fillna(0.0) * beta_xg
     if team_players["score_metric"].sum() <= 0:
+        # fallback to raw goals + shots
         team_players["score_metric"] = team_players["goals"].fillna(0.0) + 0.1 * team_players["shots"].fillna(0.0)
-    # restrict to top N players by metric to limit noise
-    team_players = team_players.sort_values("score_metric", ascending=False).head(max(min_players, 8))
+    team_players = team_players.sort_values("score_metric", ascending=False).head(top_k)
     players = team_players["player"].tolist()
     weights = team_players["score_metric"].values.astype(float)
-    # normalize
-    if weights.sum() <= 0:
-        probs = np.ones(len(weights)) / len(weights)
-    else:
-        probs = weights / weights.sum()
+    probs = weights / weights.sum() if weights.sum() > 0 else np.ones(len(weights)) / len(weights)
     return players, probs
 
-def sample_scorers_for_team(n_goals, players, probs):
+def monte_carlo_scorers(home_xg, away_xg, home_players, home_probs, away_players, away_probs, n_sim=N_MC_SIM, max_goals=MAX_GOALS_PER_TEAM):
     """
-    Sample n_goals scorers from players according to probs.
-    Allow repeat scorers (same player can score multiple goals).
-    Returns list of chosen player names.
+    Monte Carlo: for each sim, draw home_goals ~ Poisson(home_xg), away_goals ~ Poisson(away_xg),
+    then for each team sample that many scorers with replacement according to player probs.
+    Returns:
+      - score_freqs: Counter of score tuples
+      - home_scorer_counts: Counter of player-name -> count
+      - away_scorer_counts: Counter
     """
-    if n_goals <= 0 or len(players) == 0:
-        return []
-    choices = list(np.random.choice(players, size=n_goals, p=probs))
-    return choices
+    rng = np.random.default_rng(RANDOM_SEED)
+    score_counter = Counter()
+    home_scorer_counter = Counter()
+    away_scorer_counter = Counter()
 
-# -----------------------
-# Main pipeline
-# -----------------------
+    # Precompute categorical samplers by using numpy choice with given probs
+    hp = np.array(home_probs) if len(home_probs) > 0 else np.array([])
+    ap = np.array(away_probs) if len(away_probs) > 0 else np.array([])
+
+    for _ in range(n_sim):
+        # sample goals
+        gh = int(rng.poisson(home_xg))
+        ga = int(rng.poisson(away_xg))
+        gh = min(gh, max_goals)
+        ga = min(ga, max_goals)
+        score_counter[(gh, ga)] += 1
+        # sample scorers for home
+        if gh > 0 and len(home_players) > 0:
+            # vectorized choice
+            picks = rng.choice(home_players, size=gh, p=hp)
+            for p in picks:
+                home_scorer_counter[p] += 1
+        if ga > 0 and len(away_players) > 0:
+            picks = rng.choice(away_players, size=ga, p=ap)
+            for p in picks:
+                away_scorer_counter[p] += 1
+
+    # Convert to probabilities
+    total = n_sim
+    score_probs = {f"{s[0]}-{s[1]}": count / total for s, count in score_counter.items()}
+    home_scorer_probs = {p: cnt / total for p, cnt in home_scorer_counter.items()}
+    away_scorer_probs = {p: cnt / total for p, cnt in away_scorer_counter.items()}
+
+    # top scorers list
+    top_home = sorted(home_scorer_probs.items(), key=lambda x: -x[1])[:6]
+    top_away = sorted(away_scorer_probs.items(), key=lambda x: -x[1])[:6]
+
+    # also compute implied probabilities of win/draw/loss from simulation
+    p_home_win = sum(v for k, v in score_probs.items() if int(k.split('-')[0]) > int(k.split('-')[1]))
+    p_draw = sum(v for k, v in score_probs.items() if int(k.split('-')[0]) == int(k.split('-')[1]))
+    p_away_win = sum(v for k, v in score_probs.items() if int(k.split('-')[0]) < int(k.split('-')[1]))
+
+    return {
+        "score_probs": score_probs,
+        "top_home_scorers": top_home,
+        "top_away_scorers": top_away,
+        "p_home_win_mc": p_home_win,
+        "p_draw_mc": p_draw,
+        "p_away_win_mc": p_away_win,
+    }
+
+# ----------------------------
+# MAIN PIPELINE
+# ----------------------------
 
 def main():
-    print("Loading matches...")
-    matches = safe_read_matches(MATCHES_FILE)
-
-    # Normalize columns used below
-    # Understat often contains 'home_team', 'away_team', 'home_goals', 'away_goals', 'home_xg', 'away_xg'
-    # Ensure those columns exist or create placeholders
-    for col in ["home_team", "away_team"]:
-        if col not in matches.columns:
-            raise KeyError(f"Required column missing in matches file: {col}")
-
-    # Build player stats from per-match JSONs
-    print("Aggregating player stats from per-match event JSONs...")
-    player_stats = build_player_stats(MATCH_EVENTS_DIR)
+    print("Loading master matches...")
+    master = safe_read_master(MASTER_FILE)
+    # Filter seasons if needed (we will train on all available past matches)
+    master = master.sort_values("datetime")
+    # Build player stats from event JSONs
+    print("Aggregating player stats...")
+    player_stats = aggregate_player_stats(EVENTS_GLOB)
     if player_stats.empty:
-        print("Warning: no player event JSONs found. Goal-scorer predictions will be naive (team-level).")
+        print("Warning: No event JSONs found; scorer prediction will fallback to team-level naive allocation.")
 
-    # Compute team rolling form
-    print("Computing team rolling form...")
-    team_rolling = compute_team_rolling_form(matches, window=FORM_WINDOW)
-
-    # Build match-level features
-    print("Constructing match-level features...")
-    match_feats = build_match_features(matches, team_rolling)
-
-    # Split into labeled (past) and upcoming (future)
-    labeled = match_feats[(match_feats["home_goals"].notna()) & (match_feats["away_goals"].notna())]
-    upcoming = match_feats[(match_feats["home_goals"].isna()) | (match_feats["away_goals"].isna())]
-
-    if labeled.empty:
-        print("No labeled matches found (no matches with goals). Cannot train. Exiting.")
-        return
+    # Build team logs and rolling features
+    print("Building team logs and rolling features...")
+    team_logs = build_team_logs(master)
+    team_rolling = compute_rolling_features(team_logs, window=FORM_WINDOW)
+    # Build match features
+    print("Building match-level features...")
+    feats = build_match_features(master, team_rolling)
 
     # Train models
-    print("Training goal prediction models (XGBoost)...")
-    model_home, model_away, X_cols = train_goal_models(match_feats)
+    print("Training goal models (XGBoost)...")
+    model_home, model_away, feat_cols = train_goal_models(feats, save_models=True)
 
-    # Predict expected goals for upcoming fixtures
+    # Identify upcoming fixtures: where home_goals or away_goals is NaN and datetime <= now OR event not None
+    now = pd.Timestamp.now()
+    upcoming = feats[(feats["home_goals"].isna() | feats["away_goals"].isna())].copy()
+    # further restrict to matches with datetime not in far future (optional)
+    upcoming = upcoming[ (upcoming["datetime"].isna()) | (pd.to_datetime(upcoming["datetime"]) <= now + pd.Timedelta(days=7)) ]
+
     if upcoming.empty:
-        print("No upcoming fixtures found in dataset (no rows with missing goals). Nothing to predict.")
+        print("No upcoming fixtures found to predict.")
         return
 
-    print(f"Predicting for {len(upcoming)} upcoming fixtures...")
-    upcoming_pred = predict_expected_goals(upcoming, model_home, model_away, X_cols)
+    # Predict expected goals
+    print(f"Predicting expected goals for {len(upcoming)} fixtures...")
+    pred_df = predict_expected_goals((model_home, model_away), upcoming, feat_cols)
 
-    # For each upcoming fixture compute score probabilities and sample scorers
-    rows_out = []
-    for _, r in upcoming_pred.iterrows():
+    predictions = []
+    print("Running Monte Carlo scorer simulations (this may take a bit)...")
+    for _, r in tqdm(pred_df.iterrows(), total=len(pred_df), desc="Predict matches"):
         home = r["home_team"]
         away = r["away_team"]
-        match_id = r["match_id"]
-        home_xg = float(r["pred_home_xg"])
-        away_xg = float(r["pred_away_xg"])
-        probs = scoreline_probabilities(home_xg, away_xg, max_goals=MAX_GOALS_SAMPLING)
-        most_likely = probs["most_likely_score"]
-        # We'll simulate expected number of goals as rounded expected xg (but use Poisson sampling to get distribution)
-        exp_home = home_xg
-        exp_away = away_xg
-        # For scorer sampling, determine players & weights
-        players_home, probs_home = build_team_player_weights(player_stats, home)
-        players_away, probs_away = build_team_player_weights(player_stats, away)
-        # decide number of goals to sample: use most likely or round(exp)
-        # We'll sample n_home by drawing from Poisson(home_xg) once (one scenario) and similarly for away
-        n_home = int(poisson.rvs(mu=home_xg, random_state=np.random.RandomState()))
-        n_away = int(poisson.rvs(mu=away_xg, random_state=np.random.RandomState()))
-        # Cap at MAX_GOALS_SAMPLING
-        n_home = min(n_home, MAX_GOALS_SAMPLING)
-        n_away = min(n_away, MAX_GOALS_SAMPLING)
-        scorers_home = sample_scorers_for_team(n_home, players_home, probs_home) if len(players_home)>0 else []
-        scorers_away = sample_scorers_for_team(n_away, players_away, probs_away) if len(players_away)>0 else []
+        mh = float(r["pred_home_xg"])
+        ma = float(r["pred_away_xg"])
 
-        rows_out.append({
-            "match_id": match_id,
+        # closed-form score probs
+        closed = scoreline_probs_closed_form(mh, ma, max_goals=MAX_GOALS_PER_TEAM)
+        most_likely = closed["most_likely_score"]
+
+        # build player weight distributions
+        home_players, home_probs = build_team_player_weights(player_stats, home, top_k=12)
+        away_players, away_probs = build_team_player_weights(player_stats, away, top_k=12)
+
+        # Monte Carlo scorer sampling
+        mc = monte_carlo_scorers(mh, ma, home_players, home_probs, away_players, away_probs, n_sim=N_MC_SIM, max_goals=MAX_GOALS_PER_TEAM)
+
+        # Consolidate top scorer strings
+        def top_list_to_str(lst):
+            return "; ".join([f"{p} ({prob:.3f})" for p, prob in lst])
+
+        predictions.append({
+            "match_id": r["match_id"],
+            "datetime": r["datetime"],
+            "season": r["season"],
+            "event": r.get("event"),
             "home_team": home,
             "away_team": away,
-            "pred_home_xg": home_xg,
-            "pred_away_xg": away_xg,
+            "pred_home_xg": mh,
+            "pred_away_xg": ma,
             "most_likely_score_home": most_likely[0],
             "most_likely_score_away": most_likely[1],
-            "p_home_win": probs["p_home_win"],
-            "p_draw": probs["p_draw"],
-            "p_away_win": probs["p_away_win"],
-            "simulated_home_goals": n_home,
-            "simulated_away_goals": n_away,
-            "predicted_scorers_home": "; ".join(scorers_home),
-            "predicted_scorers_away": "; ".join(scorers_away)
+            "p_home_win_closed": closed["p_home_win"],
+            "p_draw_closed": closed["p_draw"],
+            "p_away_win_closed": closed["p_away_win"],
+            "p_home_win_mc": mc["p_home_win_mc"],
+            "p_draw_mc": mc["p_draw_mc"],
+            "p_away_win_mc": mc["p_away_win_mc"],
+            "top_home_scorers": json.dumps(mc["top_home_scorers"]),
+            "top_away_scorers": json.dumps(mc["top_away_scorers"]),
+            "score_probs_sampled": json.dumps(mc["score_probs"])
         })
 
-    out_df = pd.DataFrame(rows_out)
-    out_df.to_csv(PREDICTIONS_FILE, index=False)
-    print(f"Saved predictions to {PREDICTIONS_FILE}")
+    out = pd.DataFrame(predictions)
+    out.to_csv(OUTPUT_PREDICTIONS, index=False)
+    print(f"Predictions saved to {OUTPUT_PREDICTIONS}")
 
-    # Print quick summary
+    # Print readable summary
     print("\nPredictions summary:")
-    for _, row in out_df.iterrows():
-        print(f"{row['home_team']} vs {row['away_team']} — expected xG {row['pred_home_xg']:.2f} : {row['pred_away_xg']:.2f} — "
-              f"most likely {int(row['most_likely_score_home'])}-{int(row['most_likely_score_away'])}; "
-              f"scorers (home): {row['predicted_scorers_home'] or 'N/A'} — scorers (away): {row['predicted_scorers_away'] or 'N/A'}")
+    for _, r in out.iterrows():
+        print(f"{r['home_team']} vs {r['away_team']} — xG {r['pred_home_xg']:.2f}:{r['pred_away_xg']:.2f} — "
+              f"most likely {int(r['most_likely_score_home'])}-{int(r['most_likely_score_away'])}; "
+              f"p(H)={r['p_home_win_mc']:.2f} p(D)={r['p_draw_mc']:.2f} p(A)={r['p_away_win_mc']:.2f}")
+        # decode top scorers
+        try:
+            home_top = json.loads(r["top_home_scorers"])
+            away_top = json.loads(r["top_away_scorers"])
+            if home_top:
+                print("  Top home scorers:", ", ".join([f"{p} ({prob:.2%})" for p, prob in home_top]))
+            if away_top:
+                print("  Top away scorers:", ", ".join([f"{p} ({prob:.2%})" for p, prob in away_top]))
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     main()
