@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_172",
+    "team": "West Ham",
+    "minute": 64
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_23",
+    "team": "West Ham",
+    "minute": 73
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_96",
+    "team": "Liverpool",
+    "minute": 25
+  }
+]

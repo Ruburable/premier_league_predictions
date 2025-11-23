@@ -1,0 +1,56 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_208",
+    "team": "Liverpool",
+    "minute": 30
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_88",
+    "team": "Man United",
+    "minute": 41
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_147",
+    "team": "Liverpool",
+    "minute": 36
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_173",
+    "team": "Man United",
+    "minute": 35
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_172",
+    "team": "Liverpool",
+    "minute": 66
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_68",
+    "team": "Man United",
+    "minute": 44
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_156",
+    "team": "Liverpool",
+    "minute": 50
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_149",
+    "team": "Man United",
+    "minute": 38
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_89",
+    "team": "Liverpool",
+    "minute": 20
+  }
+]

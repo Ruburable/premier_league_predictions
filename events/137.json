@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_12",
+    "team": "West Ham",
+    "minute": 42
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_235",
+    "team": "West Ham",
+    "minute": 83
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_174",
+    "team": "West Ham",
+    "minute": 13
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_40",
+    "team": "Brighton",
+    "minute": 64
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_217",
+    "team": "Brentford",
+    "minute": 7
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_205",
+    "team": "Nottingham Forest",
+    "minute": 17
+  }
+]

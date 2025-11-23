@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_74",
+    "team": "Brentford",
+    "minute": 37
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_292",
+    "team": "Tottenham",
+    "minute": 76
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_246",
+    "team": "Brentford",
+    "minute": 84
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_177",
+    "team": "Tottenham",
+    "minute": 43
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_287",
+    "team": "Tottenham",
+    "minute": 59
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_14",
+    "team": "Nottingham Forest",
+    "minute": 79
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_92",
+    "team": "Nottingham Forest",
+    "minute": 21
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_69",
+    "team": "Brighton",
+    "minute": 69
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_106",
+    "team": "Brighton",
+    "minute": 20
+  }
+]

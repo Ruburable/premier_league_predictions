@@ -1,0 +1,14 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_151",
+    "team": "Chelsea",
+    "minute": 35
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_294",
+    "team": "Brentford",
+    "minute": 66
+  }
+]

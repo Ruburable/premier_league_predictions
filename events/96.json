@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_43",
+    "team": "Crystal Palace",
+    "minute": 32
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_100",
+    "team": "Man United",
+    "minute": 56
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_210",
+    "team": "Crystal Palace",
+    "minute": 22
+  }
+]

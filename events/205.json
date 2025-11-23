@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_101",
+    "team": "Sheffield United",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_1",
+    "team": "Sheffield United",
+    "minute": 45
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_8",
+    "team": "Sheffield United",
+    "minute": 27
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_52",
+    "team": "Luton",
+    "minute": 36
+  }
+]

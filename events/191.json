@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_236",
+    "team": "Tottenham",
+    "minute": 24
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_27",
+    "team": "Luton",
+    "minute": 59
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_286",
+    "team": "Luton",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_280",
+    "team": "Luton",
+    "minute": 60
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_117",
+    "team": "Luton",
+    "minute": 36
+  }
+]

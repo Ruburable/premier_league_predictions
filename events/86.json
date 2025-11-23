@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_128",
+    "team": "Bournemouth",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_201",
+    "team": "Bournemouth",
+    "minute": 73
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_70",
+    "team": "Bournemouth",
+    "minute": 56
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_5",
+    "team": "Bournemouth",
+    "minute": 68
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_9",
+    "team": "Brentford",
+    "minute": 18
+  }
+]

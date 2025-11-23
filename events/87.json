@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_166",
+    "team": "Wolves",
+    "minute": 34
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_100",
+    "team": "Fulham",
+    "minute": 49
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_110",
+    "team": "Fulham",
+    "minute": 39
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_30",
+    "team": "Wolves",
+    "minute": 20
+  }
+]

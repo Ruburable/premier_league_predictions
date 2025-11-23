@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_214",
+    "team": "Chelsea",
+    "minute": 72
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_131",
+    "team": "Chelsea",
+    "minute": 55
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_56",
+    "team": "Man United",
+    "minute": 9
+  }
+]

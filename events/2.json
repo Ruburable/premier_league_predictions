@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_157",
+    "team": "Chelsea",
+    "minute": 23
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_232",
+    "team": "Sheffield United",
+    "minute": 24
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_141",
+    "team": "Sheffield United",
+    "minute": 30
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_122",
+    "team": "Sheffield United",
+    "minute": 85
+  }
+]

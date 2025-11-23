@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_112",
+    "team": "Bournemouth",
+    "minute": 43
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_286",
+    "team": "Man City",
+    "minute": 16
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_248",
+    "team": "Bournemouth",
+    "minute": 57
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_1",
+    "team": "Bournemouth",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_298",
+    "team": "Bournemouth",
+    "minute": 23
+  }
+]

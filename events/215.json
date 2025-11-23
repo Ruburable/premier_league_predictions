@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_261",
+    "team": "Everton",
+    "minute": 86
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_56",
+    "team": "Everton",
+    "minute": 8
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_259",
+    "team": "Tottenham",
+    "minute": 2
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_12",
+    "team": "Tottenham",
+    "minute": 59
+  }
+]

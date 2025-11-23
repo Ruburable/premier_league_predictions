@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_277",
+    "team": "Aston Villa",
+    "minute": 77
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_45",
+    "team": "Aston Villa",
+    "minute": 54
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_224",
+    "team": "Bournemouth",
+    "minute": 54
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_179",
+    "team": "Bournemouth",
+    "minute": 10
+  }
+]

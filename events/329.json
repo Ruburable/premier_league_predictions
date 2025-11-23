@@ -1,0 +1,50 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_116",
+    "team": "Chelsea",
+    "minute": 50
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_130",
+    "team": "Luton",
+    "minute": 60
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_187",
+    "team": "Chelsea",
+    "minute": 76
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_143",
+    "team": "Chelsea",
+    "minute": 63
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_52",
+    "team": "Luton",
+    "minute": 80
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_168",
+    "team": "Luton",
+    "minute": 64
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_124",
+    "team": "Luton",
+    "minute": 23
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_248",
+    "team": "Luton",
+    "minute": 1
+  }
+]

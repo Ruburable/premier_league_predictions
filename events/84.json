@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_46",
+    "team": "West Ham",
+    "minute": 36
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_125",
+    "team": "West Ham",
+    "minute": 89
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_161",
+    "team": "West Ham",
+    "minute": 1
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_262",
+    "team": "Sheffield United",
+    "minute": 33
+  }
+]

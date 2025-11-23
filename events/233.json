@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_75",
+    "team": "Nottingham Forest",
+    "minute": 7
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_195",
+    "team": "Nottingham Forest",
+    "minute": 10
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_19",
+    "team": "Nottingham Forest",
+    "minute": 5
+  }
+]

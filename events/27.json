@@ -1,0 +1,14 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_85",
+    "team": "Nottingham Forest",
+    "minute": 60
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_232",
+    "team": "Bournemouth",
+    "minute": 11
+  }
+]

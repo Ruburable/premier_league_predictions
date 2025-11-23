@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_70",
+    "team": "Arsenal",
+    "minute": 87
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_137",
+    "team": "Arsenal",
+    "minute": 12
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_19",
+    "team": "Arsenal",
+    "minute": 20
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_141",
+    "team": "Arsenal",
+    "minute": 5
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_26",
+    "team": "Arsenal",
+    "minute": 75
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_218",
+    "team": "Wolves",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_101",
+    "team": "West Ham",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_131",
+    "team": "West Ham",
+    "minute": 86
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_76",
+    "team": "Wolves",
+    "minute": 31
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_251",
+    "team": "West Ham",
+    "minute": 34
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_238",
+    "team": "West Ham",
+    "minute": 30
+  }
+]

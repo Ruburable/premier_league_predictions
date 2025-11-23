@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_150",
+    "team": "Man City",
+    "minute": 13
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_228",
+    "team": "Man City",
+    "minute": 33
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_286",
+    "team": "Man City",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_287",
+    "team": "Fulham",
+    "minute": 9
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_118",
+    "team": "Fulham",
+    "minute": 82
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_91",
+    "team": "Man City",
+    "minute": 85
+  }
+]

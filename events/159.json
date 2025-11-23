@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_177",
+    "team": "Tottenham",
+    "minute": 89
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_244",
+    "team": "Tottenham",
+    "minute": 62
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_8",
+    "team": "Tottenham",
+    "minute": 18
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_202",
+    "team": "Tottenham",
+    "minute": 50
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_205",
+    "team": "Tottenham",
+    "minute": 43
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_269",
+    "team": "Tottenham",
+    "minute": 26
+  }
+]

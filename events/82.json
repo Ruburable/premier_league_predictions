@@ -1,0 +1,44 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_279",
+    "team": "Brentford",
+    "minute": 63
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_273",
+    "team": "Brentford",
+    "minute": 25
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_12",
+    "team": "Man City",
+    "minute": 61
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_145",
+    "team": "Man City",
+    "minute": 16
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_187",
+    "team": "Man City",
+    "minute": 22
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_34",
+    "team": "Man City",
+    "minute": 28
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_68",
+    "team": "Man City",
+    "minute": 19
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_267",
+    "team": "Aston Villa",
+    "minute": 31
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_206",
+    "team": "Chelsea",
+    "minute": 83
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_230",
+    "team": "Aston Villa",
+    "minute": 59
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_151",
+    "team": "Aston Villa",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_296",
+    "team": "Chelsea",
+    "minute": 16
+  }
+]

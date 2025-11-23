@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_50",
+    "team": "Newcastle",
+    "minute": 10
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_71",
+    "team": "Man United",
+    "minute": 85
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_279",
+    "team": "Man United",
+    "minute": 19
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_56",
+    "team": "Man United",
+    "minute": 52
+  }
+]

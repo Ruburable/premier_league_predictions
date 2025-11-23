@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_176",
+    "team": "Nottingham Forest",
+    "minute": 74
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_147",
+    "team": "West Ham",
+    "minute": 43
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_121",
+    "team": "West Ham",
+    "minute": 29
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_264",
+    "team": "Nottingham Forest",
+    "minute": 90
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_62",
+    "team": "West Ham",
+    "minute": 54
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_290",
+    "team": "West Ham",
+    "minute": 18
+  }
+]

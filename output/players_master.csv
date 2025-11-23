@@ -1,0 +1,301 @@
+player,team,minutes,goals,xG,shots
+Player_1,Sheffield United,1776,13,2.6,54
+Player_2,Arsenal,1400,8,1.86,22
+Player_3,Aston Villa,2254,10,3.81,45
+Player_4,Aston Villa,307,17,0.59,55
+Player_5,West Ham,348,10,2.68,26
+Player_6,Liverpool,307,15,8.12,10
+Player_7,Fulham,1613,1,1.24,15
+Player_8,Arsenal,917,4,6.06,51
+Player_9,Liverpool,2651,14,1.38,20
+Player_10,Tottenham,520,2,2.23,42
+Player_11,Man United,1816,8,9.63,16
+Player_12,Brentford,1876,2,8.22,22
+Player_13,Fulham,2047,9,9.86,56
+Player_14,Crystal Palace,1514,3,3.58,49
+Player_15,Brentford,1083,9,9.29,57
+Player_16,Luton,563,18,0.88,38
+Player_17,Bournemouth,1270,12,5.66,11
+Player_18,Aston Villa,1595,15,2.85,54
+Player_19,Luton,2345,18,2.1,27
+Player_20,Crystal Palace,2273,9,5.35,8
+Player_21,Aston Villa,1997,4,4.63,60
+Player_22,Wolves,2497,2,2.07,57
+Player_23,Man United,2438,12,8.56,31
+Player_24,Bournemouth,2026,11,0.04,18
+Player_25,Chelsea,971,4,2.03,59
+Player_26,Everton,1583,6,11.37,54
+Player_27,Aston Villa,353,11,11.5,24
+Player_28,Brighton,2298,9,3.19,31
+Player_29,Luton,1982,7,0.08,58
+Player_30,West Ham,2668,5,5.36,9
+Player_31,Arsenal,1587,16,1.93,60
+Player_32,Newcastle,1388,2,9.37,9
+Player_33,Fulham,450,17,3.49,41
+Player_34,Burnley,688,8,8.17,48
+Player_35,Sheffield United,2163,7,5.19,46
+Player_36,Aston Villa,1116,7,2.1,38
+Player_37,Everton,1970,3,6.48,51
+Player_38,West Ham,1002,15,2.24,60
+Player_39,Tottenham,547,15,10.33,3
+Player_40,Sheffield United,2534,0,1.84,50
+Player_41,Burnley,803,18,3.85,32
+Player_42,Burnley,2499,16,3.21,49
+Player_43,Everton,1745,16,1.74,58
+Player_44,Luton,541,10,10.28,3
+Player_45,Brighton,329,17,2.38,37
+Player_46,Brentford,2185,0,8.59,59
+Player_47,Man United,305,15,10.77,5
+Player_48,Burnley,1029,13,4.15,19
+Player_49,Everton,563,8,2.36,41
+Player_50,Crystal Palace,1922,0,2.05,37
+Player_51,Wolves,2324,2,9.48,58
+Player_52,Arsenal,1027,13,4.5,53
+Player_53,Bournemouth,386,11,6.0,12
+Player_54,Brighton,2109,4,8.54,41
+Player_55,Liverpool,1627,6,7.78,51
+Player_56,Arsenal,484,7,5.17,22
+Player_57,Arsenal,2291,13,10.98,53
+Player_58,Man City,707,5,5.9,53
+Player_59,Everton,717,10,8.4,51
+Player_60,Burnley,566,15,11.53,58
+Player_61,Wolves,1769,5,5.72,56
+Player_62,Chelsea,756,11,4.41,19
+Player_63,West Ham,1767,3,3.98,28
+Player_64,Brighton,2139,4,6.76,20
+Player_65,Brighton,1830,7,9.42,26
+Player_66,Brighton,1084,0,7.95,14
+Player_67,Tottenham,552,2,1.12,25
+Player_68,Man United,825,3,11.03,33
+Player_69,Chelsea,2654,14,1.97,49
+Player_70,Burnley,1339,3,5.63,45
+Player_71,Wolves,922,8,10.36,43
+Player_72,Luton,2505,6,6.66,31
+Player_73,Luton,949,1,9.05,35
+Player_74,Everton,848,5,10.51,42
+Player_75,Chelsea,2296,9,1.83,15
+Player_76,Chelsea,632,0,9.66,29
+Player_77,Man City,1194,0,7.67,51
+Player_78,Newcastle,958,14,2.09,12
+Player_79,Luton,2684,9,9.64,40
+Player_80,Brentford,1983,3,2.3,40
+Player_81,Brentford,1968,14,10.0,33
+Player_82,Burnley,2236,1,8.55,15
+Player_83,Liverpool,773,18,9.67,16
+Player_84,Chelsea,537,0,2.73,5
+Player_85,Luton,781,3,7.27,33
+Player_86,Nottingham Forest,426,4,3.95,58
+Player_87,Fulham,2633,10,6.11,10
+Player_88,Wolves,1943,18,0.8,60
+Player_89,Brighton,515,4,8.95,28
+Player_90,Liverpool,879,4,8.3,42
+Player_91,Sheffield United,1089,0,1.9,28
+Player_92,Everton,1385,8,0.96,34
+Player_93,Man City,1384,4,5.11,59
+Player_94,Brighton,1407,4,6.6,41
+Player_95,West Ham,675,3,6.26,43
+Player_96,Wolves,2317,3,11.07,57
+Player_97,Brighton,1165,4,6.34,29
+Player_98,Burnley,758,1,6.05,15
+Player_99,Everton,2410,16,4.72,42
+Player_100,Burnley,2564,4,4.63,38
+Player_101,Nottingham Forest,2375,12,5.35,38
+Player_102,Nottingham Forest,1530,1,11.36,13
+Player_103,Liverpool,1032,10,3.67,38
+Player_104,Everton,1819,7,0.5,46
+Player_105,Tottenham,1605,8,0.19,49
+Player_106,Crystal Palace,2178,17,8.54,57
+Player_107,Burnley,1422,9,11.56,38
+Player_108,Brentford,1093,10,3.8,5
+Player_109,Brighton,1858,11,8.88,44
+Player_110,Aston Villa,1168,13,11.69,12
+Player_111,West Ham,2283,13,2.4,30
+Player_112,Tottenham,2516,9,0.86,45
+Player_113,Crystal Palace,785,15,9.25,27
+Player_114,Nottingham Forest,1480,8,0.18,14
+Player_115,Luton,818,16,9.58,4
+Player_116,Liverpool,800,18,9.84,56
+Player_117,Nottingham Forest,1656,0,9.79,48
+Player_118,Wolves,1654,8,2.74,52
+Player_119,Everton,923,6,4.92,3
+Player_120,Everton,2586,16,11.18,44
+Player_121,Chelsea,997,18,4.69,20
+Player_122,Brighton,1217,9,4.3,57
+Player_123,Fulham,322,15,8.94,47
+Player_124,Man United,1243,15,10.65,26
+Player_125,Chelsea,1806,16,5.43,30
+Player_126,Man United,2549,1,6.17,21
+Player_127,Aston Villa,364,17,5.5,3
+Player_128,Crystal Palace,1186,10,3.63,47
+Player_129,Newcastle,1593,16,3.99,29
+Player_130,Chelsea,1538,6,3.28,12
+Player_131,Brentford,1246,5,2.4,19
+Player_132,Fulham,987,8,5.26,5
+Player_133,Crystal Palace,1006,5,9.14,25
+Player_134,Brighton,2189,5,0.31,24
+Player_135,Bournemouth,1605,12,0.79,19
+Player_136,Wolves,1091,13,5.33,15
+Player_137,Bournemouth,1707,12,6.34,21
+Player_138,Everton,2500,18,5.61,52
+Player_139,Chelsea,1450,8,9.36,15
+Player_140,Crystal Palace,2385,10,3.27,50
+Player_141,Fulham,2616,10,6.02,33
+Player_142,Burnley,1091,9,1.82,56
+Player_143,Nottingham Forest,1462,4,8.74,58
+Player_144,Man United,1628,11,7.86,10
+Player_145,Bournemouth,2018,18,5.3,9
+Player_146,Sheffield United,2079,2,6.45,53
+Player_147,Bournemouth,2177,16,0.27,4
+Player_148,West Ham,1280,2,3.13,3
+Player_149,Everton,1814,9,2.59,11
+Player_150,Brentford,870,18,9.47,7
+Player_151,Brighton,1605,10,11.4,29
+Player_152,Chelsea,1498,13,2.56,8
+Player_153,Luton,2387,7,8.55,36
+Player_154,Luton,2510,4,8.06,11
+Player_155,Brentford,2049,18,7.7,50
+Player_156,Tottenham,2546,16,2.73,52
+Player_157,Crystal Palace,957,13,10.55,47
+Player_158,Tottenham,1317,14,0.53,12
+Player_159,Liverpool,1030,3,1.57,18
+Player_160,Liverpool,2383,11,1.2,49
+Player_161,Everton,649,9,1.22,59
+Player_162,Brighton,1300,2,9.78,12
+Player_163,Man United,1309,10,1.25,43
+Player_164,Arsenal,2666,4,4.94,18
+Player_165,West Ham,1077,16,4.28,34
+Player_166,Everton,1870,2,11.12,31
+Player_167,Crystal Palace,1498,1,5.52,18
+Player_168,Bournemouth,777,6,2.17,11
+Player_169,Luton,1822,1,9.25,56
+Player_170,Man United,921,15,8.01,25
+Player_171,Bournemouth,534,15,2.18,6
+Player_172,Everton,1196,10,2.03,52
+Player_173,Brentford,2522,4,6.62,35
+Player_174,Sheffield United,1763,11,7.07,60
+Player_175,Luton,1704,3,0.64,40
+Player_176,Bournemouth,1982,10,4.24,34
+Player_177,Man City,2245,10,6.22,44
+Player_178,Man United,1507,18,9.02,53
+Player_179,Arsenal,2665,2,5.68,18
+Player_180,Arsenal,388,11,6.95,9
+Player_181,Man United,375,9,6.87,56
+Player_182,Arsenal,788,15,4.62,36
+Player_183,Sheffield United,2053,14,1.94,24
+Player_184,Luton,544,17,10.09,30
+Player_185,Everton,2193,8,4.45,45
+Player_186,Liverpool,1211,14,11.73,22
+Player_187,Everton,741,8,9.44,26
+Player_188,Everton,2620,11,2.98,44
+Player_189,Nottingham Forest,2560,8,10.42,50
+Player_190,Arsenal,2534,10,7.76,51
+Player_191,Crystal Palace,2072,13,5.73,34
+Player_192,Burnley,999,14,2.66,56
+Player_193,Crystal Palace,2410,0,0.59,45
+Player_194,Fulham,2353,2,9.28,10
+Player_195,Luton,1840,16,0.27,23
+Player_196,Sheffield United,531,16,11.07,7
+Player_197,Aston Villa,2214,0,2.36,37
+Player_198,Chelsea,517,7,2.28,29
+Player_199,Sheffield United,2162,2,0.18,21
+Player_200,Brighton,1740,9,2.64,21
+Player_201,Arsenal,2606,2,8.96,51
+Player_202,Arsenal,1531,8,3.74,35
+Player_203,Chelsea,1367,1,3.18,22
+Player_204,West Ham,1123,3,0.25,18
+Player_205,Chelsea,791,13,11.59,20
+Player_206,Man United,2408,2,9.98,25
+Player_207,Brentford,402,3,10.24,59
+Player_208,Arsenal,1585,9,9.54,38
+Player_209,Wolves,2562,7,0.67,49
+Player_210,Wolves,2692,9,3.83,55
+Player_211,Bournemouth,837,14,7.73,20
+Player_212,Tottenham,947,8,7.29,35
+Player_213,Sheffield United,1817,13,8.17,59
+Player_214,Crystal Palace,2445,12,4.05,39
+Player_215,Newcastle,431,2,5.81,54
+Player_216,Luton,1389,18,6.33,22
+Player_217,Arsenal,2579,5,4.31,3
+Player_218,Liverpool,1822,1,11.21,16
+Player_219,West Ham,871,11,1.68,20
+Player_220,Arsenal,1188,11,10.18,38
+Player_221,Aston Villa,1784,4,0.47,35
+Player_222,Man United,795,6,3.47,22
+Player_223,Arsenal,658,12,1.16,20
+Player_224,Brentford,1307,4,10.89,22
+Player_225,Crystal Palace,2238,9,11.34,25
+Player_226,Brighton,309,4,2.1,42
+Player_227,Wolves,2233,11,6.55,14
+Player_228,Chelsea,1522,15,2.99,46
+Player_229,Burnley,695,18,1.33,47
+Player_230,Tottenham,577,5,2.59,37
+Player_231,West Ham,2110,2,5.22,24
+Player_232,Nottingham Forest,1891,10,6.84,26
+Player_233,Fulham,2360,8,5.78,34
+Player_234,Wolves,2393,0,3.68,51
+Player_235,Nottingham Forest,745,2,3.87,44
+Player_236,Brentford,2528,3,11.65,26
+Player_237,Bournemouth,1482,15,2.18,30
+Player_238,Liverpool,2509,8,7.45,53
+Player_239,Crystal Palace,2059,17,9.41,13
+Player_240,Burnley,493,2,10.0,38
+Player_241,Brentford,2031,8,3.33,9
+Player_242,Aston Villa,2318,3,8.05,60
+Player_243,West Ham,654,15,10.98,41
+Player_244,Wolves,742,14,2.98,51
+Player_245,Arsenal,652,18,6.52,26
+Player_246,Brentford,2439,4,7.04,51
+Player_247,Man United,1339,12,0.89,48
+Player_248,Chelsea,1655,0,3.48,53
+Player_249,Brentford,1509,8,1.43,35
+Player_250,Wolves,803,1,6.94,55
+Player_251,Sheffield United,836,1,11.07,29
+Player_252,Brighton,393,17,4.05,39
+Player_253,Newcastle,357,13,4.81,3
+Player_254,Fulham,628,9,9.16,17
+Player_255,Sheffield United,468,4,6.17,41
+Player_256,Wolves,407,0,7.68,19
+Player_257,Wolves,2288,1,2.21,45
+Player_258,Brighton,731,3,8.99,17
+Player_259,Man City,1692,16,3.5,38
+Player_260,Tottenham,1479,17,11.07,35
+Player_261,Burnley,727,9,7.64,31
+Player_262,Man City,1332,12,7.95,33
+Player_263,Man United,862,17,7.42,32
+Player_264,Newcastle,2185,4,4.91,56
+Player_265,Nottingham Forest,426,2,5.97,39
+Player_266,West Ham,2691,16,7.28,16
+Player_267,Nottingham Forest,2537,3,3.17,10
+Player_268,Sheffield United,743,8,2.95,60
+Player_269,Burnley,1259,4,4.21,42
+Player_270,Man United,1007,16,10.91,59
+Player_271,Bournemouth,2683,4,9.42,23
+Player_272,Aston Villa,2108,17,6.03,4
+Player_273,Nottingham Forest,785,17,9.02,4
+Player_274,Man United,2582,12,10.78,43
+Player_275,Brentford,1444,9,11.0,26
+Player_276,Fulham,781,7,7.78,59
+Player_277,West Ham,1284,16,6.47,25
+Player_278,Chelsea,2524,6,3.2,29
+Player_279,Aston Villa,913,10,3.99,36
+Player_280,Liverpool,1622,18,3.09,52
+Player_281,Burnley,2689,12,3.15,58
+Player_282,Liverpool,1276,9,4.34,56
+Player_283,Man United,1134,14,9.87,19
+Player_284,Brighton,1636,6,0.49,35
+Player_285,Man United,1100,5,7.76,33
+Player_286,Everton,2683,0,6.82,36
+Player_287,Wolves,1410,8,4.23,50
+Player_288,Tottenham,1451,14,8.42,36
+Player_289,Burnley,1216,13,11.1,21
+Player_290,Luton,1052,13,0.07,27
+Player_291,Man City,868,1,4.59,16
+Player_292,Newcastle,1987,10,6.08,10
+Player_293,Newcastle,1118,11,1.97,20
+Player_294,West Ham,2428,14,3.44,33
+Player_295,Fulham,2583,12,2.47,50
+Player_296,Crystal Palace,1568,5,0.69,11
+Player_297,Everton,316,6,6.4,59
+Player_298,Sheffield United,596,14,6.65,29
+Player_299,Everton,1279,13,11.16,26
+Player_300,Tottenham,1294,3,11.37,53

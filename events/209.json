@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_114",
+    "team": "Brentford",
+    "minute": 1
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_124",
+    "team": "Luton",
+    "minute": 66
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_177",
+    "team": "Brentford",
+    "minute": 10
+  }
+]
