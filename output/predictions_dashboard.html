@@ -1,0 +1,341 @@
+
+    <html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Premier League Predictions</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: #f6f7f9;
+                margin: 0;
+                padding: 30px;
+            }
+            h1 {
+                text-align: center;
+                margin-bottom: 30px;
+                font-size: 36px;
+            }
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+                gap: 20px;
+            }
+            .fixture-card {
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+                display: flex;
+                flex-direction: column;
+            }
+            .teams {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .team-block {
+                text-align: center;
+            }
+            .team-name {
+                margin-top: 8px;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            .club-logo {
+                width: 70px;
+                height: 70px;
+            }
+            .pred-score {
+                font-size: 42px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .prob-block {
+                font-size: 14px;
+                opacity: 0.8;
+            }
+            .scorers {
+                margin-top: 20px;
+                font-size: 15px;
+                line-height: 1.4;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Premier League: Predicted Scores & Scorers</h1>
+        <div class="grid">
+            
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjRUYwMTA3IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5BcnM8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Arsenal</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjMDAwMDAwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5GdWw8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Fulham</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Arsenal scorers:</b> Player_57,  Player_220</div>
+            <div><b>Fulham scorers:</b> Player_13,  Player_194</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjMTMyMjU3IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5Ub3Q8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Tottenham</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjRUUyNzM3IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5TaGU8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Sheffield United</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Tottenham scorers:</b> Player_300,  Player_260</div>
+            <div><b>Sheffield United scorers:</b> Player_196,  Player_251</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjRUUyNzM3IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5TaGU8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Sheffield United</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjMDM0Njk0IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5DaGU8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Chelsea</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Sheffield United scorers:</b> Player_196,  Player_251</div>
+            <div><b>Chelsea scorers:</b> Player_205,  Player_76</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjQzgxMDJFIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5MaXY8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Liverpool</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjN0EyNjNBIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5XZXM8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">West Ham</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Liverpool scorers:</b> Player_186,  Player_218</div>
+            <div><b>West Ham scorers:</b> Player_243,  Player_266</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjMjQxRjIwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5OZXc8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Newcastle</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjMDA1N0I4IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5Ccmk8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Brighton</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Newcastle scorers:</b> Player_32,  Player_292</div>
+            <div><b>Brighton scorers:</b> Player_151,  Player_162</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjREEyOTFDIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5Cb3U8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Bournemouth</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjNkMxRDQ1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5CdXI8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Burnley</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Bournemouth scorers:</b> Player_271,  Player_211</div>
+            <div><b>Burnley scorers:</b> Player_107,  Player_60</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjRUUyNzM3IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5TaGU8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Sheffield United</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjMUI0NThGIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5Dcnk8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Crystal Palace</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Sheffield United scorers:</b> Player_196,  Player_251</div>
+            <div><b>Crystal Palace scorers:</b> Player_225,  Player_157</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjRkE0NjE2IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5MdXQ8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Luton</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjMjQxRjIwIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5OZXc8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Newcastle</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Luton scorers:</b> Player_44,  Player_184</div>
+            <div><b>Newcastle scorers:</b> Player_32,  Player_292</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjRUYwMTA3IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5BcnM8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Arsenal</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjN0EyNjNBIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5XZXM8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">West Ham</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Arsenal scorers:</b> Player_57,  Player_220</div>
+            <div><b>West Ham scorers:</b> Player_243,  Player_266</div>
+        </div>
+    </div>
+    
+
+    <div class="fixture-card">
+        <div class="teams">
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjRUYwMTA3IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5BcnM8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Arsenal</div>
+            </div>
+            <div class="score-block">
+                <div class="pred-score">1–1</div>
+                <div class="prob-block">
+                    <div><b>Home win:</b> 0.49</div>
+                    <div><b>Draw:</b> 0.98</div>
+                    <div><b>Away win:</b> 0.51</div>
+                </div>
+            </div>
+            <div class="team-block">
+                <img src="data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI5MCIgaGVpZ2h0PSI5MCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgIDxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ4IiBmaWxsPSIjRUUyNzM3IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiLz4KICAgICAgPHRleHQgeD0iNTAiIHk9IjU2IiBmb250LXNpemU9IjIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIj5TaGU8L3RleHQ+CiAgICA8L3N2Zz4KICAgIA==" class="club-logo">
+                <div class="team-name">Sheffield United</div>
+            </div>
+        </div>
+
+        <div class="scorers">
+            <div><b>Arsenal scorers:</b> Player_57,  Player_220</div>
+            <div><b>Sheffield United scorers:</b> Player_196,  Player_251</div>
+        </div>
+    </div>
+    
+        </div>
+    </body>
+    </html>
+    
