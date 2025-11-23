@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_119",
+    "team": "Brentford",
+    "minute": 74
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_148",
+    "team": "Brighton",
+    "minute": 67
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_64",
+    "team": "Brighton",
+    "minute": 57
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_233",
+    "team": "Burnley",
+    "minute": 12
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_245",
+    "team": "Tottenham",
+    "minute": 2
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_155",
+    "team": "Burnley",
+    "minute": 59
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_86",
+    "team": "Tottenham",
+    "minute": 11
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_107",
+    "team": "Tottenham",
+    "minute": 22
+  }
+]

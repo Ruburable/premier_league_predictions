@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_234",
+    "team": "Man United",
+    "minute": 25
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_237",
+    "team": "Nottingham Forest",
+    "minute": 60
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_277",
+    "team": "Nottingham Forest",
+    "minute": 88
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_148",
+    "team": "Man United",
+    "minute": 83
+  }
+]

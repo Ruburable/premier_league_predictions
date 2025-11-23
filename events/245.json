@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_180",
+    "team": "West Ham",
+    "minute": 37
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_122",
+    "team": "West Ham",
+    "minute": 11
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_254",
+    "team": "Crystal Palace",
+    "minute": 17
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_217",
+    "team": "Crystal Palace",
+    "minute": 77
+  }
+]

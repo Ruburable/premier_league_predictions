@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_241",
+    "team": "Man United",
+    "minute": 8
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_240",
+    "team": "Man United",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_32",
+    "team": "Liverpool",
+    "minute": 46
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_143",
+    "team": "Liverpool",
+    "minute": 25
+  }
+]

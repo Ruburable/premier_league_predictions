@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_35",
+    "team": "Sheffield United",
+    "minute": 86
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_98",
+    "team": "Brighton",
+    "minute": 59
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_53",
+    "team": "Brighton",
+    "minute": 57
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_50",
+    "team": "Sheffield United",
+    "minute": 55
+  }
+]

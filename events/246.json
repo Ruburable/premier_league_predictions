@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_34",
+    "team": "Wolves",
+    "minute": 22
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_217",
+    "team": "Sheffield United",
+    "minute": 36
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_144",
+    "team": "Sheffield United",
+    "minute": 39
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_76",
+    "team": "Wolves",
+    "minute": 87
+  }
+]

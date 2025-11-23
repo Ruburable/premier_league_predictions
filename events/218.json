@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_40",
+    "team": "Everton",
+    "minute": 26
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_279",
+    "team": "Arsenal",
+    "minute": 73
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_279",
+    "team": "Everton",
+    "minute": 2
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_5",
+    "team": "Arsenal",
+    "minute": 71
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_72",
+    "team": "Arsenal",
+    "minute": 22
+  }
+]

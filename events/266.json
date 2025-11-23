@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_114",
+    "team": "West Ham",
+    "minute": 18
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_85",
+    "team": "Liverpool",
+    "minute": 27
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_88",
+    "team": "West Ham",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_8",
+    "team": "Liverpool",
+    "minute": 57
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_298",
+    "team": "Liverpool",
+    "minute": 22
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_15",
+    "team": "Liverpool",
+    "minute": 3
+  }
+]

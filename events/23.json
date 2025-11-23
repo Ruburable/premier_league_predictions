@@ -1,0 +1,44 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_46",
+    "team": "Liverpool",
+    "minute": 89
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_79",
+    "team": "Crystal Palace",
+    "minute": 2
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_3",
+    "team": "Liverpool",
+    "minute": 38
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_213",
+    "team": "Liverpool",
+    "minute": 9
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_67",
+    "team": "Crystal Palace",
+    "minute": 70
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_281",
+    "team": "Liverpool",
+    "minute": 89
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_288",
+    "team": "Liverpool",
+    "minute": 52
+  }
+]

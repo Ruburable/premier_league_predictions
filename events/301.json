@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_215",
+    "team": "Man City",
+    "minute": 7
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_286",
+    "team": "Sheffield United",
+    "minute": 31
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_265",
+    "team": "Man City",
+    "minute": 54
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_184",
+    "team": "Man City",
+    "minute": 76
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_23",
+    "team": "Man City",
+    "minute": 32
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_86",
+    "team": "Sheffield United",
+    "minute": 61
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_24",
+    "team": "Burnley",
+    "minute": 8
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_181",
+    "team": "Man United",
+    "minute": 55
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_256",
+    "team": "Man United",
+    "minute": 87
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_55",
+    "team": "Wolves",
+    "minute": 60
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_155",
+    "team": "Nottingham Forest",
+    "minute": 35
+  }
+]

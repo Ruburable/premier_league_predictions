@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_222",
+    "team": "Crystal Palace",
+    "minute": 53
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_107",
+    "team": "Sheffield United",
+    "minute": 36
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_177",
+    "team": "Sheffield United",
+    "minute": 16
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_54",
+    "team": "Crystal Palace",
+    "minute": 35
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_149",
+    "team": "Sheffield United",
+    "minute": 45
+  }
+]

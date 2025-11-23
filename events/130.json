@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_178",
+    "team": "Man United",
+    "minute": 39
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_150",
+    "team": "Man United",
+    "minute": 20
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_99",
+    "team": "Fulham",
+    "minute": 86
+  }
+]

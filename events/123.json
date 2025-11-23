@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_29",
+    "team": "Brentford",
+    "minute": 76
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_155",
+    "team": "Burnley",
+    "minute": 87
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_251",
+    "team": "Brentford",
+    "minute": 59
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_235",
+    "team": "Burnley",
+    "minute": 20
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_142",
+    "team": "Brentford",
+    "minute": 86
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_282",
+    "team": "Brentford",
+    "minute": 65
+  }
+]

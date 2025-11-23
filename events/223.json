@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_65",
+    "team": "Bournemouth",
+    "minute": 62
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_60",
+    "team": "Bournemouth",
+    "minute": 23
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_20",
+    "team": "Luton",
+    "minute": 24
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_91",
+    "team": "Bournemouth",
+    "minute": 75
+  }
+]

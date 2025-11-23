@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_70",
+    "team": "Brentford",
+    "minute": 48
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_199",
+    "team": "Brentford",
+    "minute": 51
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_178",
+    "team": "Brentford",
+    "minute": 18
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_162",
+    "team": "Crystal Palace",
+    "minute": 5
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_32",
+    "team": "Brentford",
+    "minute": 76
+  }
+]

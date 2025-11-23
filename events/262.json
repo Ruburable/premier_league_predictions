@@ -1,0 +1,44 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_42",
+    "team": "Liverpool",
+    "minute": 82
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_117",
+    "team": "Luton",
+    "minute": 90
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_4",
+    "team": "Luton",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_162",
+    "team": "Luton",
+    "minute": 24
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_85",
+    "team": "Luton",
+    "minute": 1
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_13",
+    "team": "Liverpool",
+    "minute": 27
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_4",
+    "team": "Luton",
+    "minute": 9
+  }
+]

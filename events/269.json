@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_111",
+    "team": "Tottenham",
+    "minute": 21
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_111",
+    "team": "Man United",
+    "minute": 63
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_157",
+    "team": "Man United",
+    "minute": 61
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_127",
+    "team": "Tottenham",
+    "minute": 52
+  }
+]

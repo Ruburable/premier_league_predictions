@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_148",
+    "team": "Aston Villa",
+    "minute": 51
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_202",
+    "team": "Arsenal",
+    "minute": 43
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_67",
+    "team": "Aston Villa",
+    "minute": 74
+  }
+]

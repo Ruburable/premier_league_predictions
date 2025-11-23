@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_172",
+    "team": "Fulham",
+    "minute": 28
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_101",
+    "team": "Fulham",
+    "minute": 69
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_212",
+    "team": "Crystal Palace",
+    "minute": 83
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_285",
+    "team": "Fulham",
+    "minute": 90
+  }
+]

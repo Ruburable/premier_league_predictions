@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_278",
+    "team": "Brentford",
+    "minute": 23
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_147",
+    "team": "Brentford",
+    "minute": 47
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_182",
+    "team": "West Ham",
+    "minute": 57
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_216",
+    "team": "Brentford",
+    "minute": 46
+  }
+]

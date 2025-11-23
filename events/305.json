@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_113",
+    "team": "Bournemouth",
+    "minute": 48
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_254",
+    "team": "Bournemouth",
+    "minute": 34
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_160",
+    "team": "Bournemouth",
+    "minute": 9
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_228",
+    "team": "Luton",
+    "minute": 25
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_129",
+    "team": "Luton",
+    "minute": 71
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_84",
+    "team": "Bournemouth",
+    "minute": 69
+  }
+]

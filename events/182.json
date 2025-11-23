@@ -1,0 +1,20 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_230",
+    "team": "Luton",
+    "minute": 53
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_269",
+    "team": "Wolves",
+    "minute": 53
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_255",
+    "team": "Luton",
+    "minute": 38
+  }
+]

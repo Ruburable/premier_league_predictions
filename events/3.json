@@ -1,0 +1,38 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_7",
+    "team": "Brentford",
+    "minute": 40
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_27",
+    "team": "Sheffield United",
+    "minute": 85
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_106",
+    "team": "Brentford",
+    "minute": 17
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_112",
+    "team": "Sheffield United",
+    "minute": 41
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_219",
+    "team": "Sheffield United",
+    "minute": 62
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_283",
+    "team": "Brentford",
+    "minute": 23
+  }
+]

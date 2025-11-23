@@ -1,0 +1,44 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_19",
+    "team": "Luton",
+    "minute": 24
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_173",
+    "team": "Tottenham",
+    "minute": 84
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_179",
+    "team": "Luton",
+    "minute": 47
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_214",
+    "team": "Tottenham",
+    "minute": 27
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_145",
+    "team": "Luton",
+    "minute": 78
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_9",
+    "team": "Tottenham",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_24",
+    "team": "Tottenham",
+    "minute": 33
+  }
+]

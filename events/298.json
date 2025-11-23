@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_99",
+    "team": "Liverpool",
+    "minute": 24
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_250",
+    "team": "Liverpool",
+    "minute": 36
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_150",
+    "team": "Fulham",
+    "minute": 35
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_140",
+    "team": "Liverpool",
+    "minute": 17
+  }
+]

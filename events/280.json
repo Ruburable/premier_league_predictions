@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_78",
+    "team": "West Ham",
+    "minute": 59
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_174",
+    "team": "Luton",
+    "minute": 7
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_125",
+    "team": "Luton",
+    "minute": 60
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_59",
+    "team": "Luton",
+    "minute": 17
+  }
+]

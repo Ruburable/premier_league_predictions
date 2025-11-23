@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_245",
+    "team": "West Ham",
+    "minute": 8
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_179",
+    "team": "West Ham",
+    "minute": 38
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_230",
+    "team": "Burnley",
+    "minute": 12
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_158",
+    "team": "West Ham",
+    "minute": 17
+  }
+]

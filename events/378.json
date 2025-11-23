@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_208",
+    "team": "Luton",
+    "minute": 22
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_29",
+    "team": "Aston Villa",
+    "minute": 88
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_162",
+    "team": "Aston Villa",
+    "minute": 54
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_159",
+    "team": "Aston Villa",
+    "minute": 82
+  }
+]

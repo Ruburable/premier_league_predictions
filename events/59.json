@@ -1,0 +1,32 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_106",
+    "team": "Wolves",
+    "minute": 48
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_30",
+    "team": "Chelsea",
+    "minute": 70
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_70",
+    "team": "Wolves",
+    "minute": 11
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_55",
+    "team": "Wolves",
+    "minute": 79
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_289",
+    "team": "Wolves",
+    "minute": 74
+  }
+]

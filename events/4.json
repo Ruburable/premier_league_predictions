@@ -1,0 +1,26 @@
+[
+  {
+    "event_type": "goal",
+    "player": "Player_126",
+    "team": "Man City",
+    "minute": 30
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_115",
+    "team": "Man City",
+    "minute": 67
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_159",
+    "team": "Man City",
+    "minute": 88
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_189",
+    "team": "Man City",
+    "minute": 36
+  }
+]
