@@ -1,0 +1,11 @@
+date,home_team,away_team,week,home_gf5,home_xg5,away_gf5,away_xg5,pred_home_goals,pred_away_goals,scoreline,p_home_win,p_away_win,p_draw,expected_home_scorers,expected_away_scorers
+2025-11-24,Arsenal,Fulham,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_57', 'Player_220']","['Player_13', 'Player_194']"
+2025-11-25,Tottenham,Sheffield United,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_300', 'Player_260']","['Player_196', 'Player_251']"
+2025-11-26,Sheffield United,Chelsea,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_196', 'Player_251']","['Player_205', 'Player_76']"
+2025-11-27,Liverpool,West Ham,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_186', 'Player_218']","['Player_243', 'Player_266']"
+2025-11-28,Newcastle,Brighton,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_32', 'Player_292']","['Player_151', 'Player_162']"
+2025-11-29,Bournemouth,Burnley,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_271', 'Player_211']","['Player_107', 'Player_60']"
+2025-11-30,Sheffield United,Crystal Palace,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_196', 'Player_251']","['Player_225', 'Player_157']"
+2025-12-01,Luton,Newcastle,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_44', 'Player_184']","['Player_32', 'Player_292']"
+2025-12-02,Arsenal,West Ham,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_57', 'Player_220']","['Player_243', 'Player_266']"
+2025-12-03,Arsenal,Sheffield United,39,,,,,1.24,1.285,1–1,0.4887518980531451,0.5112481019468549,0.9775037961062902,"['Player_57', 'Player_220']","['Player_196', 'Player_251']"
