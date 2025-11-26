@@ -1,26 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_251",
+    "player": "Player_39",
     "team": "Brighton",
-    "minute": 36
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_250",
-    "team": "Wolves",
-    "minute": 50
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_234",
-    "team": "Brighton",
-    "minute": 72
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_182",
-    "team": "Wolves",
-    "minute": 40
+    "minute": 15
   }
 ]

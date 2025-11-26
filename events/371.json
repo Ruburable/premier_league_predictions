@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "event_type": "goal",
+    "player": "Player_225",
+    "team": "Crystal Palace",
+    "minute": 89
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_40",
+    "team": "Man City",
+    "minute": 55
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_110",
+    "team": "Crystal Palace",
+    "minute": 78
+  }
+]

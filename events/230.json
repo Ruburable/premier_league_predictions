@@ -1,20 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_214",
-    "team": "Chelsea",
+    "player": "Player_65",
+    "team": "Liverpool",
+    "minute": 53
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_236",
+    "team": "Everton",
     "minute": 72
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_131",
-    "team": "Chelsea",
-    "minute": 55
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_56",
-    "team": "Man United",
-    "minute": 9
   }
 ]

@@ -1,8 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_230",
-    "team": "Everton",
-    "minute": 27
+    "player": "Player_195",
+    "team": "Luton",
+    "minute": 7
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_138",
+    "team": "Luton",
+    "minute": 67
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_17",
+    "team": "Man United",
+    "minute": 45
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_172",
+    "team": "Man United",
+    "minute": 48
   }
 ]

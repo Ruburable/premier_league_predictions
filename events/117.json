@@ -1,20 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_284",
-    "team": "Luton",
-    "minute": 3
+    "player": "Player_235",
+    "team": "Newcastle",
+    "minute": 36
   },
   {
     "event_type": "goal",
-    "player": "Player_157",
-    "team": "Man United",
-    "minute": 29
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_27",
-    "team": "Luton",
-    "minute": 11
+    "player": "Player_5",
+    "team": "Newcastle",
+    "minute": 26
   }
 ]

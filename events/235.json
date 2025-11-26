@@ -1,14 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_4",
-    "team": "Aston Villa",
-    "minute": 81
+    "player": "Player_177",
+    "team": "Sheffield United",
+    "minute": 76
   },
   {
     "event_type": "goal",
-    "player": "Player_230",
-    "team": "Aston Villa",
-    "minute": 5
+    "player": "Player_198",
+    "team": "Bournemouth",
+    "minute": 30
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_31",
+    "team": "Sheffield United",
+    "minute": 27
   }
 ]

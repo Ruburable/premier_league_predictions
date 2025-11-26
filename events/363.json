@@ -1,20 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_45",
-    "team": "West Ham",
-    "minute": 49
+    "player": "Player_50",
+    "team": "Everton",
+    "minute": 20
   },
   {
     "event_type": "goal",
-    "player": "Player_60",
-    "team": "Wolves",
-    "minute": 36
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_197",
-    "team": "West Ham",
-    "minute": 75
+    "player": "Player_168",
+    "team": "Everton",
+    "minute": 73
   }
 ]

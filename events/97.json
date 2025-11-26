@@ -1,26 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_296",
-    "team": "Wolves",
-    "minute": 20
+    "player": "Player_97",
+    "team": "Everton",
+    "minute": 40
   },
   {
     "event_type": "goal",
-    "player": "Player_40",
-    "team": "Newcastle",
-    "minute": 13
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_63",
-    "team": "Newcastle",
-    "minute": 14
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_264",
-    "team": "Newcastle",
-    "minute": 24
+    "player": "Player_190",
+    "team": "Everton",
+    "minute": 51
   }
 ]

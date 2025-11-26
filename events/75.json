@@ -1,20 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_246",
-    "team": "Man United",
-    "minute": 73
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_37",
-    "team": "Man United",
-    "minute": 33
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_148",
-    "team": "Man United",
-    "minute": 33
+    "player": "Player_128",
+    "team": "Tottenham",
+    "minute": 50
   }
 ]

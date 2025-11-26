@@ -1,14 +1,44 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_199",
-    "team": "Wolves",
-    "minute": 85
+    "player": "Player_241",
+    "team": "Brentford",
+    "minute": 9
   },
   {
     "event_type": "goal",
-    "player": "Player_49",
-    "team": "Wolves",
-    "minute": 24
+    "player": "Player_8",
+    "team": "Tottenham",
+    "minute": 74
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_204",
+    "team": "Brentford",
+    "minute": 17
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_251",
+    "team": "Tottenham",
+    "minute": 5
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_166",
+    "team": "Tottenham",
+    "minute": 72
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_239",
+    "team": "Tottenham",
+    "minute": 79
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_66",
+    "team": "Brentford",
+    "minute": 11
   }
 ]

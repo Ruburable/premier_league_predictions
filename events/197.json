@@ -1,20 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_13",
-    "team": "Arsenal",
-    "minute": 51
+    "player": "Player_48",
+    "team": "Wolves",
+    "minute": 46
   },
   {
     "event_type": "goal",
-    "player": "Player_1",
-    "team": "Arsenal",
-    "minute": 32
+    "player": "Player_131",
+    "team": "Wolves",
+    "minute": 34
   },
   {
     "event_type": "goal",
-    "player": "Player_230",
-    "team": "Man United",
-    "minute": 36
+    "player": "Player_42",
+    "team": "Wolves",
+    "minute": 30
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_202",
+    "team": "Wolves",
+    "minute": 59
   }
 ]

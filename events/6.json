@@ -1,38 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_48",
-    "team": "Newcastle",
-    "minute": 16
+    "player": "Player_216",
+    "team": "Chelsea",
+    "minute": 3
   },
   {
     "event_type": "goal",
-    "player": "Player_110",
-    "team": "Newcastle",
-    "minute": 5
+    "player": "Player_32",
+    "team": "Chelsea",
+    "minute": 9
   },
   {
     "event_type": "goal",
-    "player": "Player_268",
-    "team": "Newcastle",
-    "minute": 22
+    "player": "Player_117",
+    "team": "Liverpool",
+    "minute": 26
   },
   {
     "event_type": "goal",
-    "player": "Player_231",
-    "team": "Newcastle",
-    "minute": 19
+    "player": "Player_227",
+    "team": "Liverpool",
+    "minute": 13
   },
   {
     "event_type": "goal",
-    "player": "Player_229",
-    "team": "Brentford",
-    "minute": 62
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_197",
-    "team": "Newcastle",
-    "minute": 22
+    "player": "Player_261",
+    "team": "Chelsea",
+    "minute": 49
   }
 ]

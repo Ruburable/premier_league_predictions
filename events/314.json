@@ -1,14 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_267",
-    "team": "Liverpool",
-    "minute": 29
+    "player": "Player_163",
+    "team": "Wolves",
+    "minute": 43
   },
   {
     "event_type": "goal",
-    "player": "Player_268",
-    "team": "Liverpool",
-    "minute": 62
+    "player": "Player_267",
+    "team": "Arsenal",
+    "minute": 77
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_5",
+    "team": "Arsenal",
+    "minute": 63
   }
 ]

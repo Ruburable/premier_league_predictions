@@ -1,8 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_96",
-    "team": "West Ham",
-    "minute": 77
+    "player": "Player_192",
+    "team": "Sheffield United",
+    "minute": 43
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_110",
+    "team": "Crystal Palace",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_287",
+    "team": "Crystal Palace",
+    "minute": 67
   }
 ]

@@ -1,20 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_24",
+    "player": "Player_97",
+    "team": "Chelsea",
+    "minute": 73
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_190",
     "team": "Burnley",
-    "minute": 8
+    "minute": 21
   },
   {
     "event_type": "goal",
-    "player": "Player_181",
-    "team": "Man United",
-    "minute": 55
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_256",
-    "team": "Man United",
-    "minute": 87
+    "player": "Player_125",
+    "team": "Burnley",
+    "minute": 24
   }
 ]

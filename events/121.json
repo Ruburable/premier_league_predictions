@@ -1,20 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_102",
-    "team": "Brentford",
-    "minute": 48
+    "player": "Player_176",
+    "team": "Nottingham Forest",
+    "minute": 65
   },
   {
     "event_type": "goal",
-    "player": "Player_65",
-    "team": "Brentford",
-    "minute": 70
+    "player": "Player_73",
+    "team": "Newcastle",
+    "minute": 61
   },
   {
     "event_type": "goal",
-    "player": "Player_278",
-    "team": "Aston Villa",
-    "minute": 38
+    "player": "Player_276",
+    "team": "Nottingham Forest",
+    "minute": 4
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_99",
+    "team": "Newcastle",
+    "minute": 71
   }
 ]

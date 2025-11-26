@@ -1,26 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_129",
+    "player": "Player_120",
     "team": "Sheffield United",
-    "minute": 80
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_67",
-    "team": "Sheffield United",
-    "minute": 52
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_184",
-    "team": "Brighton",
     "minute": 23
   },
   {
     "event_type": "goal",
-    "player": "Player_225",
-    "team": "Sheffield United",
-    "minute": 16
+    "player": "Player_199",
+    "team": "Nottingham Forest",
+    "minute": 80
   }
 ]

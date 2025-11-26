@@ -1,8 +1,56 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_74",
-    "team": "Brighton",
-    "minute": 67
+    "player": "Player_120",
+    "team": "Burnley",
+    "minute": 65
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_226",
+    "team": "Burnley",
+    "minute": 33
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_46",
+    "team": "Arsenal",
+    "minute": 74
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_273",
+    "team": "Arsenal",
+    "minute": 2
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_132",
+    "team": "Burnley",
+    "minute": 45
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_131",
+    "team": "Burnley",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_148",
+    "team": "Arsenal",
+    "minute": 84
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_93",
+    "team": "Arsenal",
+    "minute": 54
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_55",
+    "team": "Burnley",
+    "minute": 38
   }
 ]

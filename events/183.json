@@ -1,26 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_50",
+    "player": "Player_186",
+    "team": "Brentford",
+    "minute": 32
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_228",
+    "team": "Brentford",
+    "minute": 44
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_234",
+    "team": "Brentford",
+    "minute": 62
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_66",
+    "team": "Brentford",
+    "minute": 70
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_52",
     "team": "Newcastle",
-    "minute": 10
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_71",
-    "team": "Man United",
-    "minute": 85
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_279",
-    "team": "Man United",
-    "minute": 19
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_56",
-    "team": "Man United",
-    "minute": 52
+    "minute": 29
   }
 ]

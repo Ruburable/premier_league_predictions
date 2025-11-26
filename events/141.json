@@ -1,14 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_129",
-    "team": "Man United",
-    "minute": 88
+    "player": "Player_292",
+    "team": "Crystal Palace",
+    "minute": 36
   },
   {
     "event_type": "goal",
-    "player": "Player_195",
-    "team": "Tottenham",
-    "minute": 57
+    "player": "Player_81",
+    "team": "Liverpool",
+    "minute": 76
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_69",
+    "team": "Crystal Palace",
+    "minute": 32
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_205",
+    "team": "Crystal Palace",
+    "minute": 32
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_205",
+    "team": "Liverpool",
+    "minute": 31
   }
 ]

@@ -1,26 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_12",
+    "player": "Player_277",
     "team": "West Ham",
-    "minute": 42
+    "minute": 19
   },
   {
     "event_type": "goal",
-    "player": "Player_235",
+    "player": "Player_117",
     "team": "West Ham",
-    "minute": 83
+    "minute": 47
   },
   {
     "event_type": "goal",
-    "player": "Player_174",
+    "player": "Player_124",
     "team": "West Ham",
-    "minute": 13
+    "minute": 22
   },
   {
     "event_type": "goal",
-    "player": "Player_40",
-    "team": "Brighton",
-    "minute": 64
+    "player": "Player_10",
+    "team": "Crystal Palace",
+    "minute": 16
   }
 ]

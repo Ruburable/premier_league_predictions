@@ -1,20 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_119",
+    "player": "Player_33",
     "team": "Brentford",
-    "minute": 74
+    "minute": 77
   },
   {
     "event_type": "goal",
-    "player": "Player_148",
-    "team": "Brighton",
-    "minute": 67
+    "player": "Player_39",
+    "team": "Brentford",
+    "minute": 26
   },
   {
     "event_type": "goal",
-    "player": "Player_64",
-    "team": "Brighton",
-    "minute": 57
+    "player": "Player_43",
+    "team": "Brentford",
+    "minute": 4
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_35",
+    "team": "Brentford",
+    "minute": 19
   }
 ]

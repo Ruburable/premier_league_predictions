@@ -1,26 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_178",
-    "team": "Luton",
-    "minute": 86
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_71",
+    "player": "Player_27",
     "team": "Fulham",
-    "minute": 32
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_231",
-    "team": "Luton",
-    "minute": 3
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_183",
-    "team": "Fulham",
-    "minute": 22
+    "minute": 71
   }
 ]

@@ -1,14 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_20",
-    "team": "Chelsea",
-    "minute": 40
+    "player": "Player_143",
+    "team": "Aston Villa",
+    "minute": 46
   },
   {
     "event_type": "goal",
-    "player": "Player_188",
+    "player": "Player_29",
+    "team": "Luton",
+    "minute": 13
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_12",
     "team": "Aston Villa",
-    "minute": 69
+    "minute": 60
   }
 ]

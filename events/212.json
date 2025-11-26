@@ -1,14 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_296",
-    "team": "Bournemouth",
-    "minute": 78
+    "player": "Player_193",
+    "team": "Sheffield United",
+    "minute": 43
   },
   {
     "event_type": "goal",
-    "player": "Player_73",
-    "team": "Tottenham",
-    "minute": 17
+    "player": "Player_120",
+    "team": "Sheffield United",
+    "minute": 81
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_143",
+    "team": "Sheffield United",
+    "minute": 60
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_252",
+    "team": "Arsenal",
+    "minute": 66
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_207",
+    "team": "Arsenal",
+    "minute": 66
   }
 ]

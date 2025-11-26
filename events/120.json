@@ -1,20 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_79",
-    "team": "Nottingham Forest",
-    "minute": 16
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_5",
-    "team": "Brighton",
-    "minute": 1
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_176",
-    "team": "Brighton",
-    "minute": 62
+    "player": "Player_132",
+    "team": "Crystal Palace",
+    "minute": 59
   }
 ]

@@ -1,32 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_255",
-    "team": "Wolves",
-    "minute": 78
+    "player": "Player_56",
+    "team": "Arsenal",
+    "minute": 79
   },
   {
     "event_type": "goal",
-    "player": "Player_187",
-    "team": "Crystal Palace",
-    "minute": 85
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_151",
-    "team": "Wolves",
-    "minute": 60
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_290",
-    "team": "Wolves",
-    "minute": 16
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_103",
-    "team": "Wolves",
-    "minute": 31
+    "player": "Player_66",
+    "team": "Newcastle",
+    "minute": 4
   }
 ]

@@ -1,44 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_165",
-    "team": "Sheffield United",
-    "minute": 30
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_28",
-    "team": "Sheffield United",
-    "minute": 25
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_16",
-    "team": "Wolves",
-    "minute": 39
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_214",
-    "team": "Wolves",
-    "minute": 51
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_259",
-    "team": "Wolves",
-    "minute": 33
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_293",
-    "team": "Sheffield United",
+    "player": "Player_248",
+    "team": "Arsenal",
     "minute": 69
   },
   {
     "event_type": "goal",
-    "player": "Player_270",
-    "team": "Wolves",
-    "minute": 39
+    "player": "Player_126",
+    "team": "Arsenal",
+    "minute": 72
   }
 ]

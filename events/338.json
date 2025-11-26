@@ -1,8 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_135",
-    "team": "Tottenham",
-    "minute": 54
+    "player": "Player_138",
+    "team": "Bournemouth",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_93",
+    "team": "Everton",
+    "minute": 32
   }
 ]

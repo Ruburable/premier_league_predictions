@@ -1,20 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_140",
-    "team": "Chelsea",
-    "minute": 39
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_293",
-    "team": "Chelsea",
-    "minute": 20
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_112",
-    "team": "Newcastle",
+    "player": "Player_154",
+    "team": "Crystal Palace",
     "minute": 34
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_296",
+    "team": "Tottenham",
+    "minute": 56
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_85",
+    "team": "Tottenham",
+    "minute": 34
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_147",
+    "team": "Crystal Palace",
+    "minute": 68
   }
 ]

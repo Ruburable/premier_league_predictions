@@ -1,14 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_296",
-    "team": "Chelsea",
-    "minute": 73
+    "player": "Player_125",
+    "team": "Tottenham",
+    "minute": 13
   },
   {
     "event_type": "goal",
-    "player": "Player_27",
-    "team": "Chelsea",
-    "minute": 3
+    "player": "Player_44",
+    "team": "Arsenal",
+    "minute": 83
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_60",
+    "team": "Tottenham",
+    "minute": 20
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_300",
+    "team": "Arsenal",
+    "minute": 34
   }
 ]

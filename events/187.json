@@ -1,8 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_293",
-    "team": "Nottingham Forest",
-    "minute": 72
+    "player": "Player_277",
+    "team": "Aston Villa",
+    "minute": 53
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_157",
+    "team": "Man City",
+    "minute": 47
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_19",
+    "team": "Aston Villa",
+    "minute": 43
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_198",
+    "team": "Man City",
+    "minute": 45
   }
 ]

@@ -1,26 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_223",
-    "team": "Tottenham",
-    "minute": 11
+    "player": "Player_19",
+    "team": "Sheffield United",
+    "minute": 60
   },
   {
     "event_type": "goal",
-    "player": "Player_47",
-    "team": "Tottenham",
-    "minute": 89
+    "player": "Player_105",
+    "team": "Aston Villa",
+    "minute": 56
   },
   {
     "event_type": "goal",
-    "player": "Player_107",
-    "team": "Tottenham",
-    "minute": 4
+    "player": "Player_89",
+    "team": "Sheffield United",
+    "minute": 47
   },
   {
     "event_type": "goal",
-    "player": "Player_63",
-    "team": "Burnley",
-    "minute": 28
+    "player": "Player_91",
+    "team": "Aston Villa",
+    "minute": 32
   }
 ]

@@ -1,8 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_185",
-    "team": "Crystal Palace",
-    "minute": 80
+    "player": "Player_254",
+    "team": "Chelsea",
+    "minute": 6
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_249",
+    "team": "Chelsea",
+    "minute": 44
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_3",
+    "team": "Chelsea",
+    "minute": 22
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_111",
+    "team": "Man United",
+    "minute": 11
   }
 ]

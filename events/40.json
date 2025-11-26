@@ -1,14 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_29",
-    "team": "Nottingham Forest",
-    "minute": 38
+    "player": "Player_104",
+    "team": "Luton",
+    "minute": 49
   },
   {
     "event_type": "goal",
-    "player": "Player_231",
-    "team": "West Ham",
-    "minute": 62
+    "player": "Player_131",
+    "team": "Everton",
+    "minute": 47
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_247",
+    "team": "Everton",
+    "minute": 22
   }
 ]

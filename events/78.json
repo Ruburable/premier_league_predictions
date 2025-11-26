@@ -1,14 +1,38 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_9",
-    "team": "Wolves",
-    "minute": 36
+    "player": "Player_239",
+    "team": "Everton",
+    "minute": 61
   },
   {
     "event_type": "goal",
-    "player": "Player_6",
-    "team": "West Ham",
-    "minute": 71
+    "player": "Player_277",
+    "team": "Arsenal",
+    "minute": 43
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_133",
+    "team": "Everton",
+    "minute": 67
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_98",
+    "team": "Arsenal",
+    "minute": 85
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_203",
+    "team": "Arsenal",
+    "minute": 77
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_85",
+    "team": "Arsenal",
+    "minute": 54
   }
 ]

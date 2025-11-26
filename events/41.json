@@ -1,20 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_168",
-    "team": "Liverpool",
-    "minute": 23
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_25",
-    "team": "Burnley",
-    "minute": 68
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_286",
-    "team": "Liverpool",
-    "minute": 52
+    "player": "Player_103",
+    "team": "Everton",
+    "minute": 27
   }
 ]

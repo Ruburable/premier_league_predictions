@@ -1,26 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_241",
-    "team": "Man United",
-    "minute": 8
+    "player": "Player_262",
+    "team": "Everton",
+    "minute": 45
   },
   {
     "event_type": "goal",
-    "player": "Player_240",
-    "team": "Man United",
-    "minute": 14
+    "player": "Player_222",
+    "team": "Burnley",
+    "minute": 5
   },
   {
     "event_type": "goal",
-    "player": "Player_32",
-    "team": "Liverpool",
-    "minute": 46
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_143",
-    "team": "Liverpool",
-    "minute": 25
+    "player": "Player_179",
+    "team": "Everton",
+    "minute": 30
   }
 ]

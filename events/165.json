@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "event_type": "goal",
+    "player": "Player_160",
+    "team": "Aston Villa",
+    "minute": 89
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_50",
+    "team": "Aston Villa",
+    "minute": 42
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_160",
+    "team": "Brighton",
+    "minute": 10
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_260",
+    "team": "Brighton",
+    "minute": 1
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_287",
+    "team": "Aston Villa",
+    "minute": 19
+  }
+]

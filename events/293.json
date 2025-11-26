@@ -1,14 +1,1 @@
-[
-  {
-    "event_type": "goal",
-    "player": "Player_252",
-    "team": "West Ham",
-    "minute": 17
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_246",
-    "team": "Arsenal",
-    "minute": 86
-  }
-]
+[]

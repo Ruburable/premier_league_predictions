@@ -1,8 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_5",
-    "team": "Brentford",
-    "minute": 61
+    "player": "Player_196",
+    "team": "West Ham",
+    "minute": 29
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_211",
+    "team": "Sheffield United",
+    "minute": 8
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_191",
+    "team": "Sheffield United",
+    "minute": 71
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_169",
+    "team": "West Ham",
+    "minute": 18
   }
 ]

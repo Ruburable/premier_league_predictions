@@ -1,14 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_50",
-    "team": "Burnley",
-    "minute": 16
+    "player": "Player_67",
+    "team": "Man City",
+    "minute": 52
   },
   {
     "event_type": "goal",
-    "player": "Player_211",
-    "team": "Burnley",
-    "minute": 12
+    "player": "Player_120",
+    "team": "Man City",
+    "minute": 8
   }
 ]

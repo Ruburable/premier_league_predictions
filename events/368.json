@@ -1,26 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_56",
-    "team": "Arsenal",
-    "minute": 61
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_124",
-    "team": "Arsenal",
-    "minute": 47
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_72",
-    "team": "Arsenal",
-    "minute": 74
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_106",
-    "team": "Arsenal",
-    "minute": 22
+    "player": "Player_254",
+    "team": "Fulham",
+    "minute": 59
   }
 ]

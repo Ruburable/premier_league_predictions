@@ -1,14 +1,44 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_258",
-    "team": "Fulham",
-    "minute": 1
+    "player": "Player_137",
+    "team": "Man United",
+    "minute": 35
   },
   {
     "event_type": "goal",
-    "player": "Player_97",
-    "team": "Everton",
-    "minute": 16
+    "player": "Player_34",
+    "team": "Nottingham Forest",
+    "minute": 7
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_294",
+    "team": "Nottingham Forest",
+    "minute": 52
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_279",
+    "team": "Man United",
+    "minute": 89
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_234",
+    "team": "Man United",
+    "minute": 49
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_228",
+    "team": "Nottingham Forest",
+    "minute": 39
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_78",
+    "team": "Nottingham Forest",
+    "minute": 4
   }
 ]

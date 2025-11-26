@@ -1,38 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_293",
-    "team": "Man City",
-    "minute": 75
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_153",
-    "team": "Everton",
-    "minute": 64
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_106",
-    "team": "Man City",
-    "minute": 9
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_41",
-    "team": "Everton",
-    "minute": 72
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_53",
-    "team": "Everton",
-    "minute": 12
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_284",
-    "team": "Man City",
-    "minute": 42
+    "player": "Player_44",
+    "team": "Sheffield United",
+    "minute": 52
   }
 ]

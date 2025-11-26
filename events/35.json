@@ -1,26 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_123",
-    "team": "Arsenal",
-    "minute": 15
+    "player": "Player_271",
+    "team": "Crystal Palace",
+    "minute": 23
   },
   {
     "event_type": "goal",
-    "player": "Player_263",
-    "team": "Arsenal",
+    "player": "Player_35",
+    "team": "Crystal Palace",
     "minute": 27
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_245",
-    "team": "Arsenal",
-    "minute": 15
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_112",
-    "team": "Arsenal",
-    "minute": 30
   }
 ]

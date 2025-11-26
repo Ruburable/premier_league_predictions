@@ -1,20 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_190",
-    "team": "Arsenal",
-    "minute": 45
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_230",
-    "team": "Burnley",
-    "minute": 3
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_221",
-    "team": "Burnley",
-    "minute": 44
+    "player": "Player_15",
+    "team": "West Ham",
+    "minute": 60
   }
 ]

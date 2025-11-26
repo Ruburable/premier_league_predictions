@@ -1,26 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_101",
-    "team": "West Ham",
-    "minute": 64
+    "player": "Player_152",
+    "team": "Chelsea",
+    "minute": 44
   },
   {
     "event_type": "goal",
-    "player": "Player_236",
-    "team": "West Ham",
-    "minute": 21
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_210",
-    "team": "Man United",
+    "player": "Player_9",
+    "team": "Chelsea",
     "minute": 48
   },
   {
     "event_type": "goal",
-    "player": "Player_184",
-    "team": "West Ham",
-    "minute": 50
+    "player": "Player_60",
+    "team": "Brighton",
+    "minute": 52
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_260",
+    "team": "Chelsea",
+    "minute": 7
   }
 ]

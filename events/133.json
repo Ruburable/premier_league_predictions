@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "event_type": "goal",
+    "player": "Player_84",
+    "team": "Brighton",
+    "minute": 89
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_166",
+    "team": "Brighton",
+    "minute": 30
+  }
+]

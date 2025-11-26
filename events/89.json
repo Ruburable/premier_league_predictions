@@ -1,14 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_217",
-    "team": "Brentford",
-    "minute": 7
+    "player": "Player_115",
+    "team": "Crystal Palace",
+    "minute": 72
   },
   {
     "event_type": "goal",
-    "player": "Player_205",
-    "team": "Nottingham Forest",
-    "minute": 17
+    "player": "Player_188",
+    "team": "Aston Villa",
+    "minute": 20
   }
 ]

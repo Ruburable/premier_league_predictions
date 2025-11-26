@@ -1,8 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_3",
-    "team": "Luton",
-    "minute": 88
+    "player": "Player_101",
+    "team": "Crystal Palace",
+    "minute": 45
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_129",
+    "team": "Crystal Palace",
+    "minute": 52
   }
 ]

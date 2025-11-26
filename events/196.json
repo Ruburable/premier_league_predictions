@@ -1,26 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_82",
-    "team": "Burnley",
-    "minute": 15
+    "player": "Player_212",
+    "team": "Wolves",
+    "minute": 70
   },
   {
     "event_type": "goal",
-    "player": "Player_283",
-    "team": "Burnley",
-    "minute": 28
+    "player": "Player_252",
+    "team": "Bournemouth",
+    "minute": 82
   },
   {
     "event_type": "goal",
-    "player": "Player_168",
-    "team": "Newcastle",
-    "minute": 5
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_145",
-    "team": "Burnley",
-    "minute": 79
+    "player": "Player_33",
+    "team": "Bournemouth",
+    "minute": 34
   }
 ]

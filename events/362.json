@@ -1,20 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_41",
-    "team": "Bournemouth",
-    "minute": 25
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_151",
+    "player": "Player_157",
     "team": "West Ham",
-    "minute": 86
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_31",
-    "team": "West Ham",
-    "minute": 46
+    "minute": 79
   }
 ]

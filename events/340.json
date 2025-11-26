@@ -1,20 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_290",
-    "team": "Nottingham Forest",
-    "minute": 85
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_65",
+    "player": "Player_126",
     "team": "Fulham",
-    "minute": 27
+    "minute": 16
   },
   {
     "event_type": "goal",
     "player": "Player_72",
-    "team": "Nottingham Forest",
-    "minute": 17
+    "team": "Fulham",
+    "minute": 22
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_238",
+    "team": "Chelsea",
+    "minute": 47
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_80",
+    "team": "Chelsea",
+    "minute": 35
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_283",
+    "team": "Chelsea",
+    "minute": 15
   }
 ]

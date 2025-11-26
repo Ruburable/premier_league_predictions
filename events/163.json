@@ -1,32 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_12",
-    "team": "Man United",
-    "minute": 78
+    "player": "Player_164",
+    "team": "Newcastle",
+    "minute": 84
   },
   {
     "event_type": "goal",
-    "player": "Player_249",
-    "team": "Man United",
-    "minute": 70
+    "player": "Player_269",
+    "team": "Brentford",
+    "minute": 17
   },
   {
     "event_type": "goal",
-    "player": "Player_268",
-    "team": "Man United",
-    "minute": 8
+    "player": "Player_5",
+    "team": "Brentford",
+    "minute": 64
   },
   {
     "event_type": "goal",
-    "player": "Player_192",
-    "team": "Crystal Palace",
-    "minute": 27
+    "player": "Player_143",
+    "team": "Newcastle",
+    "minute": 12
   },
   {
     "event_type": "goal",
-    "player": "Player_37",
-    "team": "Crystal Palace",
-    "minute": 8
+    "player": "Player_182",
+    "team": "Newcastle",
+    "minute": 1
   }
 ]

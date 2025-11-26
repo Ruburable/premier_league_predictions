@@ -1,32 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_182",
-    "team": "Tottenham",
-    "minute": 46
+    "player": "Player_287",
+    "team": "Wolves",
+    "minute": 12
   },
   {
     "event_type": "goal",
-    "player": "Player_282",
-    "team": "Liverpool",
-    "minute": 19
+    "player": "Player_115",
+    "team": "Wolves",
+    "minute": 72
   },
   {
     "event_type": "goal",
-    "player": "Player_296",
-    "team": "Tottenham",
-    "minute": 70
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_280",
-    "team": "Liverpool",
-    "minute": 58
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_112",
-    "team": "Liverpool",
-    "minute": 45
+    "player": "Player_292",
+    "team": "Wolves",
+    "minute": 15
   }
 ]

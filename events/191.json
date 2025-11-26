@@ -1,32 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_236",
-    "team": "Tottenham",
-    "minute": 24
+    "player": "Player_200",
+    "team": "Liverpool",
+    "minute": 18
   },
   {
     "event_type": "goal",
-    "player": "Player_27",
-    "team": "Luton",
-    "minute": 59
+    "player": "Player_60",
+    "team": "West Ham",
+    "minute": 47
   },
   {
     "event_type": "goal",
-    "player": "Player_286",
-    "team": "Luton",
-    "minute": 14
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_280",
-    "team": "Luton",
-    "minute": 60
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_117",
-    "team": "Luton",
-    "minute": 36
+    "player": "Player_104",
+    "team": "Liverpool",
+    "minute": 23
   }
 ]

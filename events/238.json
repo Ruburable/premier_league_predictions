@@ -1,14 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_48",
-    "team": "Newcastle",
-    "minute": 82
+    "player": "Player_166",
+    "team": "Brighton",
+    "minute": 3
   },
   {
     "event_type": "goal",
-    "player": "Player_254",
-    "team": "Newcastle",
-    "minute": 43
+    "player": "Player_201",
+    "team": "Brighton",
+    "minute": 80
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_3",
+    "team": "Brighton",
+    "minute": 77
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_50",
+    "team": "Nottingham Forest",
+    "minute": 29
   }
 ]

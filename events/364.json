@@ -1,8 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_71",
-    "team": "Crystal Palace",
-    "minute": 7
+    "player": "Player_162",
+    "team": "Newcastle",
+    "minute": 74
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_103",
+    "team": "Everton",
+    "minute": 48
   }
 ]

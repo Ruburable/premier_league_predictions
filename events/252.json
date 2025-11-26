@@ -1,14 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_54",
-    "team": "West Ham",
-    "minute": 89
+    "player": "Player_81",
+    "team": "Arsenal",
+    "minute": 23
   },
   {
     "event_type": "goal",
-    "player": "Player_160",
-    "team": "Sheffield United",
-    "minute": 55
+    "player": "Player_73",
+    "team": "Brentford",
+    "minute": 82
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_122",
+    "team": "Brentford",
+    "minute": 73
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_148",
+    "team": "Arsenal",
+    "minute": 90
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_5",
+    "team": "Arsenal",
+    "minute": 33
   }
 ]

@@ -1,26 +1,38 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_208",
-    "team": "Luton",
-    "minute": 22
+    "player": "Player_93",
+    "team": "Tottenham",
+    "minute": 46
   },
   {
     "event_type": "goal",
-    "player": "Player_29",
-    "team": "Aston Villa",
-    "minute": 88
+    "player": "Player_237",
+    "team": "Bournemouth",
+    "minute": 25
   },
   {
     "event_type": "goal",
-    "player": "Player_162",
-    "team": "Aston Villa",
-    "minute": 54
+    "player": "Player_1",
+    "team": "Bournemouth",
+    "minute": 42
   },
   {
     "event_type": "goal",
-    "player": "Player_159",
-    "team": "Aston Villa",
-    "minute": 82
+    "player": "Player_209",
+    "team": "Tottenham",
+    "minute": 81
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_111",
+    "team": "Tottenham",
+    "minute": 78
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_61",
+    "team": "Tottenham",
+    "minute": 76
   }
 ]

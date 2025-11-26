@@ -1,32 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_126",
-    "team": "Tottenham",
-    "minute": 50
+    "player": "Player_37",
+    "team": "Crystal Palace",
+    "minute": 51
   },
   {
     "event_type": "goal",
-    "player": "Player_45",
-    "team": "Tottenham",
-    "minute": 58
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_180",
-    "team": "Tottenham",
-    "minute": 65
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_151",
-    "team": "Tottenham",
-    "minute": 70
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_61",
-    "team": "Newcastle",
-    "minute": 68
+    "player": "Player_238",
+    "team": "Brighton",
+    "minute": 14
   }
 ]

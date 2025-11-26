@@ -1,20 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_275",
-    "team": "West Ham",
-    "minute": 31
+    "player": "Player_21",
+    "team": "Arsenal",
+    "minute": 82
   },
   {
     "event_type": "goal",
-    "player": "Player_153",
-    "team": "Chelsea",
-    "minute": 42
+    "player": "Player_238",
+    "team": "Crystal Palace",
+    "minute": 12
   },
   {
     "event_type": "goal",
-    "player": "Player_159",
-    "team": "West Ham",
-    "minute": 69
+    "player": "Player_71",
+    "team": "Arsenal",
+    "minute": 1
   }
 ]

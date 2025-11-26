@@ -1,32 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_112",
-    "team": "Bournemouth",
-    "minute": 43
+    "player": "Player_145",
+    "team": "Man United",
+    "minute": 7
   },
   {
     "event_type": "goal",
-    "player": "Player_286",
-    "team": "Man City",
-    "minute": 16
+    "player": "Player_179",
+    "team": "Man United",
+    "minute": 45
   },
   {
     "event_type": "goal",
-    "player": "Player_248",
-    "team": "Bournemouth",
-    "minute": 57
+    "player": "Player_251",
+    "team": "Sheffield United",
+    "minute": 58
   },
   {
     "event_type": "goal",
-    "player": "Player_1",
-    "team": "Bournemouth",
-    "minute": 75
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_298",
-    "team": "Bournemouth",
-    "minute": 23
+    "player": "Player_132",
+    "team": "Man United",
+    "minute": 84
   }
 ]
