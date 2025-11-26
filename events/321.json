@@ -1,8 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_237",
-    "team": "Aston Villa",
-    "minute": 72
+    "player": "Player_100",
+    "team": "Burnley",
+    "minute": 90
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_239",
+    "team": "Liverpool",
+    "minute": 15
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_51",
+    "team": "Burnley",
+    "minute": 51
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_93",
+    "team": "Burnley",
+    "minute": 18
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_290",
+    "team": "Liverpool",
+    "minute": 1
   }
 ]

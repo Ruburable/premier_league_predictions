@@ -1,32 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_173",
-    "team": "Luton",
-    "minute": 30
+    "player": "Player_114",
+    "team": "Aston Villa",
+    "minute": 3
   },
   {
     "event_type": "goal",
-    "player": "Player_228",
-    "team": "Newcastle",
-    "minute": 66
+    "player": "Player_273",
+    "team": "Aston Villa",
+    "minute": 28
   },
   {
     "event_type": "goal",
-    "player": "Player_75",
-    "team": "Newcastle",
-    "minute": 70
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_112",
-    "team": "Luton",
-    "minute": 39
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_95",
-    "team": "Luton",
-    "minute": 11
+    "player": "Player_127",
+    "team": "Liverpool",
+    "minute": 15
   }
 ]

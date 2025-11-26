@@ -1,20 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_61",
-    "team": "Sheffield United",
+    "player": "Player_152",
+    "team": "Aston Villa",
+    "minute": 2
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_177",
+    "team": "Aston Villa",
+    "minute": 46
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_132",
+    "team": "Brentford",
+    "minute": 76
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_32",
+    "team": "Brentford",
     "minute": 32
   },
   {
     "event_type": "goal",
-    "player": "Player_240",
-    "team": "Tottenham",
-    "minute": 13
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_292",
-    "team": "Sheffield United",
-    "minute": 80
+    "player": "Player_200",
+    "team": "Brentford",
+    "minute": 26
   }
 ]

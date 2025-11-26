@@ -1,32 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_300",
-    "team": "Nottingham Forest",
-    "minute": 80
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_74",
-    "team": "Brentford",
-    "minute": 90
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_87",
-    "team": "Nottingham Forest",
+    "player": "Player_11",
+    "team": "Wolves",
     "minute": 77
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_204",
-    "team": "Brentford",
-    "minute": 60
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_47",
-    "team": "Nottingham Forest",
-    "minute": 82
   }
 ]

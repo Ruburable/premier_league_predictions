@@ -1,26 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_291",
-    "team": "Brentford",
-    "minute": 32
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_268",
-    "team": "Man United",
-    "minute": 20
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_207",
-    "team": "Brentford",
-    "minute": 13
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_276",
-    "team": "Man United",
-    "minute": 23
+    "player": "Player_20",
+    "team": "Fulham",
+    "minute": 43
   }
 ]

@@ -1,20 +1,50 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_32",
+    "player": "Player_124",
     "team": "Nottingham Forest",
-    "minute": 48
+    "minute": 29
   },
   {
     "event_type": "goal",
-    "player": "Player_143",
+    "player": "Player_142",
     "team": "Nottingham Forest",
-    "minute": 27
+    "minute": 37
   },
   {
     "event_type": "goal",
-    "player": "Player_86",
+    "player": "Player_94",
     "team": "Nottingham Forest",
-    "minute": 49
+    "minute": 19
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_241",
+    "team": "Luton",
+    "minute": 34
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_282",
+    "team": "Luton",
+    "minute": 61
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_6",
+    "team": "Luton",
+    "minute": 45
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_238",
+    "team": "Luton",
+    "minute": 34
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_21",
+    "team": "Nottingham Forest",
+    "minute": 25
   }
 ]

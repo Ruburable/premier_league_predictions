@@ -1,26 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_104",
-    "team": "Luton",
-    "minute": 19
+    "player": "Player_258",
+    "team": "Fulham",
+    "minute": 78
   },
   {
     "event_type": "goal",
-    "player": "Player_5",
-    "team": "Man United",
-    "minute": 89
+    "player": "Player_131",
+    "team": "Fulham",
+    "minute": 48
   },
   {
     "event_type": "goal",
-    "player": "Player_163",
-    "team": "Man United",
-    "minute": 73
+    "player": "Player_168",
+    "team": "Tottenham",
+    "minute": 41
   },
   {
     "event_type": "goal",
-    "player": "Player_296",
-    "team": "Luton",
-    "minute": 54
+    "player": "Player_253",
+    "team": "Tottenham",
+    "minute": 84
   }
 ]

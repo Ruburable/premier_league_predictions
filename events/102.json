@@ -1,26 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_25",
+    "player": "Player_199",
     "team": "Sheffield United",
-    "minute": 54
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_17",
-    "team": "Sheffield United",
-    "minute": 37
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_257",
-    "team": "Sheffield United",
-    "minute": 80
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_216",
-    "team": "Tottenham",
-    "minute": 32
+    "minute": 67
   }
 ]

@@ -1,14 +1,50 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_262",
-    "team": "Nottingham Forest",
-    "minute": 34
+    "player": "Player_5",
+    "team": "Brighton",
+    "minute": 88
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_130",
+    "team": "Brighton",
+    "minute": 46
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_9",
+    "team": "Brighton",
+    "minute": 42
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_190",
+    "team": "Brighton",
+    "minute": 71
   },
   {
     "event_type": "goal",
     "player": "Player_46",
-    "team": "Nottingham Forest",
-    "minute": 77
+    "team": "Brighton",
+    "minute": 47
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_57",
+    "team": "Brighton",
+    "minute": 39
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_155",
+    "team": "Brighton",
+    "minute": 65
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_172",
+    "team": "Brighton",
+    "minute": 78
   }
 ]

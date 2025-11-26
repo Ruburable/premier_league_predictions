@@ -1,14 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_142",
-    "team": "Liverpool",
-    "minute": 51
+    "player": "Player_51",
+    "team": "Bournemouth",
+    "minute": 1
   },
   {
     "event_type": "goal",
-    "player": "Player_99",
-    "team": "Aston Villa",
+    "player": "Player_69",
+    "team": "Bournemouth",
+    "minute": 14
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_68",
+    "team": "Crystal Palace",
+    "minute": 48
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_217",
+    "team": "Crystal Palace",
     "minute": 37
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_78",
+    "team": "Bournemouth",
+    "minute": 33
   }
 ]

@@ -1,26 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_144",
-    "team": "Brighton",
-    "minute": 75
+    "player": "Player_52",
+    "team": "Chelsea",
+    "minute": 4
   },
   {
     "event_type": "goal",
-    "player": "Player_213",
-    "team": "Bournemouth",
-    "minute": 29
+    "player": "Player_256",
+    "team": "Man City",
+    "minute": 3
   },
   {
     "event_type": "goal",
-    "player": "Player_32",
-    "team": "Bournemouth",
-    "minute": 47
+    "player": "Player_220",
+    "team": "Chelsea",
+    "minute": 37
   },
   {
     "event_type": "goal",
-    "player": "Player_270",
-    "team": "Brighton",
-    "minute": 69
+    "player": "Player_61",
+    "team": "Man City",
+    "minute": 48
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_9",
+    "team": "Man City",
+    "minute": 77
   }
 ]

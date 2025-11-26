@@ -1,38 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_127",
+    "player": "Player_185",
     "team": "Brighton",
-    "minute": 55
+    "minute": 36
   },
   {
     "event_type": "goal",
-    "player": "Player_167",
-    "team": "Man City",
-    "minute": 88
+    "player": "Player_135",
+    "team": "Arsenal",
+    "minute": 27
   },
   {
     "event_type": "goal",
-    "player": "Player_21",
-    "team": "Brighton",
-    "minute": 10
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_240",
-    "team": "Brighton",
-    "minute": 21
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_281",
-    "team": "Man City",
-    "minute": 58
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_220",
-    "team": "Brighton",
-    "minute": 28
+    "player": "Player_19",
+    "team": "Arsenal",
+    "minute": 33
   }
 ]

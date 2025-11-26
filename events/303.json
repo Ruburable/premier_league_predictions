@@ -1,20 +1,38 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_238",
-    "team": "Burnley",
-    "minute": 48
+    "player": "Player_225",
+    "team": "Everton",
+    "minute": 86
   },
   {
     "event_type": "goal",
-    "player": "Player_95",
-    "team": "West Ham",
-    "minute": 8
+    "player": "Player_181",
+    "team": "Everton",
+    "minute": 32
   },
   {
     "event_type": "goal",
-    "player": "Player_144",
-    "team": "West Ham",
-    "minute": 5
+    "player": "Player_299",
+    "team": "Everton",
+    "minute": 86
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_88",
+    "team": "Man United",
+    "minute": 81
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_290",
+    "team": "Man United",
+    "minute": 16
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_8",
+    "team": "Everton",
+    "minute": 4
   }
 ]

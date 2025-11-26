@@ -1,32 +1,38 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_258",
-    "team": "Bournemouth",
-    "minute": 35
+    "player": "Player_95",
+    "team": "Tottenham",
+    "minute": 16
   },
   {
     "event_type": "goal",
-    "player": "Player_119",
-    "team": "Bournemouth",
-    "minute": 60
+    "player": "Player_296",
+    "team": "Fulham",
+    "minute": 14
   },
   {
     "event_type": "goal",
-    "player": "Player_208",
-    "team": "Bournemouth",
-    "minute": 72
+    "player": "Player_229",
+    "team": "Fulham",
+    "minute": 37
   },
   {
     "event_type": "goal",
-    "player": "Player_266",
-    "team": "Brentford",
-    "minute": 36
+    "player": "Player_183",
+    "team": "Fulham",
+    "minute": 82
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_151",
+    "team": "Fulham",
+    "minute": 40
   },
   {
     "event_type": "goal",
     "player": "Player_244",
-    "team": "Brentford",
-    "minute": 10
+    "team": "Tottenham",
+    "minute": 26
   }
 ]

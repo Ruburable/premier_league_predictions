@@ -1,20 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_19",
-    "team": "Man United",
-    "minute": 35
+    "player": "Player_60",
+    "team": "Man City",
+    "minute": 5
   },
   {
     "event_type": "goal",
-    "player": "Player_200",
-    "team": "Man United",
-    "minute": 44
+    "player": "Player_151",
+    "team": "Crystal Palace",
+    "minute": 60
   },
   {
     "event_type": "goal",
-    "player": "Player_201",
-    "team": "Man United",
-    "minute": 28
+    "player": "Player_204",
+    "team": "Man City",
+    "minute": 8
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_61",
+    "team": "Crystal Palace",
+    "minute": 83
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_48",
+    "team": "Man City",
+    "minute": 53
   }
 ]

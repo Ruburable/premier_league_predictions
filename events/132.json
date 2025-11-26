@@ -1,14 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_195",
-    "team": "Liverpool",
-    "minute": 56
+    "player": "Player_170",
+    "team": "Nottingham Forest",
+    "minute": 86
   },
   {
     "event_type": "goal",
-    "player": "Player_76",
-    "team": "Aston Villa",
-    "minute": 33
+    "player": "Player_235",
+    "team": "Nottingham Forest",
+    "minute": 55
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_39",
+    "team": "Nottingham Forest",
+    "minute": 6
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_261",
+    "team": "Nottingham Forest",
+    "minute": 48
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_230",
+    "team": "Nottingham Forest",
+    "minute": 40
   }
 ]

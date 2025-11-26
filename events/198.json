@@ -1,38 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_123",
-    "team": "Aston Villa",
-    "minute": 58
+    "player": "Player_93",
+    "team": "Fulham",
+    "minute": 7
   },
   {
     "event_type": "goal",
-    "player": "Player_121",
-    "team": "Aston Villa",
-    "minute": 37
+    "player": "Player_197",
+    "team": "Fulham",
+    "minute": 57
   },
   {
     "event_type": "goal",
-    "player": "Player_62",
-    "team": "Aston Villa",
-    "minute": 77
+    "player": "Player_294",
+    "team": "Fulham",
+    "minute": 57
   },
   {
     "event_type": "goal",
-    "player": "Player_100",
-    "team": "Aston Villa",
-    "minute": 39
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_144",
-    "team": "Aston Villa",
-    "minute": 88
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_278",
-    "team": "Aston Villa",
-    "minute": 65
+    "player": "Player_241",
+    "team": "Fulham",
+    "minute": 84
   }
 ]

@@ -1,14 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_77",
-    "team": "Newcastle",
-    "minute": 7
+    "player": "Player_59",
+    "team": "Bournemouth",
+    "minute": 80
   },
   {
     "event_type": "goal",
-    "player": "Player_277",
-    "team": "Newcastle",
-    "minute": 17
+    "player": "Player_8",
+    "team": "Man United",
+    "minute": 31
   }
 ]

@@ -1,14 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_42",
-    "team": "Wolves",
-    "minute": 53
+    "player": "Player_294",
+    "team": "Man City",
+    "minute": 26
   },
   {
     "event_type": "goal",
-    "player": "Player_196",
-    "team": "Tottenham",
-    "minute": 7
+    "player": "Player_129",
+    "team": "Man City",
+    "minute": 32
   }
 ]

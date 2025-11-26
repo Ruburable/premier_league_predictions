@@ -1,26 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_11",
-    "team": "Bournemouth",
-    "minute": 21
+    "player": "Player_134",
+    "team": "Liverpool",
+    "minute": 22
   },
   {
     "event_type": "goal",
-    "player": "Player_217",
-    "team": "Bournemouth",
-    "minute": 21
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_49",
-    "team": "Bournemouth",
-    "minute": 57
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_180",
-    "team": "Chelsea",
-    "minute": 3
+    "player": "Player_121",
+    "team": "Nottingham Forest",
+    "minute": 9
   }
 ]

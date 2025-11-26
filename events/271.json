@@ -1,14 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_90",
-    "team": "Aston Villa",
-    "minute": 50
+    "player": "Player_94",
+    "team": "Bournemouth",
+    "minute": 46
   },
   {
     "event_type": "goal",
-    "player": "Player_31",
-    "team": "Everton",
-    "minute": 62
+    "player": "Player_88",
+    "team": "Bournemouth",
+    "minute": 24
   }
 ]

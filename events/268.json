@@ -1,8 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_32",
-    "team": "Wolves",
-    "minute": 14
+    "player": "Player_91",
+    "team": "Sheffield United",
+    "minute": 30
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_253",
+    "team": "Sheffield United",
+    "minute": 83
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_41",
+    "team": "Everton",
+    "minute": 67
   }
 ]

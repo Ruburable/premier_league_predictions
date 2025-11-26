@@ -1,26 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_154",
+    "player": "Player_253",
     "team": "Newcastle",
-    "minute": 86
+    "minute": 11
   },
   {
     "event_type": "goal",
-    "player": "Player_18",
+    "player": "Player_299",
     "team": "Newcastle",
-    "minute": 19
+    "minute": 77
   },
   {
     "event_type": "goal",
-    "player": "Player_62",
-    "team": "Man City",
-    "minute": 80
+    "player": "Player_245",
+    "team": "Crystal Palace",
+    "minute": 89
   },
   {
     "event_type": "goal",
-    "player": "Player_202",
-    "team": "Man City",
-    "minute": 20
+    "player": "Player_32",
+    "team": "Newcastle",
+    "minute": 47
   }
 ]

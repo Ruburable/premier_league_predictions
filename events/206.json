@@ -1,26 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_223",
-    "team": "Aston Villa",
-    "minute": 68
+    "player": "Player_205",
+    "team": "Nottingham Forest",
+    "minute": 23
   },
   {
     "event_type": "goal",
-    "player": "Player_250",
-    "team": "Luton",
-    "minute": 72
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_48",
-    "team": "Aston Villa",
-    "minute": 85
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_31",
-    "team": "Luton",
-    "minute": 1
+    "player": "Player_79",
+    "team": "Brentford",
+    "minute": 53
   }
 ]

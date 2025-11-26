@@ -2,7 +2,19 @@
   {
     "event_type": "goal",
     "player": "Player_19",
-    "team": "Brentford",
-    "minute": 60
+    "team": "Man City",
+    "minute": 55
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_142",
+    "team": "Man City",
+    "minute": 24
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_11",
+    "team": "Man City",
+    "minute": 40
   }
 ]

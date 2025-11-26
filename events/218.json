@@ -1,32 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_40",
-    "team": "Everton",
-    "minute": 26
+    "player": "Player_271",
+    "team": "Newcastle",
+    "minute": 21
   },
   {
     "event_type": "goal",
-    "player": "Player_279",
-    "team": "Arsenal",
-    "minute": 73
+    "player": "Player_25",
+    "team": "West Ham",
+    "minute": 57
   },
   {
     "event_type": "goal",
-    "player": "Player_279",
-    "team": "Everton",
-    "minute": 2
+    "player": "Player_110",
+    "team": "Newcastle",
+    "minute": 12
   },
   {
     "event_type": "goal",
-    "player": "Player_5",
-    "team": "Arsenal",
-    "minute": 71
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_72",
-    "team": "Arsenal",
-    "minute": 22
+    "player": "Player_272",
+    "team": "West Ham",
+    "minute": 16
   }
 ]

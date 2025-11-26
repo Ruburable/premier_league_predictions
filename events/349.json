@@ -1,44 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_52",
-    "team": "Man United",
-    "minute": 54
+    "player": "Player_155",
+    "team": "Everton",
+    "minute": 76
   },
   {
     "event_type": "goal",
-    "player": "Player_49",
-    "team": "Man United",
-    "minute": 74
+    "player": "Player_189",
+    "team": "Brentford",
+    "minute": 72
   },
   {
     "event_type": "goal",
-    "player": "Player_264",
-    "team": "Man United",
-    "minute": 29
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_243",
-    "team": "Man United",
-    "minute": 30
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_127",
-    "team": "Man United",
-    "minute": 25
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_13",
-    "team": "Man United",
-    "minute": 64
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_221",
-    "team": "Man United",
-    "minute": 45
+    "player": "Player_158",
+    "team": "Everton",
+    "minute": 50
   }
 ]

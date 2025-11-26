@@ -1,26 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_265",
-    "team": "Man United",
-    "minute": 28
+    "player": "Player_240",
+    "team": "Arsenal",
+    "minute": 14
   },
   {
     "event_type": "goal",
-    "player": "Player_177",
-    "team": "Liverpool",
-    "minute": 7
+    "player": "Player_84",
+    "team": "Arsenal",
+    "minute": 6
   },
   {
     "event_type": "goal",
-    "player": "Player_59",
-    "team": "Man United",
-    "minute": 51
+    "player": "Player_114",
+    "team": "Arsenal",
+    "minute": 86
   },
   {
     "event_type": "goal",
-    "player": "Player_298",
-    "team": "Liverpool",
-    "minute": 54
+    "player": "Player_142",
+    "team": "Arsenal",
+    "minute": 42
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_39",
+    "team": "Arsenal",
+    "minute": 47
   }
 ]

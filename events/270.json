@@ -1,32 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_55",
-    "team": "Arsenal",
-    "minute": 16
+    "player": "Player_170",
+    "team": "Newcastle",
+    "minute": 29
   },
   {
     "event_type": "goal",
-    "player": "Player_268",
-    "team": "Arsenal",
-    "minute": 23
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_277",
-    "team": "Nottingham Forest",
-    "minute": 83
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_5",
-    "team": "Arsenal",
-    "minute": 25
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_268",
-    "team": "Arsenal",
-    "minute": 15
+    "player": "Player_100",
+    "team": "Everton",
+    "minute": 53
   }
 ]

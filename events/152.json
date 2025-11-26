@@ -1,14 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_206",
-    "team": "Man United",
-    "minute": 3
+    "player": "Player_244",
+    "team": "Tottenham",
+    "minute": 11
   },
   {
     "event_type": "goal",
-    "player": "Player_122",
-    "team": "Brentford",
-    "minute": 4
+    "player": "Player_70",
+    "team": "Tottenham",
+    "minute": 25
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_194",
+    "team": "Tottenham",
+    "minute": 33
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_121",
+    "team": "West Ham",
+    "minute": 48
   }
 ]

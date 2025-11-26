@@ -1,8 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_159",
-    "team": "Brighton",
-    "minute": 44
+    "player": "Player_123",
+    "team": "Man City",
+    "minute": 19
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_152",
+    "team": "Liverpool",
+    "minute": 6
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_236",
+    "team": "Man City",
+    "minute": 79
   }
 ]

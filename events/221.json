@@ -1,26 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_149",
-    "team": "Brighton",
-    "minute": 23
+    "player": "Player_146",
+    "team": "Tottenham",
+    "minute": 24
   },
   {
     "event_type": "goal",
-    "player": "Player_300",
-    "team": "Brighton",
-    "minute": 75
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_48",
-    "team": "Brentford",
-    "minute": 58
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_95",
-    "team": "Brentford",
-    "minute": 32
+    "player": "Player_106",
+    "team": "Crystal Palace",
+    "minute": 88
   }
 ]

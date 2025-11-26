@@ -67,7 +67,7 @@ def simulate_master_matches():
 
 
 # ============================================================
-# 2. Simulate PLAYER MATCH STATS (aggregated)
+# 2. Simulate PLAYER MATCH STATS
 # ============================================================
 
 def simulate_player_stats():
@@ -88,7 +88,7 @@ def simulate_player_stats():
 
 
 # ============================================================
-# 3. Simulate EVENT JSON FILES (scorers expected)
+# 3. Simulate EVENT JSON FILES
 # ============================================================
 
 def simulate_event_jsons(matches_df):
@@ -97,8 +97,6 @@ def simulate_event_jsons(matches_df):
 
     for _, row in matches_df.iterrows():
         match_id = row["match_id"]
-
-        # Each match will have random number of events
         events = []
         total_goals = row["home_goals"] + row["away_goals"]
 
@@ -141,31 +139,23 @@ def simulate_fixtures():
 def main():
     print("Simulating data...")
 
-    # -----------------------------
-    # Master match data
-    # -----------------------------
-    master = simulate_master_matches()
-
     os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+    # Master dataset
+    master = simulate_master_matches()
     master.to_csv(f"{OUTPUT_DIR}/matches_master.csv", index=False)
     print(f"✔ Saved master dataset → {OUTPUT_DIR}/matches_master.csv")
 
-    # -----------------------------
-    # Player stats
-    # -----------------------------
+    # Player data
     players = simulate_player_stats()
     players.to_csv(f"{OUTPUT_DIR}/players_master.csv", index=False)
     print(f"✔ Saved player stats → {OUTPUT_DIR}/players_master.csv")
 
-    # -----------------------------
-    # Event JSONs
-    # -----------------------------
+    # Events
     simulate_event_jsons(master)
     print(f"✔ Created {len(master)} event JSON files → {EVENTS_DIR}/")
 
-    # -----------------------------
     # Fixtures
-    # -----------------------------
     fixtures = simulate_fixtures()
     fixtures.to_csv(f"{OUTPUT_DIR}/upcoming_fixtures.csv", index=False)
     print(f"✔ Saved simulated fixtures → {OUTPUT_DIR}/upcoming_fixtures.csv")

@@ -1,38 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_149",
-    "team": "Burnley",
-    "minute": 67
+    "player": "Player_50",
+    "team": "Bournemouth",
+    "minute": 19
   },
   {
     "event_type": "goal",
-    "player": "Player_176",
-    "team": "Burnley",
-    "minute": 11
+    "player": "Player_217",
+    "team": "Bournemouth",
+    "minute": 87
   },
   {
     "event_type": "goal",
-    "player": "Player_248",
-    "team": "Fulham",
-    "minute": 28
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_265",
-    "team": "Fulham",
-    "minute": 74
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_55",
-    "team": "Fulham",
-    "minute": 43
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_276",
-    "team": "Burnley",
-    "minute": 86
+    "player": "Player_40",
+    "team": "Brentford",
+    "minute": 58
   }
 ]

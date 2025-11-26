@@ -1,8 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_23",
-    "team": "Chelsea",
-    "minute": 1
+    "player": "Player_128",
+    "team": "Everton",
+    "minute": 61
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_81",
+    "team": "Everton",
+    "minute": 17
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_5",
+    "team": "Nottingham Forest",
+    "minute": 45
   }
 ]

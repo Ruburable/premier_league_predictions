@@ -1,32 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_70",
-    "team": "Sheffield United",
-    "minute": 44
+    "player": "Player_248",
+    "team": "Nottingham Forest",
+    "minute": 52
   },
   {
     "event_type": "goal",
-    "player": "Player_117",
-    "team": "Sheffield United",
-    "minute": 35
+    "player": "Player_122",
+    "team": "West Ham",
+    "minute": 31
   },
   {
     "event_type": "goal",
-    "player": "Player_271",
-    "team": "Newcastle",
-    "minute": 33
+    "player": "Player_113",
+    "team": "West Ham",
+    "minute": 84
   },
   {
     "event_type": "goal",
-    "player": "Player_48",
-    "team": "Sheffield United",
-    "minute": 36
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_250",
-    "team": "Sheffield United",
-    "minute": 76
+    "player": "Player_279",
+    "team": "Nottingham Forest",
+    "minute": 2
   }
 ]

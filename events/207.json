@@ -1,20 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_54",
-    "team": "Aston Villa",
-    "minute": 58
+    "player": "Player_94",
+    "team": "Man City",
+    "minute": 43
   },
   {
     "event_type": "goal",
-    "player": "Player_8",
-    "team": "Aston Villa",
-    "minute": 28
+    "player": "Player_98",
+    "team": "Man City",
+    "minute": 65
   },
   {
     "event_type": "goal",
-    "player": "Player_283",
-    "team": "Aston Villa",
-    "minute": 75
+    "player": "Player_78",
+    "team": "Man City",
+    "minute": 79
   }
 ]

@@ -1,14 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_94",
-    "team": "Crystal Palace",
-    "minute": 69
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_172",
-    "team": "Fulham",
-    "minute": 85
+    "player": "Player_75",
+    "team": "Aston Villa",
+    "minute": 70
   }
 ]

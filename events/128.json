@@ -1,26 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_77",
-    "team": "Tottenham",
-    "minute": 16
+    "player": "Player_259",
+    "team": "Newcastle",
+    "minute": 77
   },
   {
     "event_type": "goal",
-    "player": "Player_277",
-    "team": "Tottenham",
-    "minute": 88
+    "player": "Player_65",
+    "team": "Newcastle",
+    "minute": 3
   },
   {
     "event_type": "goal",
-    "player": "Player_186",
-    "team": "Tottenham",
-    "minute": 49
+    "player": "Player_220",
+    "team": "Newcastle",
+    "minute": 39
   },
   {
     "event_type": "goal",
-    "player": "Player_121",
-    "team": "Arsenal",
-    "minute": 4
+    "player": "Player_155",
+    "team": "Bournemouth",
+    "minute": 12
   }
 ]

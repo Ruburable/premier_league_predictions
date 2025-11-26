@@ -1,20 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_198",
-    "team": "Arsenal",
-    "minute": 44
+    "player": "Player_180",
+    "team": "Brentford",
+    "minute": 86
   },
   {
     "event_type": "goal",
-    "player": "Player_243",
+    "player": "Player_185",
     "team": "Arsenal",
-    "minute": 50
+    "minute": 36
   },
   {
     "event_type": "goal",
-    "player": "Player_54",
-    "team": "Arsenal",
-    "minute": 87
+    "player": "Player_43",
+    "team": "Brentford",
+    "minute": 68
   }
 ]

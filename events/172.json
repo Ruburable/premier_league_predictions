@@ -1,20 +1,8 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_52",
-    "team": "Burnley",
-    "minute": 51
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_31",
-    "team": "West Ham",
-    "minute": 74
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_296",
-    "team": "Burnley",
-    "minute": 82
+    "player": "Player_254",
+    "team": "Brentford",
+    "minute": 1
   }
 ]

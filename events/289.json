@@ -1,14 +1,1 @@
-[
-  {
-    "event_type": "goal",
-    "player": "Player_123",
-    "team": "Liverpool",
-    "minute": 85
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_129",
-    "team": "Sheffield United",
-    "minute": 36
-  }
-]
+[]

@@ -1,32 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_184",
-    "team": "Crystal Palace",
-    "minute": 44
+    "player": "Player_102",
+    "team": "Brentford",
+    "minute": 33
   },
   {
     "event_type": "goal",
-    "player": "Player_6",
-    "team": "Wolves",
-    "minute": 3
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_52",
-    "team": "Wolves",
-    "minute": 36
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_216",
-    "team": "Crystal Palace",
-    "minute": 40
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_270",
-    "team": "Crystal Palace",
-    "minute": 62
+    "player": "Player_74",
+    "team": "Man City",
+    "minute": 34
   }
 ]

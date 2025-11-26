@@ -1,26 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_71",
-    "team": "Tottenham",
-    "minute": 64
+    "player": "Player_82",
+    "team": "West Ham",
+    "minute": 65
   },
   {
     "event_type": "goal",
-    "player": "Player_111",
-    "team": "Tottenham",
-    "minute": 45
+    "player": "Player_251",
+    "team": "Aston Villa",
+    "minute": 9
   },
   {
     "event_type": "goal",
-    "player": "Player_34",
-    "team": "Tottenham",
-    "minute": 59
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_226",
-    "team": "Crystal Palace",
-    "minute": 18
+    "player": "Player_191",
+    "team": "Aston Villa",
+    "minute": 22
   }
 ]

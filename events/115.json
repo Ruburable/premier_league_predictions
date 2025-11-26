@@ -1,38 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_181",
-    "team": "Man United",
-    "minute": 63
+    "player": "Player_102",
+    "team": "Sheffield United",
+    "minute": 78
   },
   {
     "event_type": "goal",
-    "player": "Player_61",
-    "team": "Man United",
-    "minute": 70
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_194",
-    "team": "Man United",
-    "minute": 58
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_151",
-    "team": "Chelsea",
-    "minute": 79
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_58",
-    "team": "Chelsea",
-    "minute": 40
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_123",
-    "team": "Chelsea",
-    "minute": 51
+    "player": "Player_96",
+    "team": "Newcastle",
+    "minute": 41
   }
 ]

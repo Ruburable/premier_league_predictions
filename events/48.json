@@ -1,20 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_123",
-    "team": "Luton",
-    "minute": 54
+    "player": "Player_3",
+    "team": "Tottenham",
+    "minute": 40
   },
   {
     "event_type": "goal",
-    "player": "Player_197",
-    "team": "Tottenham",
-    "minute": 43
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_15",
-    "team": "Tottenham",
-    "minute": 8
+    "player": "Player_210",
+    "team": "Crystal Palace",
+    "minute": 67
   }
 ]

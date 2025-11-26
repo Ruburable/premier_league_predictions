@@ -1,14 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_296",
-    "team": "Bournemouth",
-    "minute": 5
+    "player": "Player_82",
+    "team": "Everton",
+    "minute": 8
   },
   {
     "event_type": "goal",
-    "player": "Player_282",
-    "team": "Bournemouth",
-    "minute": 80
+    "player": "Player_89",
+    "team": "Crystal Palace",
+    "minute": 53
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_70",
+    "team": "Everton",
+    "minute": 49
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_1",
+    "team": "Crystal Palace",
+    "minute": 60
   }
 ]

@@ -1,8 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_53",
+    "player": "Player_31",
     "team": "Burnley",
-    "minute": 78
+    "minute": 68
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_148",
+    "team": "Burnley",
+    "minute": 59
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_22",
+    "team": "Nottingham Forest",
+    "minute": 71
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_8",
+    "team": "Burnley",
+    "minute": 76
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_254",
+    "team": "Burnley",
+    "minute": 50
   }
 ]

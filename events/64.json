@@ -1,20 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_23",
-    "team": "Wolves",
-    "minute": 79
+    "player": "Player_74",
+    "team": "Everton",
+    "minute": 44
   },
   {
     "event_type": "goal",
-    "player": "Player_271",
-    "team": "Nottingham Forest",
-    "minute": 4
+    "player": "Player_195",
+    "team": "Everton",
+    "minute": 45
   },
   {
     "event_type": "goal",
-    "player": "Player_244",
-    "team": "Nottingham Forest",
-    "minute": 10
+    "player": "Player_28",
+    "team": "Tottenham",
+    "minute": 49
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_54",
+    "team": "Tottenham",
+    "minute": 36
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_217",
+    "team": "Tottenham",
+    "minute": 37
   }
 ]

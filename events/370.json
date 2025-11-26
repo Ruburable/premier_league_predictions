@@ -1,20 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_163",
-    "team": "Sheffield United",
-    "minute": 12
+    "player": "Player_49",
+    "team": "Brentford",
+    "minute": 25
   },
   {
     "event_type": "goal",
-    "player": "Player_200",
-    "team": "Man United",
-    "minute": 9
+    "player": "Player_12",
+    "team": "Burnley",
+    "minute": 52
   },
   {
     "event_type": "goal",
-    "player": "Player_243",
-    "team": "Sheffield United",
-    "minute": 30
+    "player": "Player_283",
+    "team": "Burnley",
+    "minute": 34
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_114",
+    "team": "Burnley",
+    "minute": 82
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_196",
+    "team": "Burnley",
+    "minute": 82
   }
 ]

@@ -1,8 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_172",
-    "team": "Brentford",
-    "minute": 67
+    "player": "Player_214",
+    "team": "Liverpool",
+    "minute": 49
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_284",
+    "team": "Tottenham",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_171",
+    "team": "Liverpool",
+    "minute": 10
   }
 ]

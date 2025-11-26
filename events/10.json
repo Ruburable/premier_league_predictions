@@ -1,50 +1,44 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_17",
+    "player": "Player_39",
     "team": "Man United",
-    "minute": 47
+    "minute": 3
   },
   {
     "event_type": "goal",
-    "player": "Player_269",
+    "player": "Player_142",
     "team": "Man United",
+    "minute": 85
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_90",
+    "team": "Man United",
+    "minute": 16
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_5",
+    "team": "Tottenham",
     "minute": 72
   },
   {
     "event_type": "goal",
-    "player": "Player_85",
+    "player": "Player_274",
+    "team": "Tottenham",
+    "minute": 20
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_122",
     "team": "Man United",
-    "minute": 53
+    "minute": 57
   },
   {
     "event_type": "goal",
-    "player": "Player_31",
-    "team": "Bournemouth",
-    "minute": 71
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_114",
-    "team": "Bournemouth",
-    "minute": 12
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_38",
-    "team": "Bournemouth",
-    "minute": 21
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_285",
-    "team": "Man United",
-    "minute": 73
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_42",
-    "team": "Bournemouth",
-    "minute": 33
+    "player": "Player_92",
+    "team": "Tottenham",
+    "minute": 2
   }
 ]

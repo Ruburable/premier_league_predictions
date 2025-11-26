@@ -1,8 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_160",
-    "team": "Man United",
-    "minute": 65
+    "player": "Player_265",
+    "team": "Everton",
+    "minute": 7
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_58",
+    "team": "Everton",
+    "minute": 18
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_157",
+    "team": "Everton",
+    "minute": 17
   }
 ]

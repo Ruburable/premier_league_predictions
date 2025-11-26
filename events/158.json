@@ -1,20 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_175",
-    "team": "Man City",
-    "minute": 38
+    "player": "Player_230",
+    "team": "Wolves",
+    "minute": 41
   },
   {
     "event_type": "goal",
-    "player": "Player_170",
-    "team": "Man City",
-    "minute": 87
+    "player": "Player_254",
+    "team": "Man United",
+    "minute": 63
   },
   {
     "event_type": "goal",
-    "player": "Player_24",
-    "team": "Man City",
-    "minute": 90
+    "player": "Player_93",
+    "team": "Man United",
+    "minute": 40
   }
 ]

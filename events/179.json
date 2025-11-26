@@ -1,26 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_264",
-    "team": "Brighton",
-    "minute": 51
+    "player": "Player_152",
+    "team": "Man United",
+    "minute": 60
   },
   {
     "event_type": "goal",
-    "player": "Player_34",
-    "team": "Brighton",
-    "minute": 86
+    "player": "Player_200",
+    "team": "Liverpool",
+    "minute": 35
   },
   {
     "event_type": "goal",
     "player": "Player_159",
-    "team": "Brighton",
-    "minute": 62
+    "team": "Man United",
+    "minute": 19
   },
   {
     "event_type": "goal",
-    "player": "Player_54",
-    "team": "Brighton",
-    "minute": 5
+    "player": "Player_272",
+    "team": "Man United",
+    "minute": 64
   }
 ]

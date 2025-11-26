@@ -1,20 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_138",
-    "team": "Nottingham Forest",
-    "minute": 89
+    "player": "Player_268",
+    "team": "Wolves",
+    "minute": 75
   },
   {
     "event_type": "goal",
-    "player": "Player_126",
-    "team": "Nottingham Forest",
-    "minute": 54
+    "player": "Player_243",
+    "team": "Crystal Palace",
+    "minute": 80
   },
   {
     "event_type": "goal",
-    "player": "Player_83",
-    "team": "Liverpool",
-    "minute": 65
+    "player": "Player_117",
+    "team": "Crystal Palace",
+    "minute": 80
   }
 ]

@@ -1,32 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_233",
-    "team": "Burnley",
-    "minute": 12
+    "player": "Player_10",
+    "team": "Liverpool",
+    "minute": 74
   },
   {
     "event_type": "goal",
-    "player": "Player_245",
-    "team": "Tottenham",
-    "minute": 2
+    "player": "Player_33",
+    "team": "Arsenal",
+    "minute": 30
   },
   {
     "event_type": "goal",
-    "player": "Player_155",
-    "team": "Burnley",
-    "minute": 59
+    "player": "Player_22",
+    "team": "Arsenal",
+    "minute": 69
   },
   {
     "event_type": "goal",
-    "player": "Player_86",
-    "team": "Tottenham",
-    "minute": 11
+    "player": "Player_199",
+    "team": "Liverpool",
+    "minute": 29
   },
   {
     "event_type": "goal",
-    "player": "Player_107",
-    "team": "Tottenham",
-    "minute": 22
+    "player": "Player_4",
+    "team": "Arsenal",
+    "minute": 19
   }
 ]

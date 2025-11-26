@@ -1,26 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_46",
-    "team": "Fulham",
-    "minute": 30
+    "player": "Player_238",
+    "team": "Tottenham",
+    "minute": 26
   },
   {
     "event_type": "goal",
-    "player": "Player_30",
-    "team": "Fulham",
-    "minute": 77
+    "player": "Player_35",
+    "team": "Man United",
+    "minute": 16
   },
   {
     "event_type": "goal",
-    "player": "Player_239",
-    "team": "Burnley",
-    "minute": 70
+    "player": "Player_25",
+    "team": "Man United",
+    "minute": 6
   },
   {
     "event_type": "goal",
-    "player": "Player_75",
-    "team": "Burnley",
-    "minute": 10
+    "player": "Player_270",
+    "team": "Tottenham",
+    "minute": 7
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_54",
+    "team": "Man United",
+    "minute": 41
   }
 ]

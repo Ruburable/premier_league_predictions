@@ -1,14 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_275",
-    "team": "Luton",
-    "minute": 31
+    "player": "Player_193",
+    "team": "Man City",
+    "minute": 12
   },
   {
     "event_type": "goal",
-    "player": "Player_223",
-    "team": "Luton",
-    "minute": 27
+    "player": "Player_153",
+    "team": "Man City",
+    "minute": 42
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_35",
+    "team": "Man City",
+    "minute": 77
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_22",
+    "team": "Man City",
+    "minute": 81
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_252",
+    "team": "Man City",
+    "minute": 26
   }
 ]

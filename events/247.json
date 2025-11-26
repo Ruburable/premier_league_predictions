@@ -1,56 +1,44 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_208",
-    "team": "Liverpool",
-    "minute": 30
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_88",
-    "team": "Man United",
-    "minute": 41
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_147",
-    "team": "Liverpool",
-    "minute": 36
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_173",
-    "team": "Man United",
-    "minute": 35
-  },
-  {
-    "event_type": "goal",
-    "player": "Player_172",
-    "team": "Liverpool",
+    "player": "Player_43",
+    "team": "Burnley",
     "minute": 66
   },
   {
     "event_type": "goal",
-    "player": "Player_68",
-    "team": "Man United",
-    "minute": 44
+    "player": "Player_128",
+    "team": "Burnley",
+    "minute": 67
   },
   {
     "event_type": "goal",
-    "player": "Player_156",
-    "team": "Liverpool",
-    "minute": 50
+    "player": "Player_235",
+    "team": "West Ham",
+    "minute": 7
   },
   {
     "event_type": "goal",
-    "player": "Player_149",
-    "team": "Man United",
-    "minute": 38
+    "player": "Player_274",
+    "team": "West Ham",
+    "minute": 46
   },
   {
     "event_type": "goal",
-    "player": "Player_89",
-    "team": "Liverpool",
-    "minute": 20
+    "player": "Player_172",
+    "team": "West Ham",
+    "minute": 54
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_249",
+    "team": "Burnley",
+    "minute": 52
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_241",
+    "team": "West Ham",
+    "minute": 59
   }
 ]

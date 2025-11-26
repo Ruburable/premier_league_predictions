@@ -1,14 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_207",
+    "player": "Player_201",
     "team": "Brighton",
-    "minute": 11
+    "minute": 44
   },
   {
     "event_type": "goal",
-    "player": "Player_46",
+    "player": "Player_239",
     "team": "Brighton",
-    "minute": 62
+    "minute": 1
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_28",
+    "team": "Luton",
+    "minute": 23
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_74",
+    "team": "Luton",
+    "minute": 52
   }
 ]

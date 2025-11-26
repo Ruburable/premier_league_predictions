@@ -1,20 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_222",
-    "team": "Tottenham",
-    "minute": 60
+    "player": "Player_221",
+    "team": "Fulham",
+    "minute": 18
   },
   {
     "event_type": "goal",
-    "player": "Player_133",
-    "team": "Tottenham",
-    "minute": 76
+    "player": "Player_175",
+    "team": "Arsenal",
+    "minute": 19
   },
   {
     "event_type": "goal",
-    "player": "Player_286",
-    "team": "Tottenham",
-    "minute": 86
+    "player": "Player_169",
+    "team": "Arsenal",
+    "minute": 50
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_106",
+    "team": "Fulham",
+    "minute": 82
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_289",
+    "team": "Fulham",
+    "minute": 62
   }
 ]

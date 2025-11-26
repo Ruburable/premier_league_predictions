@@ -1,26 +1,26 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_278",
-    "team": "Brentford",
-    "minute": 23
+    "player": "Player_136",
+    "team": "Sheffield United",
+    "minute": 1
   },
   {
     "event_type": "goal",
-    "player": "Player_147",
-    "team": "Brentford",
-    "minute": 47
+    "player": "Player_193",
+    "team": "Liverpool",
+    "minute": 63
   },
   {
     "event_type": "goal",
-    "player": "Player_182",
-    "team": "West Ham",
-    "minute": 57
+    "player": "Player_294",
+    "team": "Sheffield United",
+    "minute": 32
   },
   {
     "event_type": "goal",
-    "player": "Player_216",
-    "team": "Brentford",
-    "minute": 46
+    "player": "Player_18",
+    "team": "Sheffield United",
+    "minute": 58
   }
 ]

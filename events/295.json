@@ -1,8 +1,20 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_133",
-    "team": "Sheffield United",
-    "minute": 70
+    "player": "Player_225",
+    "team": "Burnley",
+    "minute": 83
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_148",
+    "team": "Brentford",
+    "minute": 49
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_177",
+    "team": "Burnley",
+    "minute": 15
   }
 ]

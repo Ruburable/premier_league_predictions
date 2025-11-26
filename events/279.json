@@ -1,8 +1,32 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_98",
-    "team": "Brentford",
-    "minute": 26
+    "player": "Player_130",
+    "team": "Arsenal",
+    "minute": 73
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_196",
+    "team": "Burnley",
+    "minute": 75
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_255",
+    "team": "Burnley",
+    "minute": 8
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_174",
+    "team": "Arsenal",
+    "minute": 54
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_111",
+    "team": "Burnley",
+    "minute": 48
   }
 ]

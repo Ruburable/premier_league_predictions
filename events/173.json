@@ -1,8 +1,14 @@
 [
   {
     "event_type": "goal",
-    "player": "Player_73",
-    "team": "Burnley",
-    "minute": 33
+    "player": "Player_157",
+    "team": "Aston Villa",
+    "minute": 80
+  },
+  {
+    "event_type": "goal",
+    "player": "Player_142",
+    "team": "West Ham",
+    "minute": 20
   }
 ]
