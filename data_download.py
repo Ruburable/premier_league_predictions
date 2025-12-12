@@ -3,19 +3,16 @@
 data_download.py
 
 Downloads historical matches from Understat and upcoming fixtures from FPL API.
-Produces output/matches_master.csv with all matches.
+Produces output/matches_master.csv with all matches (including final scores when available).
 """
-
 import re
-import os
 import time
 import json
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import requests
 import pandas as pd
-from bs4 import BeautifulSoup
 from tqdm import tqdm
 import numpy as np
 
@@ -48,7 +45,9 @@ def safe_get_text(url, session=None, timeout=25, params=None, headers=None):
         try:
             r = s.get(url, timeout=timeout, params=params, headers=headers or {"User-Agent": "Mozilla/5.0"})
             polite_sleep()
-            return r.text if r.status_code == 200 else None
+            if r.status_code == 200:
+                return r.text
+            return None
         except Exception:
             time.sleep(1 + attempt * 2)
     return None
@@ -121,10 +120,8 @@ def normalize_understat_match(record, year):
     out = {}
     out['id'] = record.get('id') or record.get('match_id') or record.get('matchId') or None
 
-    home = record.get('h') or record.get('h_team') or record.get('home') or record.get('hTeam') or record.get(
-        'home_team')
-    away = record.get('a') or record.get('a_team') or record.get('away') or record.get('aTeam') or record.get(
-        'away_team')
+    home = record.get('h') or record.get('h_team') or record.get('home') or record.get('hTeam') or record.get('home_team')
+    away = record.get('a') or record.get('a_team') or record.get('away') or record.get('aTeam') or record.get('away_team')
     out['home_team'] = str(home) if home is not None else None
     out['away_team'] = str(away) if away is not None else None
 
@@ -134,6 +131,7 @@ def normalize_understat_match(record, year):
     except Exception:
         out['datetime'] = pd.NaT
 
+    # attempt many possible keys for final goals
     home_goals = away_goals = None
     if 'goals' in record and isinstance(record['goals'], (list, tuple)) and len(record['goals']) >= 2:
         home_goals = record['goals'][0]
@@ -155,6 +153,7 @@ def normalize_understat_match(record, year):
     except Exception:
         out['away_goals'] = None
 
+    # xG extraction (many possible keys)
     home_xg = away_xg = None
     xg_data = None
     for key in ('xG', 'xg', 'hxG', 'home_xg', 'home_xG', 'h_xg', 'home_xG_ft'):
@@ -307,7 +306,6 @@ def extract_name(x):
 
 
 def get_next_gameweek(fixtures_df):
-    """Find the next upcoming gameweek number"""
     if fixtures_df is None or fixtures_df.empty:
         return None
 
@@ -337,7 +335,6 @@ def build_upcoming_from_fpl(fixtures_df, teams_df):
     print(f"Next gameweek: {next_gw}")
 
     df = fixtures_df[fixtures_df['event'] == next_gw].copy()
-
     if df.empty:
         return pd.DataFrame()
 
@@ -378,21 +375,24 @@ def build_upcoming_from_fpl(fixtures_df, teams_df):
 
     return out.reset_index(drop=True)
 
+
 def extract_final_score_from_events(match_id):
+    """
+    Read the saved event JSON (if present) and try to extract a final score.
+    Returns (home_goals, away_goals) or (None, None).
+    """
     fpath = EVENTS_DIR / f"{match_id}.json"
     if not fpath.exists():
         return None, None
-
     try:
         with open(fpath, "r", encoding="utf-8") as fh:
             data = json.load(fh)
     except Exception:
         return None, None
 
-    # Understat match event JSON contains final score here:
-    # data["match_info"]["ft_score"] = {"h": 2, "a": 1}
+    # understat event JSON often contains match_info.ft_score or match_info.score
     try:
-        info = data.get("match_info", {})
+        info = data.get("match_info", {}) if isinstance(data, dict) else {}
         score = info.get("ft_score") or info.get("score") or {}
         hg = score.get("h")
         ag = score.get("a")
@@ -401,7 +401,15 @@ def extract_final_score_from_events(match_id):
     except Exception:
         pass
 
+    # fallback: try to infer from events list (very basic)
+    try:
+        events = data.get("h", []) if isinstance(data, dict) else []
+        # Not implementing complex parsing here; return None, None if not found
+    except Exception:
+        pass
+
     return None, None
+
 
 def download_and_build_master():
     fixtures_df, teams_df = load_fpl_fixtures_and_teams()
@@ -417,9 +425,19 @@ def download_and_build_master():
             all_raw_matches.append(norm)
 
     master_df = pd.DataFrame(all_raw_matches)
-    if 'datetime' in master_df.columns:
-        master_df['datetime'] = pd.to_datetime(master_df['datetime'], errors='coerce')
+    if master_df.empty:
+        print("No matches found from Understat. Exiting.")
+        return master_df
 
+    # Normalize datetime tz-naive
+    if 'datetime' in master_df.columns:
+        master_df['datetime'] = pd.to_datetime(master_df['datetime'], errors='coerce').dt.tz_localize(None)
+
+    # ensure id column exists
+    if 'id' not in master_df.columns:
+        master_df = master_df.reset_index().rename(columns={'index': 'id'})
+
+    # coerce team text
     master_df['home_team'] = master_df['home_team'].astype(str)
     master_df['away_team'] = master_df['away_team'].astype(str)
 
@@ -434,23 +452,58 @@ def download_and_build_master():
         mapped_events.append(ev)
     master_df['event'] = mapped_events
 
-    now = pd.Timestamp.now()
-    cond_past = (master_df['datetime'].notna() & (master_df['datetime'] <= now)) | \
-                (master_df.get('home_goals').notna() & master_df.get('away_goals').notna())
-    master_df = master_df[cond_past].copy()
-
+    # Convert any present numeric goals to numeric
     master_df['home_goals'] = pd.to_numeric(master_df.get('home_goals'), errors='coerce')
     master_df['away_goals'] = pd.to_numeric(master_df.get('away_goals'), errors='coerce')
 
-    print("Downloading match events...")
+    now = pd.Timestamp.utcnow().tz_localize(None)
+    cond_past = (master_df['datetime'].notna() & (master_df['datetime'] <= now)) | \
+                (master_df.get('home_goals').notna() & master_df.get('away_goals').notna())
+    # keep all rows for now (we'll filter later), but in earlier code you filtered - keep as before:
+    master_df = master_df[cond_past].copy()
+
+    print("Downloading match events (per-match JSON) for matches that are in the past or missing goals...")
     for _, r in tqdm(master_df.iterrows(), total=len(master_df)):
         mid = r.get('id')
         dt = r.get('datetime')
         if pd.isna(mid):
             continue
-        if pd.notna(dt) and pd.to_datetime(dt) > now:
+        # download events for past matches only (skip future matches)
+        if pd.notna(dt) and pd.to_datetime(dt).tz_localize(None) > now:
             continue
-        download_match_events(mid)
+        try:
+            download_match_events(mid)
+        except Exception:
+            pass
+
+    # ---- NEW STEP: Extract final scores from downloaded event files ----
+    print("Extracting final scores from event files...")
+    final_hg = []
+    final_ag = []
+    for _, r in tqdm(master_df.iterrows(), total=len(master_df)):
+        mid = r.get('id')
+        # preserve any existing score
+        existing_hg = r.get('home_goals')
+        existing_ag = r.get('away_goals')
+        if pd.notna(existing_hg) and pd.notna(existing_ag):
+            final_hg.append(existing_hg)
+            final_ag.append(existing_ag)
+            continue
+
+        if pd.isna(mid):
+            final_hg.append(None)
+            final_ag.append(None)
+            continue
+
+        hg, ag = extract_final_score_from_events(mid)
+        final_hg.append(hg)
+        final_ag.append(ag)
+
+    master_df['home_goals'] = master_df['home_goals'].fillna(final_hg)
+    master_df['away_goals'] = master_df['away_goals'].fillna(final_ag)
+
+    master_df['home_goals'] = pd.to_numeric(master_df['home_goals'], errors='coerce')
+    master_df['away_goals'] = pd.to_numeric(master_df['away_goals'], errors='coerce')
 
     print("Fetching upcoming gameweek fixtures from FPL...")
     future_df = build_upcoming_from_fpl(fixtures_df, teams_df)
@@ -460,48 +513,30 @@ def download_and_build_master():
         combined = master_df
     else:
         print(f"Found {len(future_df)} upcoming fixtures in next gameweek")
-
         future_df['home_team'] = future_df['home_team'].astype(str)
         future_df['away_team'] = future_df['away_team'].astype(str)
-
         combined = pd.concat([master_df, future_df], ignore_index=True, sort=False)
 
         combined['home_team'] = combined['home_team'].astype(str)
         combined['away_team'] = combined['away_team'].astype(str)
-        combined['datetime'] = pd.to_datetime(combined['datetime'], errors='coerce')
+        combined['datetime'] = pd.to_datetime(combined['datetime'], errors='coerce').dt.tz_localize(None)
 
         combined = combined.drop_duplicates(
             subset=["datetime", "home_team", "away_team"],
             keep="first"
         ).sort_values("datetime").reset_index(drop=True)
 
+    # final cleaning: ensure match id column (rename to match_id for downstream)
+    if 'id' in combined.columns:
+        combined = combined.rename(columns={'id': 'match_id'})
+    elif 'match_id' not in combined.columns:
+        combined = combined.reset_index().rename(columns={'index': 'match_id'})
+
+    # Save
     combined.to_csv(MASTER_CSV, index=False)
-    print(f"Saved to {MASTER_CSV}")
+    print(f"Saved to {MASTER_CSV} (rows: {len(combined)})")
     return combined
 
-# ---- NEW STEP: Inject final goals from event files ----
-final_hg = []
-final_ag = []
-
-print("Extracting final scores from event files...")
-for _, r in tqdm(master_df.iterrows(), total=len(master_df)):
-    mid = r.get("id")
-    if pd.isna(mid):
-        final_hg.append(None)
-        final_ag.append(None)
-        continue
-
-    hg, ag = extract_final_score_from_events(mid)
-    final_hg.append(hg)
-    final_ag.append(ag)
-
-# Overwrite (or fill missing) goals
-master_df["home_goals"] = master_df["home_goals"].fillna(final_hg)
-master_df["away_goals"] = master_df["away_goals"].fillna(final_ag)
-
-# Convert to numerics
-master_df["home_goals"] = pd.to_numeric(master_df["home_goals"], errors="coerce")
-master_df["away_goals"] = pd.to_numeric(master_df["away_goals"], errors="coerce")
 
 if __name__ == "__main__":
     master = download_and_build_master()
