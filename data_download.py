@@ -378,6 +378,30 @@ def build_upcoming_from_fpl(fixtures_df, teams_df):
 
     return out.reset_index(drop=True)
 
+def extract_final_score_from_events(match_id):
+    fpath = EVENTS_DIR / f"{match_id}.json"
+    if not fpath.exists():
+        return None, None
+
+    try:
+        with open(fpath, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception:
+        return None, None
+
+    # Understat match event JSON contains final score here:
+    # data["match_info"]["ft_score"] = {"h": 2, "a": 1}
+    try:
+        info = data.get("match_info", {})
+        score = info.get("ft_score") or info.get("score") or {}
+        hg = score.get("h")
+        ag = score.get("a")
+        if hg is not None and ag is not None:
+            return int(hg), int(ag)
+    except Exception:
+        pass
+
+    return None, None
 
 def download_and_build_master():
     fixtures_df, teams_df = load_fpl_fixtures_and_teams()
@@ -455,6 +479,29 @@ def download_and_build_master():
     print(f"Saved to {MASTER_CSV}")
     return combined
 
+# ---- NEW STEP: Inject final goals from event files ----
+final_hg = []
+final_ag = []
+
+print("Extracting final scores from event files...")
+for _, r in tqdm(master_df.iterrows(), total=len(master_df)):
+    mid = r.get("id")
+    if pd.isna(mid):
+        final_hg.append(None)
+        final_ag.append(None)
+        continue
+
+    hg, ag = extract_final_score_from_events(mid)
+    final_hg.append(hg)
+    final_ag.append(ag)
+
+# Overwrite (or fill missing) goals
+master_df["home_goals"] = master_df["home_goals"].fillna(final_hg)
+master_df["away_goals"] = master_df["away_goals"].fillna(final_ag)
+
+# Convert to numerics
+master_df["home_goals"] = pd.to_numeric(master_df["home_goals"], errors="coerce")
+master_df["away_goals"] = pd.to_numeric(master_df["away_goals"], errors="coerce")
 
 if __name__ == "__main__":
     master = download_and_build_master()
