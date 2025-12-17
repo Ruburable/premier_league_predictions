@@ -63,42 +63,56 @@ def load_fbref():
 # ------------------------------------------------------------------
 # BUILD MATCH TABLE
 # ------------------------------------------------------------------
-def build_matches(schedule: pd.DataFrame, shooting: pd.DataFrame) -> pd.DataFrame:
+def build_matches(schedule: pd.DataFrame) -> pd.DataFrame:
     print("Building match-level dataset...")
+    print("Schedule columns:", list(schedule.columns))
 
-    sched = schedule[
+    df = schedule.copy()
+
+    # ------------------------------------------------------------
+    # Parse goals from score (e.g. "2–1")
+    # ------------------------------------------------------------
+    if "score" not in df.columns:
+        raise RuntimeError("FBref schedule missing 'score' column")
+
+    scores = df["score"].astype(str).str.split("–", expand=True)
+    df["home_goals"] = pd.to_numeric(scores[0], errors="coerce")
+    df["away_goals"] = pd.to_numeric(scores[1], errors="coerce")
+
+    # ------------------------------------------------------------
+    # Validate xG columns
+    # ------------------------------------------------------------
+    if not {"home_xg", "away_xg"}.issubset(df.columns):
+        raise RuntimeError(
+            "FBref schedule missing home_xg / away_xg columns"
+        )
+
+    # ------------------------------------------------------------
+    # Datetime
+    # ------------------------------------------------------------
+    df["datetime"] = pd.to_datetime(
+        df["date"],
+        errors="coerce",
+        utc=True
+    )
+
+    # ------------------------------------------------------------
+    # Final selection
+    # ------------------------------------------------------------
+    matches = df[
         [
-            "game_id", "season", "date",
-            "home_team", "away_team",
-            "home_goals", "away_goals"
+            "season",
+            "datetime",
+            "home_team",
+            "away_team",
+            "home_goals",
+            "away_goals",
+            "home_xg",
+            "away_xg",
         ]
-    ].copy()
+    ].sort_values("datetime").reset_index(drop=True)
 
-    shoot = shooting[
-        ["game_id", "is_home", "xg"]
-    ].copy()
-
-    home_xg = shoot[shoot["is_home"]].set_index("game_id")["xg"]
-    away_xg = shoot[~shoot["is_home"]].set_index("game_id")["xg"]
-
-    sched["home_xg"] = sched["game_id"].map(home_xg)
-    sched["away_xg"] = sched["game_id"].map(away_xg)
-
-    sched["datetime"] = pd.to_datetime(sched["date"], utc=True)
-
-    for col in ["home_goals", "away_goals", "home_xg", "away_xg"]:
-        sched[col] = pd.to_numeric(sched[col], errors="coerce")
-
-    sched = sched.sort_values("datetime").reset_index(drop=True)
-
-    return sched[
-        [
-            "season", "datetime",
-            "home_team", "away_team",
-            "home_goals", "away_goals",
-            "home_xg", "away_xg"
-        ]
-    ]
+    return matches
 
 # ------------------------------------------------------------------
 # MAIN
@@ -107,7 +121,7 @@ def main():
     print("=== FBREF DATA PIPELINE START ===")
 
     schedule, shooting = load_fbref()
-    matches = build_matches(schedule, shooting)
+    matches = build_matches(schedule)
 
     if matches.empty:
         raise RuntimeError("Final dataset is empty — aborting")
