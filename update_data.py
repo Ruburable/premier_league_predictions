@@ -15,7 +15,7 @@ import os
 from pathlib import Path
 import pandas as pd
 import soccerdata as sd
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 # ------------------------------------------------------------------
 # CONFIGURATION
@@ -100,31 +100,43 @@ def process_schedule(schedule: pd.DataFrame):
         df["home_xg"] = pd.NA
         df["away_xg"] = pd.NA
 
-    # Get current time
+    # Get current time with a buffer (consider matches in last 6 hours as historical)
     now = pd.Timestamp.now(tz=timezone.utc)
+    cutoff = now - timedelta(hours=6)
+
     print(f"\nCurrent time: {now}")
+    print(f"Cutoff time (6h buffer): {cutoff}")
 
-    # Split into historical (has results) and upcoming (no results yet)
-    historical = df[df["home_goals"].notna() & df["away_goals"].notna()].copy()
-    upcoming = df[df["home_goals"].isna() | df["away_goals"].isna()].copy()
+    # CRITICAL: A match is historical ONLY if it has BOTH goals AND is before cutoff
+    # A match is upcoming if it has NO goals OR is after cutoff
+    has_results = df["home_goals"].notna() & df["away_goals"].notna()
+    is_past = df["datetime"] < cutoff
 
-    # Also check by date as backup
-    upcoming_by_date = df[df["datetime"] > now].copy()
+    historical = df[has_results & is_past].copy()
+    upcoming = df[~(has_results & is_past)].copy()
 
-    # Merge the two approaches (take union)
-    upcoming = pd.concat([upcoming, upcoming_by_date]).drop_duplicates()
-
-    print(f"\n📊 Data split:")
-    print(f"  Historical matches (with results): {len(historical)}")
-    print(f"  Upcoming matches (no results yet): {len(upcoming)}")
+    print(f"\n📊 Data split logic:")
+    print(f"  Matches with results AND before cutoff: {len(historical)}")
+    print(f"  Matches without results OR after cutoff: {len(upcoming)}")
 
     if not historical.empty:
         latest = historical["datetime"].max()
         print(f"\n  Latest historical match: {latest}")
+        latest_match = historical[historical["datetime"] == latest].iloc[0]
+        print(
+            f"    {latest_match['home_team']} {latest_match['home_goals']:.0f}-{latest_match['away_goals']:.0f} {latest_match['away_team']}")
 
     if not upcoming.empty:
         next_match = upcoming["datetime"].min()
-        print(f"  Next upcoming match: {next_match}")
+        print(f"\n  Next upcoming match: {next_match}")
+        next_fixture = upcoming[upcoming["datetime"] == next_match].iloc[0]
+        print(f"    {next_fixture['home_team']} vs {next_fixture['away_team']}")
+
+        # Show sample of upcoming matches
+        print(f"\n  Sample of upcoming matches:")
+        for _, match in upcoming.head(5).iterrows():
+            date_str = match["datetime"].strftime("%Y-%m-%d %H:%M") if pd.notna(match["datetime"]) else "TBD"
+            print(f"    {date_str} | {match['home_team']} vs {match['away_team']}")
 
     # Sort both
     historical = historical.sort_values("datetime").reset_index(drop=True)
@@ -248,6 +260,10 @@ def save_upcoming(df: pd.DataFrame):
         print("   - The season has ended")
         print("   - All fixtures have been played")
         print("   - There's a break in the schedule")
+
+        # Create empty file so pipeline doesn't break
+        pd.DataFrame(columns=["season", "datetime", "home_team", "away_team", "home_xg", "away_xg"]).to_csv(
+            UPCOMING_OUTPUT, index=False)
         return
 
     output = df[[
