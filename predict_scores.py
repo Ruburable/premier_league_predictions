@@ -23,7 +23,26 @@ OUT_UPCOMING = Path("output/predictions_upcoming.csv")
 OUT_HISTORICAL = Path("output/predictions_historical.csv")
 
 RANDOM_STATE = 42
-CURRENT_SEASON = 2024  # Adjust as needed
+
+
+# Determine current season based on current date
+# Premier League season runs from August to May
+# e.g., 2024-25 season = 2024 (year when season starts)
+def get_current_season():
+    """
+    Determine current Premier League season based on date.
+    Season starts in August, so:
+    - Jan-July: previous year's season (e.g., Jan 2025 = 2024 season)
+    - Aug-Dec: current year's season (e.g., Aug 2024 = 2024 season)
+    """
+    now = datetime.now()
+    if now.month >= 8:  # August or later
+        return now.year
+    else:  # January to July
+        return now.year - 1
+
+
+CURRENT_SEASON = get_current_season()
 
 FEATURES = [
     "home_xg",
@@ -136,6 +155,10 @@ def main():
     print("=" * 80)
     print("ENHANCED MATCH PREDICTION PIPELINE")
     print("=" * 80)
+
+    # Show current season
+    print(f"\n🏆 Current season: {CURRENT_SEASON}/{str(CURRENT_SEASON + 1)[-2:]}")
+    print(f"   (Determined from current date: {datetime.now().strftime('%Y-%m-%d')})")
 
     # Load data
     print("\n1. Loading data...")
