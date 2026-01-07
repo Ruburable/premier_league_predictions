@@ -35,7 +35,28 @@ os.environ["SOCCERDATA_USER_AGENT"] = (
 )
 
 LEAGUE = "ENG-Premier League"
-SEASONS = list(range(2018, 2026))  # Adjust end year as needed
+
+
+# Determine current season dynamically
+def get_current_season():
+    """
+    Determine current Premier League season based on date.
+    Season starts in August, so:
+    - Jan-July: previous year's season (e.g., Jan 2025 = 2024 season)
+    - Aug-Dec: current year's season (e.g., Aug 2024 = 2024 season)
+    """
+    from datetime import datetime
+    now = datetime.now()
+    if now.month >= 8:  # August or later
+        return now.year
+    else:  # January to July
+        return now.year - 1
+
+
+CURRENT_SEASON = get_current_season()
+# Download data from multiple seasons for better training
+SEASONS = list(range(2018, CURRENT_SEASON + 1))
+
 HISTORICAL_OUTPUT = DATA_DIR / "matches_master.csv"
 UPCOMING_OUTPUT = DATA_DIR / "upcoming_fixtures.csv"
 
@@ -49,7 +70,8 @@ def download_fbref_data():
     print("DOWNLOADING DATA FROM FBREF")
     print("=" * 80)
     print(f"\nLeague: {LEAGUE}")
-    print(f"Seasons: {SEASONS[0]} to {SEASONS[-1]}")
+    print(f"Current Season: {CURRENT_SEASON}/{str(CURRENT_SEASON + 1)[-2:]}")
+    print(f"Downloading Seasons: {SEASONS[0]} to {SEASONS[-1]}")
     print(f"Cache directory: {CACHE_DIR.resolve()}\n")
 
     fbref = sd.FBref(
