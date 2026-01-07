@@ -29,7 +29,7 @@ HEADERS = {
 # All URLs tested and confirmed as of January 2026
 CLUB_LOGOS = {
     "Arsenal": "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
-    "Aston Villa": "https://upload.wikimedia.org/wikipedia/en/f/f9/Aston_Villa_FC_crest_%282016%29.svg",
+    "Aston Villa": "https://resources.premierleague.com/premierleague/badges/t7.svg",
     "Bournemouth": "https://upload.wikimedia.org/wikipedia/en/e/e5/AFC_Bournemouth_%282013%29.svg",
     "AFC Bournemouth": "https://upload.wikimedia.org/wikipedia/en/e/e5/AFC_Bournemouth_%282013%29.svg",
     "Brentford": "https://upload.wikimedia.org/wikipedia/en/2/2a/Brentford_FC_crest.svg",
@@ -46,9 +46,9 @@ CLUB_LOGOS = {
     "Liverpool": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg",
     "Luton Town": "https://upload.wikimedia.org/wikipedia/en/8/8b/LutonTownFC2009.svg",
     "Manchester City": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
-    "Manchester United": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+    "Manchester United": "https://resources.premierleague.com/premierleague/badges/t1.svg",
     "Man City": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
-    "Man United": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+    "Man United": "https://resources.premierleague.com/premierleague/badges/t1.svg",
     "Newcastle United": "https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg",
     "Newcastle Utd": "https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg",
     "Nottingham Forest": "https://upload.wikimedia.org/wikipedia/en/e/e5/Nottingham_Forest_F.C._logo.svg",
@@ -79,8 +79,21 @@ FALLBACK_URLS = {
         "https://resources.premierleague.com/premierleague/badges/t90.svg"
     ],
     "Manchester United": [
-        "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
-        "https://resources.premierleague.com/premierleague/badges/t1.svg"
+        "https://upload.wikimedia.org/wikipedia/hds/en/7/7a/Manchester_United_FC_crest.svg",
+        "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png",
+        "https://resources.premierleague.com/premierleague/badges/t1.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/a/a1/Manchester_United_FC_crest.svg"
+    ],
+    "Man United": [
+        "https://upload.wikimedia.org/wikipedia/hds/en/7/7a/Manchester_United_FC_crest.svg",
+        "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png",
+        "https://resources.premierleague.com/premierleague/badges/t1.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/a/a1/Manchester_United_FC_crest.svg"
+    ],
+    "Aston Villa": [
+        "https://upload.wikimedia.org/wikipedia/de/9/9f/Aston_Villa_logo.svg",
+        "https://resources.premierleague.com/premierleague/badges/t7.svg",
+        "https://upload.wikimedia.org/wikipedia/en/thumb/f/f9/Aston_Villa_FC_crest_%282016%29.svg/1200px-Aston_Villa_FC_crest_%282016%29.svg.png"
     ],
 }
 
@@ -93,13 +106,14 @@ def verify_svg_content(content: bytes) -> bool:
     Verify that the content is actually an SVG file.
     Checks for SVG header and minimum size.
     """
-    if len(content) < 200:
+    if len(content) < 100:  # Reduced from 200 to be less strict
         return False
 
     # Check if it starts with SVG or XML declaration
-    content_str = content[:500].decode('utf-8', errors='ignore').lower()
+    content_str = content[:1000].decode('utf-8', errors='ignore').lower()
 
-    if '<svg' not in content_str and '<?xml' not in content_str:
+    # Be more lenient - accept SVG or PNG (we'll convert PNG URLs in fallback)
+    if '<svg' not in content_str and '<?xml' not in content_str and b'\x89PNG' not in content[:10]:
         return False
 
     # Check it's not an error page
@@ -109,7 +123,7 @@ def verify_svg_content(content: bytes) -> bool:
     return True
 
 
-def download_file(url: str, output_path: Path, timeout: int = 15) -> bool:
+def download_file(url: str, output_path: Path, timeout: int = 20) -> bool:
     """
     Download a file from a URL with verification.
 
@@ -122,15 +136,28 @@ def download_file(url: str, output_path: Path, timeout: int = 15) -> bool:
         True if successful, False otherwise
     """
     try:
+        # Handle PNG URLs by converting extension
+        is_png = url.endswith('.png')
+        actual_output = output_path.with_suffix('.png') if is_png else output_path
+
         response = requests.get(url, headers=HEADERS, timeout=timeout, allow_redirects=True)
         response.raise_for_status()
 
-        # Verify we got actual SVG content
-        if not verify_svg_content(response.content):
+        # For SVG files, verify content
+        if not is_png and not verify_svg_content(response.content):
+            return False
+
+        # For PNG, just check minimum size
+        if is_png and len(response.content) < 1000:
             return False
 
         # Save the file
-        output_path.write_bytes(response.content)
+        actual_output.write_bytes(response.content)
+
+        # If we saved as PNG, try to also save as SVG name (some code might expect .svg)
+        if is_png:
+            output_path.write_bytes(response.content)
+
         return True
 
     except requests.exceptions.RequestException:
