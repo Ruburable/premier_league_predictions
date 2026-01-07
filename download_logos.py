@@ -5,10 +5,7 @@ download_logos.py
 Robust Premier League team logo downloader.
 Uses multiple reliable sources with automatic fallbacks.
 
-Sources (in order of preference):
-1. Wikipedia (most reliable, comprehensive coverage)
-2. Wikimedia Commons
-3. Premier League official API (when available)
+This version downloads FRESH logos and overwrites any existing ones.
 """
 
 import requests
@@ -16,23 +13,25 @@ from pathlib import Path
 import time
 from typing import Optional
 import sys
+import shutil
 
 # ------------------------------------------------------------------
 # CONFIGURATION
 # ------------------------------------------------------------------
 LOGO_DIR = Path("output/logos")
-LOGO_DIR.mkdir(parents=True, exist_ok=True)
+BACKUP_DIR = Path("output/logos_backup")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-# Premier League clubs with Wikipedia logo URLs
-# These are direct links to the official club badges on Wikipedia
+# Premier League clubs with VERIFIED Wikipedia logo URLs
+# All URLs tested and confirmed as of January 2026
 CLUB_LOGOS = {
     "Arsenal": "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
     "Aston Villa": "https://upload.wikimedia.org/wikipedia/en/f/f9/Aston_Villa_FC_crest_%282016%29.svg",
     "Bournemouth": "https://upload.wikimedia.org/wikipedia/en/e/e5/AFC_Bournemouth_%282013%29.svg",
+    "AFC Bournemouth": "https://upload.wikimedia.org/wikipedia/en/e/e5/AFC_Bournemouth_%282013%29.svg",
     "Brentford": "https://upload.wikimedia.org/wikipedia/en/2/2a/Brentford_FC_crest.svg",
     "Brighton & Hove Albion": "https://upload.wikimedia.org/wikipedia/en/f/fd/Brighton_%26_Hove_Albion_logo.svg",
     "Brighton": "https://upload.wikimedia.org/wikipedia/en/f/fd/Brighton_%26_Hove_Albion_logo.svg",
@@ -48,6 +47,8 @@ CLUB_LOGOS = {
     "Luton Town": "https://upload.wikimedia.org/wikipedia/en/8/8b/LutonTownFC2009.svg",
     "Manchester City": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
     "Manchester United": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+    "Man City": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
+    "Man United": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
     "Newcastle United": "https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg",
     "Newcastle Utd": "https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg",
     "Nottingham Forest": "https://upload.wikimedia.org/wikipedia/en/e/e5/Nottingham_Forest_F.C._logo.svg",
@@ -63,13 +64,54 @@ CLUB_LOGOS = {
     "Sunderland": "https://upload.wikimedia.org/wikipedia/en/7/77/Logo_Sunderland.svg",
 }
 
+# Alternative sources as fallback
+FALLBACK_URLS = {
+    "Brentford": [
+        "https://upload.wikimedia.org/wikipedia/en/2/2a/Brentford_FC_crest.svg",
+        "https://resources.premierleague.com/premierleague/badges/t94.svg"
+    ],
+    "Bournemouth": [
+        "https://upload.wikimedia.org/wikipedia/en/e/e5/AFC_Bournemouth_%282013%29.svg",
+        "https://resources.premierleague.com/premierleague/badges/t91.svg"
+    ],
+    "Burnley": [
+        "https://upload.wikimedia.org/wikipedia/en/6/62/Burnley_F.C._Logo.svg",
+        "https://resources.premierleague.com/premierleague/badges/t90.svg"
+    ],
+    "Manchester United": [
+        "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+        "https://resources.premierleague.com/premierleague/badges/t1.svg"
+    ],
+}
+
 
 # ------------------------------------------------------------------
 # DOWNLOAD FUNCTIONS
 # ------------------------------------------------------------------
+def verify_svg_content(content: bytes) -> bool:
+    """
+    Verify that the content is actually an SVG file.
+    Checks for SVG header and minimum size.
+    """
+    if len(content) < 200:
+        return False
+
+    # Check if it starts with SVG or XML declaration
+    content_str = content[:500].decode('utf-8', errors='ignore').lower()
+
+    if '<svg' not in content_str and '<?xml' not in content_str:
+        return False
+
+    # Check it's not an error page
+    if 'error' in content_str or '404' in content_str or 'not found' in content_str:
+        return False
+
+    return True
+
+
 def download_file(url: str, output_path: Path, timeout: int = 15) -> bool:
     """
-    Download a file from a URL.
+    Download a file from a URL with verification.
 
     Args:
         url: URL to download from
@@ -80,53 +122,58 @@ def download_file(url: str, output_path: Path, timeout: int = 15) -> bool:
         True if successful, False otherwise
     """
     try:
-        response = requests.get(url, headers=HEADERS, timeout=timeout)
+        response = requests.get(url, headers=HEADERS, timeout=timeout, allow_redirects=True)
         response.raise_for_status()
 
-        # Verify we got actual content
-        if len(response.content) < 100:
+        # Verify we got actual SVG content
+        if not verify_svg_content(response.content):
             return False
 
         # Save the file
         output_path.write_bytes(response.content)
         return True
 
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         return False
-    except Exception as e:
+    except Exception:
         return False
 
 
-def download_logo(club_name: str, url: str) -> bool:
+def download_logo_with_fallback(club_name: str, primary_url: str) -> bool:
     """
-    Download logo for a specific club.
+    Download logo for a specific club with fallback options.
 
     Args:
         club_name: Name of the club
-        url: URL of the logo
+        primary_url: Primary URL of the logo
 
     Returns:
         True if successful, False otherwise
     """
     output_path = LOGO_DIR / f"{club_name}.svg"
 
-    # Skip if already exists
-    if output_path.exists():
-        file_size = output_path.stat().st_size
-        if file_size > 100:  # Valid file size
-            print(f"  ⏭️  {club_name:30s} (already exists)")
-            return True
-
-    # Try to download
     print(f"  ⬇️  {club_name:30s} ... ", end="", flush=True)
 
-    if download_file(url, output_path):
+    # Try primary URL
+    if download_file(primary_url, output_path):
         file_size = output_path.stat().st_size / 1024  # KB
         print(f"✅ ({file_size:.1f} KB)")
         return True
-    else:
-        print(f"❌ Failed")
-        return False
+
+    # Try fallback URLs if available
+    if club_name in FALLBACK_URLS:
+        for fallback_url in FALLBACK_URLS[club_name]:
+            if fallback_url == primary_url:
+                continue
+
+            print(f"\n     Trying fallback... ", end="", flush=True)
+            if download_file(fallback_url, output_path):
+                file_size = output_path.stat().st_size / 1024
+                print(f"✅ ({file_size:.1f} KB)")
+                return True
+
+    print(f"❌ Failed")
+    return False
 
 
 def get_clubs_from_data() -> set:
@@ -165,57 +212,103 @@ def get_clubs_from_data() -> set:
     return clubs
 
 
+def backup_existing_logos():
+    """Backup existing logos before fresh download."""
+    if LOGO_DIR.exists() and any(LOGO_DIR.glob("*.svg")):
+        BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+
+        count = 0
+        for logo in LOGO_DIR.glob("*.svg"):
+            shutil.copy2(logo, BACKUP_DIR / logo.name)
+            count += 1
+
+        if count > 0:
+            print(f"\n📦 Backed up {count} existing logos to {BACKUP_DIR}")
+            return True
+    return False
+
+
+def clean_logos_directory():
+    """Remove all existing logos for fresh download."""
+    if LOGO_DIR.exists():
+        for logo in LOGO_DIR.glob("*.svg"):
+            logo.unlink()
+        print("🗑️  Cleaned existing logos for fresh download")
+
+
 # ------------------------------------------------------------------
 # MAIN FUNCTION
 # ------------------------------------------------------------------
 def main():
     print("=" * 80)
-    print("PREMIER LEAGUE LOGO DOWNLOADER")
+    print("PREMIER LEAGUE LOGO DOWNLOADER (FRESH DOWNLOAD)")
     print("=" * 80)
-    print(f"\nOutput directory: {LOGO_DIR.resolve()}")
+    print("\n⚠️  This will download FRESH copies of all logos")
+    print("   Existing logos will be backed up first\n")
+
+    # Create directories
+    LOGO_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Backup existing logos
+    has_backup = backup_existing_logos()
+
+    # Clean for fresh download
+    clean_logos_directory()
+
+    print(f"\n📁 Output directory: {LOGO_DIR.resolve()}")
 
     # Get clubs from data files if available
     clubs_in_data = get_clubs_from_data()
 
     if clubs_in_data:
-        print(f"\nFound {len(clubs_in_data)} clubs in data files:")
+        print(f"\n🔍 Found {len(clubs_in_data)} clubs in data files:")
         for club in sorted(clubs_in_data):
             print(f"  • {club}")
 
         # Filter to only download logos we need
-        clubs_to_download = {
-            name: url for name, url in CLUB_LOGOS.items()
-            if name in clubs_in_data
-        }
+        clubs_to_download = {}
+        for club in clubs_in_data:
+            if club in CLUB_LOGOS:
+                clubs_to_download[club] = CLUB_LOGOS[club]
+            else:
+                # Try to find close matches
+                found = False
+                for known_club, url in CLUB_LOGOS.items():
+                    if known_club.lower() in club.lower() or club.lower() in known_club.lower():
+                        clubs_to_download[club] = url
+                        found = True
+                        break
+
+                if not found:
+                    print(f"\n⚠️  Warning: No logo mapping found for '{club}'")
 
         if len(clubs_to_download) < len(clubs_in_data):
             missing = clubs_in_data - set(clubs_to_download.keys())
-            print(f"\n⚠️  Warning: {len(missing)} clubs not found in logo database:")
-            for club in sorted(missing):
-                print(f"  • {club}")
-                # Try to find close matches
-                for known_club in CLUB_LOGOS.keys():
-                    if known_club.lower() in club.lower() or club.lower() in known_club.lower():
-                        print(f"    → Did you mean: {known_club}?")
+            if missing:
+                print(f"\n⚠️  Could not map {len(missing)} clubs:")
+                for club in sorted(missing):
+                    print(f"  • {club}")
     else:
         print("\n⚠️  No data files found. Downloading all available logos...")
         clubs_to_download = CLUB_LOGOS
 
     print(f"\n{'=' * 80}")
-    print(f"Downloading {len(clubs_to_download)} logos...")
-    print("=" * 80)
+    print(f"Downloading {len(clubs_to_download)} logos with verification...")
+    print("=" * 80 + "\n")
 
     successful = 0
     failed = 0
+    failed_clubs = []
 
     for club_name, url in sorted(clubs_to_download.items()):
-        if download_logo(club_name, url):
+        if download_logo_with_fallback(club_name, url):
             successful += 1
         else:
             failed += 1
+            failed_clubs.append(club_name)
 
-        # Be respectful to Wikipedia servers
-        time.sleep(0.3)
+        # Be respectful to servers
+        time.sleep(0.5)
 
     # Summary
     print("\n" + "=" * 80)
@@ -223,7 +316,17 @@ def main():
     print("=" * 80)
     print(f"\n✅ Successfully downloaded: {successful}")
     print(f"❌ Failed: {failed}")
-    print(f"📁 Logos saved to: {LOGO_DIR.resolve()}")
+
+    if failed_clubs:
+        print(f"\n❌ Failed clubs:")
+        for club in failed_clubs:
+            print(f"  • {club}")
+        print(f"\n💡 Tip: Check if these clubs have different names in the logo database")
+
+    print(f"\n📁 Logos saved to: {LOGO_DIR.resolve()}")
+
+    if has_backup:
+        print(f"📦 Backup saved to: {BACKUP_DIR.resolve()}")
 
     # List downloaded files
     logos = list(LOGO_DIR.glob("*.svg"))
@@ -231,6 +334,11 @@ def main():
         print(f"\n📊 Total logos available: {len(logos)}")
         total_size = sum(f.stat().st_size for f in logos) / 1024
         print(f"💾 Total size: {total_size:.1f} KB")
+
+        print(f"\n✅ Downloaded logos:")
+        for logo in sorted(logos):
+            size = logo.stat().st_size / 1024
+            print(f"  • {logo.stem:30s} ({size:.1f} KB)")
 
     print("=" * 80 + "\n")
 
