@@ -26,9 +26,9 @@ import argparse
 # ------------------------------------------------------------------
 SCRIPTS = {
     "update_data": "update_data.py",
-    "download_logos": "download_logos.py",
     "predict": "predict_scores.py",
-    "visualize": "visualise.py"
+    "visualize": "visualise.py",
+    "readme": "generate_readme.py"
 }
 
 OUTPUT_DASHBOARD = Path("output/predictions_dashboard.html")
@@ -120,30 +120,25 @@ def step_update_data():
     return run_script(SCRIPTS["update_data"], "Data update")
 
 
-def step_download_logos(skip=False):
-    """Step 2: Download team logos."""
-    if skip:
-        print_step(2, 4, "Downloading Team Logos (SKIPPED)")
-        print_warning("Logo download skipped as requested")
-        return True
-
-    print_step(2, 4, "Downloading Team Logos")
-    print("Fetching club badges from official sources...\n")
-    return run_script(SCRIPTS["download_logos"], "Logo download")
-
-
 def step_predict():
-    """Step 3: Predict match scores."""
-    print_step(3, 4, "Predicting Match Scores")
+    """Step 2: Predict match scores."""
+    print_step(2, 4, "Predicting Match Scores")
     print("Training model and generating predictions...\n")
     return run_script(SCRIPTS["predict"], "Score prediction")
 
 
 def step_visualize():
-    """Step 4: Generate visualization."""
-    print_step(4, 4, "Generating Dashboard")
+    """Step 3: Generate visualization."""
+    print_step(3, 4, "Generating Dashboard")
     print("Creating HTML visualization...\n")
     return run_script(SCRIPTS["visualize"], "Visualization")
+
+
+def step_readme():
+    """Step 4: Generate README."""
+    print_step(4, 4, "Generating README")
+    print("Creating README with predictions...\n")
+    return run_script(SCRIPTS["readme"], "README generation")
 
 
 # ------------------------------------------------------------------
@@ -156,7 +151,7 @@ def run_pipeline(skip_logos=False):
 
     # Track success
     steps_completed = 0
-    total_steps = 4
+    total_steps = 3  # Changed from 4 to 3
 
     # Step 1: Update data
     if step_update_data():
@@ -166,16 +161,7 @@ def run_pipeline(skip_logos=False):
         print_error("Data update failed - aborting pipeline")
         return False
 
-    # Step 2: Download logos
-    if step_download_logos(skip=skip_logos):
-        steps_completed += 1
-        if not skip_logos:
-            print_success("Logo download completed")
-    else:
-        print_warning("Logo download failed - continuing anyway")
-        steps_completed += 1  # Non-critical, continue
-
-    # Step 3: Predict scores
+    # Step 2: Predict scores (was step 3)
     if step_predict():
         steps_completed += 1
         print_success("Score prediction completed")
@@ -183,7 +169,7 @@ def run_pipeline(skip_logos=False):
         print_error("Score prediction failed - aborting pipeline")
         return False
 
-    # Step 4: Visualize
+    # Step 3: Visualize (was step 4)
     if step_visualize():
         steps_completed += 1
         print_success("Dashboard generation completed")
@@ -202,6 +188,10 @@ def run_pipeline(skip_logos=False):
         print(f"   {Colors.CYAN}{OUTPUT_DASHBOARD.resolve()}{Colors.END}\n")
         print(f"{Colors.BOLD}🌐 Open in browser:{Colors.END}")
         print(f"   file://{OUTPUT_DASHBOARD.resolve()}\n")
+
+    if Path("README.md").exists():
+        print(f"{Colors.BOLD}📖 README updated with predictions:{Colors.END}")
+        print(f"   {Colors.CYAN}README.md{Colors.END}\n")
 
     print(f"{Colors.BOLD}📁 Output files:{Colors.END}")
     output_dir = Path("output")
@@ -225,23 +215,36 @@ def main():
         epilog="""
 Examples:
   python run_all.py                # Run full pipeline
-  python run_all.py --skip-logos   # Skip logo downloads (faster)
+  python run_all.py --help-logos   # Show info about logo downloads
 
 Output:
   - data/matches_master.csv         (historical matches)
   - data/upcoming_fixtures.csv      (upcoming fixtures)
   - output/predictions_upcoming.csv (predictions)
   - output/predictions_dashboard.html (visualization)
+
+Note: To download team logos, run 'python download_logos.py' separately
         """
     )
 
     parser.add_argument(
-        "--skip-logos",
+        "--help-logos",
         action="store_true",
-        help="Skip downloading team logos (faster, but dashboard won't show badges)"
+        help="Show information about downloading team logos separately"
     )
 
     args = parser.parse_args()
+
+    if args.help_logos:
+        print("\n" + "=" * 80)
+        print("TEAM LOGOS INFORMATION")
+        print("=" * 80)
+        print("\nTo download team logos for the dashboard, run:")
+        print("  python download_logos.py")
+        print("\nThis is a separate step because logo downloads are optional")
+        print("and the dashboard works fine without them.")
+        print("=" * 80 + "\n")
+        return 0
 
     # Check if required scripts exist
     missing_scripts = []
@@ -258,7 +261,7 @@ Output:
 
     # Run pipeline
     try:
-        success = run_pipeline(skip_logos=args.skip_logos)
+        success = run_pipeline()
         return 0 if success else 1
     except KeyboardInterrupt:
         print(f"\n\n{Colors.YELLOW}Pipeline interrupted by user{Colors.END}")
