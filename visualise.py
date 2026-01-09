@@ -1,306 +1,326 @@
 #!/usr/bin/env python3
 """
-visualise_predictions.py
+predict_scores_enhanced.py
 
-Reads:
-  - output/predictions_upcoming.csv
-
-Creates:
-  - output/predictions_dashboard.html
+Enhanced prediction script that:
+1. Makes in-sample predictions for historical matches (current season)
+2. Predicts upcoming fixtures
+3. Saves both for visualization
 """
 
 import pandas as pd
+import numpy as np
 from pathlib import Path
-import base64
-import json
+from xgboost import XGBRegressor
+from sklearn.metrics import mean_absolute_error
+from datetime import datetime, timezone
 
-PRED_CSV = Path("output/predictions_upcoming.csv")
-LOGO_DIR = Path("output/logos")
-OUT_HTML = Path("output/predictions_dashboard.html")
+# ---------------- CONFIG ---------------- #
 
+HISTORICAL_DATA = Path("data/matches_master.csv")
+UPCOMING_DATA = Path("data/upcoming_fixtures.csv")
+OUT_UPCOMING = Path("output/predictions_upcoming.csv")
+OUT_HISTORICAL = Path("output/predictions_historical.csv")
 
-# --------------------------------------------------
-# Helpers
-# --------------------------------------------------
-def svg_to_base64(path: Path):
-    if not path.exists():
-        return ""
-    try:
-        return base64.b64encode(path.read_bytes()).decode("utf-8")
-    except Exception as e:
-        print(f"Warning: Could not encode {path}: {e}")
-        return ""
+RANDOM_STATE = 42
 
 
-def scorers_html(s):
-    if not s or pd.isna(s):
-        return "<span class='muted'>–</span>"
-    try:
-        lst = json.loads(s)
-        return "<br>".join([f"• {p[0]} ({p[1] * 100:.1f}%)" for p in lst])
-    except Exception:
-        return "<span class='muted'>–</span>"
-
-
-# --------------------------------------------------
-# Match card HTML
-# --------------------------------------------------
-def build_match_html(row, logos):
-    home = row["home_team"]
-    away = row["away_team"]
-
-    ph = float(row.get("pred_home_goals", 0.0))
-    pa = float(row.get("pred_away_goals", 0.0))
-
-    prob_home = row.get("prob_home", None)
-    prob_draw = row.get("prob_draw", None)
-    prob_away = row.get("prob_away", None)
-
-    # Format date if available
-    date_str = ""
-    if "datetime" in row and pd.notna(row["datetime"]):
-        try:
-            date_obj = pd.to_datetime(row["datetime"])
-            date_str = f"<div class='match-date'>{date_obj.strftime('%a, %d %b %Y')}</div>"
-        except:
-            pass
-
-    prob_html = (
-        f"Home: {float(prob_home) * 100:.1f}% | Draw: {float(prob_draw) * 100:.1f}% | Away: {float(prob_away) * 100:.1f}%"
-        if all(v is not None and pd.notna(v) for v in [prob_home, prob_draw, prob_away])
-        else "Probabilities unavailable"
-    )
-
-    return f"""
-    <div class="match-row">
-
-      <div class="team team-left">
-        <img class="badge" src="data:image/svg+xml;base64,{logos.get(home, '')}" onerror="this.style.display='none'" />
-        <div class="team-name">{home}</div>
-        <div class="scorers">{scorers_html(row.get("top_home_scorers"))}</div>
-      </div>
-
-      <div class="center">
-        {date_str}
-        <div class="scoreline">{ph:.2f} – {pa:.2f}</div>
-        <div class="prob">{prob_html}</div>
-      </div>
-
-      <div class="team team-right">
-        <img class="badge" src="data:image/svg+xml;base64,{logos.get(away, '')}" onerror="this.style.display='none'" />
-        <div class="team-name">{away}</div>
-        <div class="scorers">{scorers_html(row.get("top_away_scorers"))}</div>
-      </div>
-
-    </div>
+# Determine current season based on current date
+# Premier League season runs from August to May
+# e.g., 2024-25 season = 2024 (year when season starts)
+def get_current_season():
     """
-
-
-# --------------------------------------------------
-# Page shell
-# --------------------------------------------------
-def build_page(rows):
-    css = """
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f7fa; padding:30px; }
-    .container { max-width:1000px; margin:auto; }
-    h1 { text-align:center; margin-bottom:10px; color:#2c3e50; font-size:36px; }
-    .subtitle { text-align:center; color:#7f8c8d; margin-bottom:40px; font-size:16px; }
-
-    .gameweek-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px 30px;
-        border-radius: 12px;
-        margin: 30px 0 20px 0;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-    .gameweek-header h2 {
-        margin: 0 0 8px 0;
-        font-size: 28px;
-        font-weight: 600;
-    }
-    .gameweek-date {
-        font-size: 15px;
-        opacity: 0.95;
-        font-weight: 500;
-    }
-    .gameweek-count {
-        font-size: 13px;
-        opacity: 0.85;
-        margin-top: 5px;
-    }
-
-    .match-row {
-        display:flex; justify-content:space-between; align-items:center;
-        background:white; padding:20px; border-radius:12px;
-        box-shadow:0 2px 8px rgba(0,0,0,0.08);
-        margin-bottom:16px;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .match-row:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-    }
-    .team { width:32%; text-align:center; }
-    .badge { width:64px; height:64px; object-fit: contain; }
-    .team-name { font-size:17px; font-weight:600; margin-top:8px; color:#2c3e50; }
-    .scorers { font-size:13px; margin-top:6px; color:#7f8c8d; }
-    .center { width:25%; text-align:center; }
-    .match-date { font-size:12px; color:#95a5a6; margin-bottom:8px; font-weight:500; }
-    .scoreline { font-size:32px; font-weight:700; color:#2c3e50; letter-spacing: 2px; }
-    .prob { font-size:12px; color:#7f8c8d; margin-top:8px; background:#f8f9fa; padding:6px 10px; border-radius:6px; }
-    .muted { color:#bdc3c7; }
-    .error { color: #e74c3c; padding: 40px; text-align: center; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+    Determine current Premier League season based on date.
+    Season starts in August, so:
+    - Jan-July: previous year's season (e.g., Jan 2025 = 2024 season)
+    - Aug-Dec: current year's season (e.g., Aug 2024 = 2024 season)
     """
-
-    return f"""<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premier League Predictions</title>
-<style>{css}</style>
-</head>
-<body>
-<div class="container">
-<h1>⚽ Premier League Predictions</h1>
-<div class="subtitle">AI-powered match predictions using XGBoost and xG data</div>
-{rows}
-</div>
-</body>
-</html>
-"""
+    now = datetime.now()
+    if now.month >= 8:  # August or later
+        return now.year
+    else:  # January to July
+        return now.year - 1
 
 
-# --------------------------------------------------
-# Main
-# --------------------------------------------------
-def group_by_gameweek(df):
-    """Group matches by gameweek based on dates."""
-    if df.empty:
-        return {}
+CURRENT_SEASON = get_current_season()
 
+FEATURES = [
+    "home_xg",
+    "away_xg",
+    "xg_diff",
+    "home_adv",
+]
+
+TARGET_HOME = "home_goals"
+TARGET_AWAY = "away_goals"
+
+
+# ---------------------------------------- #
+
+
+def load_historical_data():
+    """Load historical matches for training."""
+    if not HISTORICAL_DATA.exists():
+        raise FileNotFoundError(
+            f"Historical data not found at {HISTORICAL_DATA}\n"
+            "Please run update_data.py first!"
+        )
+
+    df = pd.read_csv(HISTORICAL_DATA, parse_dates=["datetime"])
     df = df.sort_values("datetime").reset_index(drop=True)
 
-    gameweeks = {}
-    current_gw = 1
-    current_gw_start = df.iloc[0]["datetime"]
+    # Drop any rows without goals (unplayed matches)
+    df = df.dropna(subset=[TARGET_HOME, TARGET_AWAY])
 
-    for idx, row in df.iterrows():
-        match_date = row["datetime"]
+    print(f"Loaded {len(df)} historical matches")
+    if not df.empty:
+        print(f"  Date range: {df['datetime'].min()} to {df['datetime'].max()}")
 
-        # If more than 4 days from current gameweek start, start new gameweek
-        days_diff = (match_date - current_gw_start).total_seconds() / 86400
-        if days_diff > 4:
-            current_gw += 1
-            current_gw_start = match_date
-
-        if current_gw not in gameweeks:
-            gameweeks[current_gw] = []
-
-        gameweeks[current_gw].append(row)
-
-    return gameweeks
+    return df
 
 
-def build_gameweek_section(gw_num, matches, logos):
-    """Build HTML for a gameweek section."""
-    # Get date range for this gameweek
-    first_date = matches[0]["datetime"]
-    last_date = matches[-1]["datetime"]
+def load_upcoming_fixtures():
+    """Load upcoming fixtures to predict."""
+    if not UPCOMING_DATA.exists():
+        raise FileNotFoundError(
+            f"Upcoming fixtures not found at {UPCOMING_DATA}\n"
+            "Please run update_data.py first!"
+        )
 
-    if first_date.date() == last_date.date():
-        date_range = first_date.strftime("%A, %d %B %Y")
+    df = pd.read_csv(UPCOMING_DATA, parse_dates=["datetime"])
+
+    print(f"\nLoaded {len(df)} upcoming fixtures")
+    if not df.empty:
+        print(f"  Date range: {df['datetime'].min()} to {df['datetime'].max()}")
+
+    return df
+
+
+def add_features(df):
+    """Add engineered features."""
+    df = df.copy()
+    df["xg_diff"] = df["home_xg"] - df["away_xg"]
+    df["home_adv"] = 1.0
+    return df
+
+
+def train_model(X, y, model_type="xgb"):
+    """Train prediction model."""
+    if model_type == "xgb":
+        model = XGBRegressor(
+            n_estimators=300,
+            max_depth=4,
+            learning_rate=0.05,
+            subsample=0.9,
+            colsample_bytree=0.9,
+            objective="reg:squarederror",
+            random_state=RANDOM_STATE,
+            n_jobs=4,
+        )
     else:
-        date_range = f"{first_date.strftime('%d %b')} - {last_date.strftime('%d %b %Y')}"
+        raise ValueError(f"Unknown model type: {model_type}")
 
-    header = f"""
-    <div class="gameweek-header">
-        <h2>Gameweek {gw_num}</h2>
-        <div class="gameweek-date">{date_range}</div>
-        <div class="gameweek-count">{len(matches)} matches</div>
-    </div>
-    """
+    model.fit(X, y)
+    return model
 
-    matches_html = "\n".join(
-        build_match_html(match, logos) for match in matches
-    )
 
-    return header + matches_html
+def calculate_win_probabilities(pred_home, pred_away, margin=0.5):
+    """Calculate win probabilities based on predicted scores."""
+    diff = pred_home - pred_away
+
+    if diff > margin:
+        prob_home = 0.6 + min(0.3, (diff - margin) * 0.2)
+        prob_draw = max(0.1, 0.3 - (diff - margin) * 0.15)
+        prob_away = 1 - prob_home - prob_draw
+    elif diff < -margin:
+        prob_away = 0.6 + min(0.3, (-diff - margin) * 0.2)
+        prob_draw = max(0.1, 0.3 - (-diff - margin) * 0.15)
+        prob_home = 1 - prob_away - prob_draw
+    else:
+        prob_draw = 0.35
+        prob_home = 0.33
+        prob_away = 0.32
+
+    return prob_home, prob_draw, prob_away
+
+
+def get_current_season_matches(df):
+    """Filter for current season matches."""
+    if df.empty:
+        return df
+
+    # Check if season column exists
+    if "season" not in df.columns:
+        print(f"\n⚠️  Warning: 'season' column not found in data")
+        print(f"   Available columns: {list(df.columns)}")
+        return pd.DataFrame()
+
+    current_season_df = df[df["season"] == CURRENT_SEASON].copy()
+    print(f"\nCurrent season ({CURRENT_SEASON}) has {len(current_season_df)} matches")
+
+    if current_season_df.empty:
+        print(f"⚠️  No matches found for season {CURRENT_SEASON}")
+        print(f"   Available seasons in data: {sorted(df['season'].unique())}")
+
+    return current_season_df
 
 
 def main():
-    # Check if predictions file exists
-    if not PRED_CSV.exists():
-        print(f"ERROR: Predictions file not found at {PRED_CSV}")
-        print("Please run predict_scores.py first to generate predictions.")
-        return
+    print("=" * 80)
+    print("ENHANCED MATCH PREDICTION PIPELINE")
+    print("=" * 80)
 
-    # Read predictions
-    df = pd.read_csv(PRED_CSV, parse_dates=["datetime"])
-    print(f"Loaded {len(df)} predictions from {PRED_CSV}")
+    # Show current season
+    print(f"\n🏆 Current season: {CURRENT_SEASON}/{str(CURRENT_SEASON + 1)[-2:]}")
+    print(f"   (Determined from current date: {datetime.now().strftime('%Y-%m-%d')})")
 
-    # Debug: print columns and first few rows
-    print("\nColumns in predictions file:", df.columns.tolist())
-    print("\nFirst few rows:")
-    print(df.head())
+    # Load data
+    print("\n1. Loading data...")
+    all_historical = load_historical_data()
+    upcoming = load_upcoming_fixtures()
 
-    # Check if dataframe is empty
-    if df.empty:
-        print("ERROR: Predictions dataframe is empty!")
-        OUT_HTML.parent.mkdir(exist_ok=True, parents=True)
-        OUT_HTML.write_text(
-            build_page("<div class='error'>No predictions available. Please check your data pipeline.</div>"),
-            encoding="utf-8")
-        return
+    # Add features to all data
+    print("\n2. Engineering features...")
+    all_historical = add_features(all_historical)
+    upcoming = add_features(upcoming) if not upcoming.empty else upcoming
 
-    # Load club logos
-    clubs = set(df["home_team"]) | set(df["away_team"])
-    print(f"\nLoading logos for {len(clubs)} clubs...")
-    logos = {}
-    for c in clubs:
-        logo_path = LOGO_DIR / f"{c}.svg"
-        if logo_path.exists():
-            logos[c] = svg_to_base64(logo_path)
-            print(f"  ✓ {c}")
-        else:
-            logos[c] = ""
-            print(f"  ✗ {c} (logo not found)")
+    # Prepare training data (all historical matches)
+    X_train = all_historical[FEATURES]
+    y_home = all_historical[TARGET_HOME]
+    y_away = all_historical[TARGET_AWAY]
 
-    # Group by gameweek
-    print("\nGrouping matches by gameweek...")
-    gameweeks = group_by_gameweek(df)
-    print(f"Found {len(gameweeks)} gameweek(s)")
+    # Sanity check
+    print("\n3. Training data sanity check:")
+    print(all_historical[[TARGET_HOME, TARGET_AWAY]].describe())
 
-    # Generate HTML for each gameweek
-    print("\nGenerating match cards by gameweek...")
-    gameweek_sections = []
+    # Train models
+    print("\n4. Training models on all historical data...")
+    model_home = train_model(X_train, y_home)
+    model_away = train_model(X_train, y_away)
 
-    for gw_num in sorted(gameweeks.keys()):
-        matches = gameweeks[gw_num]
-        print(f"\n  Gameweek {gw_num}: {len(matches)} matches")
+    # Evaluate on training data
+    pred_home_train = model_home.predict(X_train)
+    pred_away_train = model_away.predict(X_train)
 
-        try:
-            gw_html = build_gameweek_section(gw_num, matches, logos)
-            gameweek_sections.append(gw_html)
+    print("\nModel Performance (on all training data):")
+    print(f"  Home goals MAE: {mean_absolute_error(y_home, pred_home_train):.3f}")
+    print(f"  Away goals MAE: {mean_absolute_error(y_away, pred_away_train):.3f}")
 
-            for match in matches:
-                print(f"    ✓ {match['home_team']} vs {match['away_team']}")
-        except Exception as e:
-            print(f"    ✗ Error processing gameweek {gw_num}: {e}")
+    # Make in-sample predictions for current season
+    print("\n5. Making in-sample predictions for current season...")
+    current_season = get_current_season_matches(all_historical)
 
-    rows_html = "\n".join(gameweek_sections)
+    if not current_season.empty:
+        X_current = current_season[FEATURES]
 
-    if not rows_html.strip():
-        print("WARNING: No match HTML was generated!")
-        rows_html = "<div class='error'>Error generating match predictions. Check console for details.</div>"
+        current_season["pred_home_goals"] = model_home.predict(X_current)
+        current_season["pred_away_goals"] = model_away.predict(X_current)
 
-    # Write output
-    OUT_HTML.parent.mkdir(exist_ok=True, parents=True)
-    OUT_HTML.write_text(build_page(rows_html), encoding="utf-8")
+        # Calculate probabilities for historical matches
+        probs = [
+            calculate_win_probabilities(h, a)
+            for h, a in zip(current_season["pred_home_goals"], current_season["pred_away_goals"])
+        ]
 
-    print(f"\n✔ Dashboard created: {OUT_HTML.resolve()}")
-    print(f"Generated {len(gameweeks)} gameweek sections with {len(df)} total matches")
+        current_season["prob_home"] = [p[0] for p in probs]
+        current_season["prob_draw"] = [p[1] for p in probs]
+        current_season["prob_away"] = [p[2] for p in probs]
+
+        # Calculate prediction accuracy
+        mae_home = mean_absolute_error(
+            current_season[TARGET_HOME],
+            current_season["pred_home_goals"]
+        )
+        mae_away = mean_absolute_error(
+            current_season[TARGET_AWAY],
+            current_season["pred_away_goals"]
+        )
+
+        print(f"\nCurrent season prediction accuracy:")
+        print(f"  Home goals MAE: {mae_home:.3f}")
+        print(f"  Away goals MAE: {mae_away:.3f}")
+
+        # Save historical predictions
+        historical_output = current_season[[
+            "datetime",
+            "home_team",
+            "away_team",
+            "home_goals",
+            "away_goals",
+            "home_xg",
+            "away_xg",
+            "pred_home_goals",
+            "pred_away_goals",
+            "prob_home",
+            "prob_draw",
+            "prob_away",
+        ]]
+
+        OUT_HISTORICAL.parent.mkdir(parents=True, exist_ok=True)
+        historical_output.to_csv(OUT_HISTORICAL, index=False)
+        print(f"\n✅ Saved {len(historical_output)} historical predictions to {OUT_HISTORICAL}")
+
+    # Predict upcoming matches
+    if upcoming.empty:
+        print("\n⚠️  No upcoming fixtures to predict")
+        empty_df = pd.DataFrame(columns=[
+            "datetime", "home_team", "away_team",
+            "pred_home_goals", "pred_away_goals",
+            "prob_home", "prob_draw", "prob_away"
+        ])
+        OUT_UPCOMING.parent.mkdir(parents=True, exist_ok=True)
+        empty_df.to_csv(OUT_UPCOMING, index=False)
+    else:
+        print("\n6. Predicting upcoming fixtures...")
+        X_upcoming = upcoming[FEATURES]
+
+        upcoming["pred_home_goals"] = model_home.predict(X_upcoming)
+        upcoming["pred_away_goals"] = model_away.predict(X_upcoming)
+
+        # Calculate win probabilities
+        probs = [
+            calculate_win_probabilities(h, a)
+            for h, a in zip(upcoming["pred_home_goals"], upcoming["pred_away_goals"])
+        ]
+
+        upcoming["prob_home"] = [p[0] for p in probs]
+        upcoming["prob_draw"] = [p[1] for p in probs]
+        upcoming["prob_away"] = [p[2] for p in probs]
+
+        # Display predictions
+        print("\n" + "=" * 80)
+        print("PREDICTIONS FOR UPCOMING FIXTURES")
+        print("=" * 80)
+        for _, row in upcoming.head(10).iterrows():
+            date_str = row['datetime'].strftime("%a %Y-%m-%d %H:%M") if pd.notna(row['datetime']) else "TBD"
+            print(f"\n{date_str}")
+            print(
+                f"{row['home_team']:25s} {row['pred_home_goals']:4.2f} - {row['pred_away_goals']:4.2f}  {row['away_team']:25s}")
+            print(
+                f"  Probabilities: H {row['prob_home'] * 100:5.1f}% | D {row['prob_draw'] * 100:5.1f}% | A {row['prob_away'] * 100:5.1f}%")
+
+        if len(upcoming) > 10:
+            print(f"\n... and {len(upcoming) - 10} more fixtures")
+        print("=" * 80)
+
+        # Export
+        upcoming_output = upcoming[[
+            "datetime",
+            "home_team",
+            "away_team",
+            "pred_home_goals",
+            "pred_away_goals",
+            "prob_home",
+            "prob_draw",
+            "prob_away",
+        ]]
+
+        OUT_UPCOMING.parent.mkdir(parents=True, exist_ok=True)
+        upcoming_output.to_csv(OUT_UPCOMING, index=False)
+
+        print(f"\n✅ Saved {len(upcoming_output)} upcoming predictions to {OUT_UPCOMING}")
+
+    print("\n✨ Next step: Run python visualise.py to create enhanced dashboard")
 
 
 if __name__ == "__main__":
