@@ -29,10 +29,11 @@ def get_current_season():
     """Determine current Premier League season."""
     now = datetime.now()
     if now.month >= 8:
-        season_year = now.year
+        season_start = now.year
     else:
-        season_year = now.year - 1
-    return season_year, f"{season_year}/{str(season_year + 1)[-2:]}"
+        season_start = now.year - 1
+    season_end = season_start + 1
+    return f"{season_start}/{str(season_end)[-2:]}"
 
 
 def group_by_gameweek(df: pd.DataFrame) -> dict:
@@ -100,7 +101,7 @@ def calculate_performance_metrics(df: pd.DataFrame) -> dict:
 # ------------------------------------------------------------------
 def generate_empty_readme() -> str:
     """Generate README when no fixtures are available."""
-    season_year, season_display = get_current_season()
+    season_display = get_current_season()
     now = datetime.now().strftime("%Y-%m-%d %H:%M UTC")
 
     return f"""# Premier League Match Predictor
@@ -192,7 +193,7 @@ open output/predictions_dashboard.html
 
 def generate_full_readme(upcoming_df: pd.DataFrame, historical_df: pd.DataFrame) -> str:
     """Generate complete README with predictions and statistics."""
-    season_year, season_display = get_current_season()
+    season_display = get_current_season()
     now = datetime.now().strftime("%Y-%m-%d %H:%M UTC")
 
     # Calculate performance metrics
@@ -532,7 +533,7 @@ def main():
     # Write README
     README_FILE.write_text(content, encoding="utf-8")
 
-    season_year, season_display = get_current_season()
+    season_display = get_current_season()
     print(f"\n✅ Generated README.md")
     print(f"   Season: {season_display}")
     print(f"   Path: {README_FILE.resolve()}")

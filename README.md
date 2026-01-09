@@ -6,48 +6,63 @@ Machine learning system for predicting Premier League match outcomes using XGBoo
 
 ---
 
+## Model Performance
+
+Current season (2025/26) statistics:
+
+| Metric | Value |
+|--------|-------|
+| Matches Analyzed | 210 |
+| Average Error (MAE) | ±0.726 goals |
+| Home Goals MAE | ±0.750 |
+| Away Goals MAE | ±0.701 |
+| Accuracy (±1 goal) | 55.7% |
+| Perfect Predictions | 43 (20.5%) |
+
+---
+
 ## Next Gameweek Predictions
 
-**Gameweek 1** (9 matches)
+**Gameweek 1** (10 matches)
 
 | Home | Prediction | Away | Win Probability |
 |------|------------|------|----------------|
-| Bournemouth | 2.1 - 1.4 | Tottenham | **Bournemouth** 62% |
-| Brentford | 2.2 - 1.2 | Sunderland | **Brentford** 70% |
-| Burnley | 1.1 - 1.6 | Manchester Utd | Draw 35% |
-| Crystal Palace | 1.9 - 2.1 | Aston Villa | Draw 35% |
-| Everton | 1.5 - 1.4 | Wolves | Draw 35% |
-| Fulham | 1.8 - 1.8 | Chelsea | Draw 35% |
-| Manchester City | 2.0 - 1.4 | Brighton | **Manchester City** 62% |
-| Newcastle Utd | 1.8 - 1.4 | Leeds United | Draw 35% |
-| Arsenal | 2.1 - 1.4 | Liverpool | **Arsenal** 62% |
+| Chelsea | 2.0 - 3.3 | Brentford | **Brentford** 76% |
+| Leeds United | 2.0 - 1.4 | Fulham | **Leeds United** 61% |
+| Liverpool | 1.6 - 0.8 | Burnley | **Liverpool** 66% |
+| Manchester Utd | 1.8 - 1.3 | Manchester City | Draw 35% |
+| Nott'ham Forest | 1.3 - 1.6 | Arsenal | Draw 35% |
+| Sunderland | 1.5 - 1.5 | Crystal Palace | Draw 35% |
+| Tottenham | 1.6 - 1.0 | West Ham | **Tottenham** 62% |
+| Aston Villa | 2.2 - 1.3 | Everton | **Aston Villa** 69% |
+| Wolves | 1.4 - 1.7 | Newcastle Utd | Draw 35% |
+| Brighton | 1.9 - 1.6 | Bournemouth | Draw 35% |
 
 ---
 
 ## Upcoming Fixtures Summary
 
-Total fixtures predicted: **179**
+Total fixtures predicted: **170**
 
 | Gameweek | Matches | Date Range |
 |----------|---------|------------|
-| 1 | 9 | 07 Jan - 08 Jan |
-| 2 | 10 | 17 Jan - 19 Jan |
-| 3 | 10 | 24 Jan - 26 Jan |
-| 4 | 10 | 31 Jan - 02 Feb |
-| 5 | 14 | 06 Feb - 10 Feb |
-| 6 | 6 | 11 Feb - 12 Feb |
-| 7 | 10 | 21 Feb - 23 Feb |
-| 8 | 10 | 27 Feb - 01 Mar |
-| 9 | 10 | 04 Mar - 04 Mar |
-| 10 | 10 | 14 Mar - 14 Mar |
-| 11 | 10 | 21 Mar - 21 Mar |
-| 12 | 10 | 11 Apr - 11 Apr |
-| 13 | 10 | 18 Apr - 18 Apr |
-| 14 | 10 | 25 Apr - 25 Apr |
-| 15 | 10 | 02 May - 02 May |
-| 16 | 10 | 09 May - 09 May |
-| 17 | 10 | 17 May - 17 May |
-| 18 | 10 | 24 May - 24 May |
+| 1 | 10 | 17 Jan - 19 Jan |
+| 2 | 10 | 24 Jan - 26 Jan |
+| 3 | 10 | 31 Jan - 02 Feb |
+| 4 | 14 | 06 Feb - 10 Feb |
+| 5 | 6 | 11 Feb - 12 Feb |
+| 6 | 10 | 21 Feb - 23 Feb |
+| 7 | 10 | 27 Feb - 01 Mar |
+| 8 | 10 | 04 Mar - 04 Mar |
+| 9 | 10 | 14 Mar - 14 Mar |
+| 10 | 10 | 21 Mar - 21 Mar |
+| 11 | 10 | 11 Apr - 11 Apr |
+| 12 | 10 | 18 Apr - 18 Apr |
+| 13 | 10 | 25 Apr - 25 Apr |
+| 14 | 10 | 02 May - 02 May |
+| 15 | 10 | 09 May - 09 May |
+| 16 | 10 | 17 May - 17 May |
+| 17 | 10 | 24 May - 24 May |
 
 ---
 
