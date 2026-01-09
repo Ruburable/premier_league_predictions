@@ -598,10 +598,11 @@ def main():
     from datetime import datetime
     now = datetime.now()
     if now.month >= 8:
-        current_season = now.year
+        season_start = now.year
     else:
-        current_season = now.year - 1
-    season_display = f"{current_season}/{str(current_season + 1)[-2:]}"
+        season_start = now.year - 1
+    season_end = season_start + 1
+    season_display = f"{season_start}/{str(season_end)[-2:]}"
 
     # Load data
     upcoming_df = pd.read_csv(PRED_UPCOMING, parse_dates=["datetime"]) if PRED_UPCOMING.exists() else pd.DataFrame()
