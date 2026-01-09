@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
 """
-visualise_predictions.py
+visualise.py
 
-Reads:
-  - output/predictions_upcoming.csv
-
-Creates:
-  - output/predictions_dashboard.html
+Creates enhanced HTML dashboard with:
+1. Past Performance (current season in-sample predictions)
+2. Upcoming Gameweek (next fixtures)
+3. Future Predictions (all upcoming fixtures)
 """
 
 import pandas as pd
 from pathlib import Path
 import base64
 import json
+from datetime import datetime, timedelta
 
-PRED_CSV = Path("output/predictions_upcoming.csv")
+PRED_UPCOMING = Path("output/predictions_upcoming.csv")
+PRED_HISTORICAL = Path("output/predictions_historical.csv")
 LOGO_DIR = Path("output/logos")
 OUT_HTML = Path("output/predictions_dashboard.html")
 
@@ -32,149 +33,6 @@ def svg_to_base64(path: Path):
         return ""
 
 
-def scorers_html(s):
-    if not s or pd.isna(s):
-        return "<span class='muted'>–</span>"
-    try:
-        lst = json.loads(s)
-        return "<br>".join([f"• {p[0]} ({p[1] * 100:.1f}%)" for p in lst])
-    except Exception:
-        return "<span class='muted'>–</span>"
-
-
-# --------------------------------------------------
-# Match card HTML
-# --------------------------------------------------
-def build_match_html(row, logos):
-    home = row["home_team"]
-    away = row["away_team"]
-
-    ph = float(row.get("pred_home_goals", 0.0))
-    pa = float(row.get("pred_away_goals", 0.0))
-
-    prob_home = row.get("prob_home", None)
-    prob_draw = row.get("prob_draw", None)
-    prob_away = row.get("prob_away", None)
-
-    # Format date if available
-    date_str = ""
-    if "datetime" in row and pd.notna(row["datetime"]):
-        try:
-            date_obj = pd.to_datetime(row["datetime"])
-            date_str = f"<div class='match-date'>{date_obj.strftime('%a, %d %b %Y')}</div>"
-        except:
-            pass
-
-    prob_html = (
-        f"Home: {float(prob_home) * 100:.1f}% | Draw: {float(prob_draw) * 100:.1f}% | Away: {float(prob_away) * 100:.1f}%"
-        if all(v is not None and pd.notna(v) for v in [prob_home, prob_draw, prob_away])
-        else "Probabilities unavailable"
-    )
-
-    return f"""
-    <div class="match-row">
-
-      <div class="team team-left">
-        <img class="badge" src="data:image/svg+xml;base64,{logos.get(home, '')}" onerror="this.style.display='none'" />
-        <div class="team-name">{home}</div>
-        <div class="scorers">{scorers_html(row.get("top_home_scorers"))}</div>
-      </div>
-
-      <div class="center">
-        {date_str}
-        <div class="scoreline">{ph:.2f} – {pa:.2f}</div>
-        <div class="prob">{prob_html}</div>
-      </div>
-
-      <div class="team team-right">
-        <img class="badge" src="data:image/svg+xml;base64,{logos.get(away, '')}" onerror="this.style.display='none'" />
-        <div class="team-name">{away}</div>
-        <div class="scorers">{scorers_html(row.get("top_away_scorers"))}</div>
-      </div>
-
-    </div>
-    """
-
-
-# --------------------------------------------------
-# Page shell
-# --------------------------------------------------
-def build_page(rows):
-    css = """
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f7fa; padding:30px; }
-    .container { max-width:1000px; margin:auto; }
-    h1 { text-align:center; margin-bottom:10px; color:#2c3e50; font-size:36px; }
-    .subtitle { text-align:center; color:#7f8c8d; margin-bottom:40px; font-size:16px; }
-
-    .gameweek-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px 30px;
-        border-radius: 12px;
-        margin: 30px 0 20px 0;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-    .gameweek-header h2 {
-        margin: 0 0 8px 0;
-        font-size: 28px;
-        font-weight: 600;
-    }
-    .gameweek-date {
-        font-size: 15px;
-        opacity: 0.95;
-        font-weight: 500;
-    }
-    .gameweek-count {
-        font-size: 13px;
-        opacity: 0.85;
-        margin-top: 5px;
-    }
-
-    .match-row {
-        display:flex; justify-content:space-between; align-items:center;
-        background:white; padding:20px; border-radius:12px;
-        box-shadow:0 2px 8px rgba(0,0,0,0.08);
-        margin-bottom:16px;
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .match-row:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-    }
-    .team { width:32%; text-align:center; }
-    .badge { width:64px; height:64px; object-fit: contain; }
-    .team-name { font-size:17px; font-weight:600; margin-top:8px; color:#2c3e50; }
-    .scorers { font-size:13px; margin-top:6px; color:#7f8c8d; }
-    .center { width:25%; text-align:center; }
-    .match-date { font-size:12px; color:#95a5a6; margin-bottom:8px; font-weight:500; }
-    .scoreline { font-size:32px; font-weight:700; color:#2c3e50; letter-spacing: 2px; }
-    .prob { font-size:12px; color:#7f8c8d; margin-top:8px; background:#f8f9fa; padding:6px 10px; border-radius:6px; }
-    .muted { color:#bdc3c7; }
-    .error { color: #e74c3c; padding: 40px; text-align: center; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-    """
-
-    return f"""<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premier League Predictions</title>
-<style>{css}</style>
-</head>
-<body>
-<div class="container">
-<h1>⚽ Premier League Predictions</h1>
-<div class="subtitle">AI-powered match predictions using XGBoost and xG data</div>
-{rows}
-</div>
-</body>
-</html>
-"""
-
-
-# --------------------------------------------------
-# Main
-# --------------------------------------------------
 def group_by_gameweek(df):
     """Group matches by gameweek based on dates."""
     if df.empty:
@@ -203,9 +61,129 @@ def group_by_gameweek(df):
     return gameweeks
 
 
-def build_gameweek_section(gw_num, matches, logos):
+# --------------------------------------------------
+# Match card HTML for UPCOMING matches
+# --------------------------------------------------
+def build_upcoming_match_html(row, logos):
+    home = row["home_team"]
+    away = row["away_team"]
+
+    ph = float(row.get("pred_home_goals", 0.0))
+    pa = float(row.get("pred_away_goals", 0.0))
+
+    prob_home = row.get("prob_home", None)
+    prob_draw = row.get("prob_draw", None)
+    prob_away = row.get("prob_away", None)
+
+    # Format date
+    date_str = ""
+    if "datetime" in row and pd.notna(row["datetime"]):
+        try:
+            date_obj = pd.to_datetime(row["datetime"])
+            date_str = f"<div class='match-date'>{date_obj.strftime('%a, %d %b %Y - %H:%M')}</div>"
+        except:
+            pass
+
+    prob_html = (
+        f"H: {float(prob_home) * 100:.0f}% | D: {float(prob_draw) * 100:.0f}% | A: {float(prob_away) * 100:.0f}%"
+        if all(v is not None and pd.notna(v) for v in [prob_home, prob_draw, prob_away])
+        else "N/A"
+    )
+
+    return f"""
+    <div class="match-row">
+      <div class="team team-left">
+        <img class="badge" src="data:image/svg+xml;base64,{logos.get(home, '')}" onerror="this.style.display='none'" />
+        <div class="team-name">{home}</div>
+      </div>
+
+      <div class="center">
+        {date_str}
+        <div class="scoreline">{ph:.1f} - {pa:.1f}</div>
+        <div class="prob">{prob_html}</div>
+      </div>
+
+      <div class="team team-right">
+        <img class="badge" src="data:image/svg+xml;base64,{logos.get(away, '')}" onerror="this.style.display='none'" />
+        <div class="team-name">{away}</div>
+      </div>
+    </div>
+    """
+
+
+# --------------------------------------------------
+# Match card HTML for HISTORICAL matches
+# --------------------------------------------------
+def build_historical_match_html(row, logos):
+    home = row["home_team"]
+    away = row["away_team"]
+
+    # Actual results
+    ah = float(row.get("home_goals", 0.0))
+    aa = float(row.get("away_goals", 0.0))
+
+    # Predictions
+    ph = float(row.get("pred_home_goals", 0.0))
+    pa = float(row.get("pred_away_goals", 0.0))
+
+    # xG
+    xg_home = float(row.get("home_xg", 0.0))
+    xg_away = float(row.get("away_xg", 0.0))
+
+    # Calculate accuracy
+    error_home = abs(ah - ph)
+    error_away = abs(aa - pa)
+    avg_error = (error_home + error_away) / 2
+
+    # Color code accuracy
+    if avg_error < 0.5:
+        accuracy_class = "accuracy-good"
+        accuracy_text = "Excellent"
+    elif avg_error < 1.0:
+        accuracy_class = "accuracy-ok"
+        accuracy_text = "Good"
+    else:
+        accuracy_class = "accuracy-poor"
+        accuracy_text = "Poor"
+
+    # Format date
+    date_str = ""
+    if "datetime" in row and pd.notna(row["datetime"]):
+        try:
+            date_obj = pd.to_datetime(row["datetime"])
+            date_str = f"<div class='match-date'>{date_obj.strftime('%a, %d %b %Y')}</div>"
+        except:
+            pass
+
+    return f"""
+    <div class="match-row historical">
+      <div class="team team-left">
+        <img class="badge" src="data:image/svg+xml;base64,{logos.get(home, '')}" onerror="this.style.display='none'" />
+        <div class="team-name">{home}</div>
+        <div class="xg-display">xG: {xg_home:.2f}</div>
+      </div>
+
+      <div class="center">
+        {date_str}
+        <div class="actual-score">{ah:.0f} - {aa:.0f}</div>
+        <div class="predicted-score">Predicted: {ph:.1f} - {pa:.1f}</div>
+        <div class="accuracy {accuracy_class}">{accuracy_text} (±{avg_error:.2f})</div>
+      </div>
+
+      <div class="team team-right">
+        <img class="badge" src="data:image/svg+xml;base64,{logos.get(away, '')}" onerror="this.style.display='none'" />
+        <div class="team-name">{away}</div>
+        <div class="xg-display">xG: {xg_away:.2f}</div>
+      </div>
+    </div>
+    """
+
+
+# --------------------------------------------------
+# Section builders
+# --------------------------------------------------
+def build_gameweek_section(gw_num, matches, logos, is_historical=False):
     """Build HTML for a gameweek section."""
-    # Get date range for this gameweek
     first_date = matches[0]["datetime"]
     last_date = matches[-1]["datetime"]
 
@@ -215,92 +193,550 @@ def build_gameweek_section(gw_num, matches, logos):
         date_range = f"{first_date.strftime('%d %b')} - {last_date.strftime('%d %b %Y')}"
 
     header = f"""
-    <div class="gameweek-header">
-        <h2>Gameweek {gw_num}</h2>
+    <div class="gameweek-header {'historical' if is_historical else ''}">
+        <h3>Gameweek {gw_num}</h3>
         <div class="gameweek-date">{date_range}</div>
         <div class="gameweek-count">{len(matches)} matches</div>
     </div>
     """
 
-    matches_html = "\n".join(
-        build_match_html(match, logos) for match in matches
-    )
+    if is_historical:
+        matches_html = "\n".join(
+            build_historical_match_html(match, logos) for match in matches
+        )
+    else:
+        matches_html = "\n".join(
+            build_upcoming_match_html(match, logos) for match in matches
+        )
 
     return header + matches_html
 
 
+def build_section_header(title, subtitle, icon):
+    """Build HTML for a section header."""
+    return f"""
+    <div class="section-header">
+        <h2>{icon} {title}</h2>
+        <p class="section-subtitle">{subtitle}</p>
+    </div>
+    """
+
+
+# --------------------------------------------------
+# Page shell
+# --------------------------------------------------
+def build_page(past_html, upcoming_html, future_html, stats_html, season_display):
+    css = """
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        min-height: 100vh;
+    }
+    .container { max-width: 1200px; margin: auto; }
+
+    /* Tabs */
+    .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        background: white;
+        padding: 10px;
+        border-radius: 15px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .tab {
+        flex: 1;
+        padding: 15px 25px;
+        border: none;
+        background: transparent;
+        color: #7f8c8d;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+    .tab:hover {
+        background: #f8f9fa;
+        color: #2c3e50;
+    }
+    .tab.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Tab content */
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Main header */
+    .main-header {
+        text-align: center;
+        color: white;
+        padding: 40px 20px 20px 20px;
+        margin-bottom: 20px;
+    }
+    .main-header h1 {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    .main-header .subtitle {
+        font-size: 18px;
+        opacity: 0.9;
+        margin-bottom: 15px;
+    }
+    .season-badge {
+        display: inline-block;
+        background: rgba(255,255,255,0.2);
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 10px;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Stats cards */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .stat-value {
+        font-size: 36px;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 5px;
+    }
+    .stat-label {
+        font-size: 14px;
+        color: #7f8c8d;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Section headers */
+    .section-header {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin: 40px 0 20px 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .section-header h2 {
+        font-size: 32px;
+        color: #2c3e50;
+        margin-bottom: 8px;
+    }
+    .section-subtitle {
+        color: #7f8c8d;
+        font-size: 16px;
+    }
+
+    /* Gameweek headers */
+    .gameweek-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 20px 30px;
+        border-radius: 12px;
+        margin: 25px 0 15px 0;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    .gameweek-header.historical {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    .gameweek-header h3 {
+        margin: 0 0 8px 0;
+        font-size: 24px;
+        font-weight: 600;
+    }
+    .gameweek-date {
+        font-size: 15px;
+        opacity: 0.95;
+        font-weight: 500;
+    }
+    .gameweek-count {
+        font-size: 13px;
+        opacity: 0.85;
+        margin-top: 5px;
+    }
+
+    /* Match rows */
+    .match-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 25px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+    .match-row:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+    .match-row.historical {
+        background: #fafbfc;
+    }
+
+    /* Teams */
+    .team {
+        flex: 1;
+        text-align: center;
+        padding: 0 15px;
+    }
+    .badge {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+    .team-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+    .xg-display {
+        font-size: 13px;
+        color: #7f8c8d;
+        font-weight: 500;
+    }
+
+    /* Center section */
+    .center {
+        flex: 0 0 280px;
+        text-align: center;
+        padding: 0 20px;
+    }
+    .match-date {
+        font-size: 13px;
+        color: #95a5a6;
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+
+    /* Scores */
+    .scoreline {
+        font-size: 36px;
+        font-weight: 700;
+        color: #667eea;
+        letter-spacing: 3px;
+        margin: 5px 0;
+    }
+    .actual-score {
+        font-size: 42px;
+        font-weight: 700;
+        color: #2c3e50;
+        letter-spacing: 3px;
+        margin: 5px 0;
+    }
+    .predicted-score {
+        font-size: 14px;
+        color: #7f8c8d;
+        margin: 8px 0;
+    }
+
+    /* Probabilities */
+    .prob {
+        font-size: 13px;
+        color: #7f8c8d;
+        margin-top: 10px;
+        background: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-weight: 500;
+    }
+
+    /* Accuracy indicators */
+    .accuracy {
+        font-size: 12px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        margin-top: 8px;
+        display: inline-block;
+        font-weight: 600;
+    }
+    .accuracy-good {
+        background: #d4edda;
+        color: #155724;
+    }
+    .accuracy-ok {
+        background: #fff3cd;
+        color: #856404;
+    }
+    .accuracy-poor {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .match-row {
+            flex-direction: column;
+            padding: 20px 15px;
+        }
+        .team, .center {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .badge {
+            width: 50px;
+            height: 50px;
+        }
+        .main-header h1 {
+            font-size: 32px;
+        }
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .error {
+        color: #e74c3c;
+        padding: 40px;
+        text-align: center;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    """
+
+    return f"""<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premier League Predictions Dashboard</title>
+<style>{css}</style>
+</head>
+<body>
+<div class="container">
+
+<div class="main-header">
+<h1>⚽ Premier League Predictions</h1>
+<div class="subtitle">AI-powered match predictions using XGBoost and xG data</div>
+<div class="season-badge">Season {season_display}</div>
+</div>
+
+{stats_html}
+
+<div class="tabs">
+    <button class="tab {'active' if past_html else ''}" onclick="switchTab('past')">Past Performance</button>
+    <button class="tab {'active' if not past_html else ''}" onclick="switchTab('future')">Upcoming Fixtures</button>
+</div>
+
+<div id="past-content" class="tab-content {'active' if past_html else ''}">
+{past_html if past_html else '<div class="error">No historical data available. Run the pipeline to generate predictions for current season matches.</div>'}
+</div>
+
+<div id="future-content" class="tab-content {'active' if not past_html else ''}">
+{upcoming_html}
+{future_html}
+</div>
+
+<script>
+function switchTab(tab) {{
+    // Update tab buttons
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(t => t.classList.remove('active'));
+
+    // Update content
+    const contents = document.querySelectorAll('.tab-content');
+    contents.forEach(c => c.classList.remove('active'));
+
+    if (tab === 'past') {{
+        tabs[0].classList.add('active');
+        document.getElementById('past-content').classList.add('active');
+    }} else {{
+        tabs[1].classList.add('active');
+        document.getElementById('future-content').classList.add('active');
+    }}
+}}
+</script>
+
+</div>
+</body>
+</html>
+"""
+
+
+# --------------------------------------------------
+# Main
+# --------------------------------------------------
 def main():
-    # Check if predictions file exists
-    if not PRED_CSV.exists():
-        print(f"ERROR: Predictions file not found at {PRED_CSV}")
-        print("Please run predict_scores.py first to generate predictions.")
-        return
+    print("=" * 80)
+    print("ENHANCED DASHBOARD GENERATOR")
+    print("=" * 80)
 
-    # Read predictions
-    df = pd.read_csv(PRED_CSV, parse_dates=["datetime"])
-    print(f"Loaded {len(df)} predictions from {PRED_CSV}")
+    # Determine current season
+    from datetime import datetime
+    now = datetime.now()
+    if now.month >= 8:
+        season_start = now.year
+    else:
+        season_start = now.year - 1
+    season_end = season_start + 1
+    season_display = f"{season_start}/{str(season_end)[-2:]}"
 
-    # Debug: print columns and first few rows
-    print("\nColumns in predictions file:", df.columns.tolist())
-    print("\nFirst few rows:")
-    print(df.head())
+    # Load data
+    upcoming_df = pd.read_csv(PRED_UPCOMING, parse_dates=["datetime"]) if PRED_UPCOMING.exists() else pd.DataFrame()
+    historical_df = pd.read_csv(PRED_HISTORICAL,
+                                parse_dates=["datetime"]) if PRED_HISTORICAL.exists() else pd.DataFrame()
 
-    # Check if dataframe is empty
-    if df.empty:
-        print("ERROR: Predictions dataframe is empty!")
-        OUT_HTML.parent.mkdir(exist_ok=True, parents=True)
-        OUT_HTML.write_text(
-            build_page("<div class='error'>No predictions available. Please check your data pipeline.</div>"),
-            encoding="utf-8")
-        return
+    print(f"\nLoaded {len(upcoming_df)} upcoming predictions")
+    print(f"Loaded {len(historical_df)} historical predictions")
 
-    # Load club logos
-    clubs = set(df["home_team"]) | set(df["away_team"])
+    # Load logos
+    clubs = set()
+    if not upcoming_df.empty:
+        clubs.update(upcoming_df["home_team"])
+        clubs.update(upcoming_df["away_team"])
+    if not historical_df.empty:
+        clubs.update(historical_df["home_team"])
+        clubs.update(historical_df["away_team"])
+
     print(f"\nLoading logos for {len(clubs)} clubs...")
     logos = {}
     for c in clubs:
         logo_path = LOGO_DIR / f"{c}.svg"
         if logo_path.exists():
             logos[c] = svg_to_base64(logo_path)
-            print(f"  ✓ {c}")
         else:
             logos[c] = ""
-            print(f"  ✗ {c} (logo not found)")
 
-    # Group by gameweek
-    print("\nGrouping matches by gameweek...")
-    gameweeks = group_by_gameweek(df)
-    print(f"Found {len(gameweeks)} gameweek(s)")
+    # Build stats summary
+    stats_html = ""
+    if not historical_df.empty:
+        total_matches = len(historical_df)
+        avg_mae = (
+                          abs(historical_df["home_goals"] - historical_df["pred_home_goals"]).mean() +
+                          abs(historical_df["away_goals"] - historical_df["pred_away_goals"]).mean()
+                  ) / 2
 
-    # Generate HTML for each gameweek
-    print("\nGenerating match cards by gameweek...")
-    gameweek_sections = []
+        # Calculate accuracy percentage (within 1 goal)
+        accurate_predictions = (
+                (abs(historical_df["home_goals"] - historical_df["pred_home_goals"]) <= 1.0) &
+                (abs(historical_df["away_goals"] - historical_df["pred_away_goals"]) <= 1.0)
+        ).sum()
+        accuracy_pct = (accurate_predictions / total_matches * 100) if total_matches > 0 else 0
 
-    for gw_num in sorted(gameweeks.keys()):
-        matches = gameweeks[gw_num]
-        print(f"\n  Gameweek {gw_num}: {len(matches)} matches")
+        upcoming_count = len(upcoming_df)
 
-        try:
-            gw_html = build_gameweek_section(gw_num, matches, logos)
-            gameweek_sections.append(gw_html)
+        stats_html = f"""
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{total_matches}</div>
+                <div class="stat-label">Season Matches</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">±{avg_mae:.2f}</div>
+                <div class="stat-label">Avg Prediction Error</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{accuracy_pct:.0f}%</div>
+                <div class="stat-label">Accuracy (±1 goal)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{upcoming_count}</div>
+                <div class="stat-label">Upcoming Fixtures</div>
+            </div>
+        </div>
+        """
+    elif not upcoming_df.empty:
+        # Only show upcoming fixtures count if no historical data
+        upcoming_count = len(upcoming_df)
+        stats_html = f"""
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{upcoming_count}</div>
+                <div class="stat-label">Upcoming Fixtures</div>
+            </div>
+        </div>
+        """
 
-            for match in matches:
-                print(f"    ✓ {match['home_team']} vs {match['away_team']}")
-        except Exception as e:
-            print(f"    ✗ Error processing gameweek {gw_num}: {e}")
+    # Build past performance section
+    past_html = ""
+    if not historical_df.empty:
+        past_html = build_section_header(
+            "Season Performance Analysis",
+            f"{season_display} season - Model predictions vs actual results",
+            "📊"
+        )
 
-    rows_html = "\n".join(gameweek_sections)
+        gameweeks = group_by_gameweek(historical_df)
+        for gw_num in sorted(gameweeks.keys(), reverse=True):  # Most recent first
+            past_html += build_gameweek_section(gw_num, gameweeks[gw_num], logos, is_historical=True)
 
-    if not rows_html.strip():
-        print("WARNING: No match HTML was generated!")
-        rows_html = "<div class='error'>Error generating match predictions. Check console for details.</div>"
+    # Build upcoming gameweek section
+    upcoming_html = ""
+    future_html = ""
+
+    if not upcoming_df.empty:
+        gameweeks = group_by_gameweek(upcoming_df)
+
+        if gameweeks:
+            # Next gameweek
+            next_gw = min(gameweeks.keys())
+            upcoming_html = build_section_header(
+                "Next Gameweek",
+                f"Gameweek {next_gw} - Upcoming matches with win probabilities",
+                "🔮"
+            )
+            upcoming_html += build_gameweek_section(next_gw, gameweeks[next_gw], logos)
+
+            # Future gameweeks
+            if len(gameweeks) > 1:
+                future_html = build_section_header(
+                    "Future Gameweeks",
+                    f"{len(gameweeks) - 1} additional gameweeks predicted",
+                    "📅"
+                )
+
+                for gw_num in sorted(gameweeks.keys())[1:]:  # Skip first (already shown)
+                    future_html += build_gameweek_section(gw_num, gameweeks[gw_num], logos)
+    else:
+        upcoming_html = '<div class="error">No upcoming fixtures available. The season may have ended or there is a break in fixtures.</div>'
+
+    # Generate page with season info
+    html_content = build_page(past_html, upcoming_html, future_html, stats_html, season_display)
 
     # Write output
     OUT_HTML.parent.mkdir(exist_ok=True, parents=True)
-    OUT_HTML.write_text(build_page(rows_html), encoding="utf-8")
+    OUT_HTML.write_text(html_content, encoding="utf-8")
 
-    print(f"\n✔ Dashboard created: {OUT_HTML.resolve()}")
-    print(f"Generated {len(gameweeks)} gameweek sections with {len(df)} total matches")
+    print(f"\n✅ Enhanced dashboard created: {OUT_HTML.resolve()}")
+    print(f"\n📊 Dashboard sections:")
+    print(f"   • Season: {season_display}")
+    print(f"   • Past Performance: {len(historical_df)} matches")
+    print(f"   • Upcoming Gameweek: {len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
+    print(
+        f"   • Future Predictions: {len(upcoming_df) - len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
 
 
 if __name__ == "__main__":
