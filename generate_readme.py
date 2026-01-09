@@ -486,15 +486,8 @@ The interactive HTML dashboard includes:
 
 ---
 
-## License
-
-MIT License - See LICENSE file for details
-
----
-
 *Last updated: {now}*  
-*Generated automatically by the prediction pipeline*  
-*For questions or issues, please open a GitHub issue*
+*Generated automatically by the prediction pipeline*
 """
 
     return content
