@@ -27,22 +27,29 @@ RANDOM_STATE = 42
 
 # Determine current season based on current date
 # Premier League season runs from August to May
-# e.g., 2024-25 season = 2024 (year when season starts)
 def get_current_season():
     """
     Determine current Premier League season based on date.
+    Returns the 4-digit season code used by FBref (e.g., 2526 for 2025/26).
+
     Season starts in August, so:
-    - Jan-July: previous year's season (e.g., Jan 2025 = 2024 season)
-    - Aug-Dec: current year's season (e.g., Aug 2024 = 2024 season)
+    - Aug-Dec: current year's season (e.g., Aug 2025 = 2526)
+    - Jan-Jul: previous year's season (e.g., Jan 2026 = 2526)
     """
     now = datetime.now()
-    if now.month >= 8:  # August or later
-        return now.year
-    else:  # January to July
-        return now.year - 1
+    if now.month >= 8:  # August to December
+        season_start = now.year
+    else:  # January to July - still the previous year's season
+        season_start = now.year - 1
+
+    season_end = season_start + 1
+    # Format as 4-digit code: 2526 for 2025/26
+    season_code = int(f"{str(season_start)[-2:]}{str(season_end)[-2:]}")
+
+    return season_code, f"{season_start}/{str(season_end)[-2:]}"
 
 
-CURRENT_SEASON = get_current_season()
+CURRENT_SEASON, SEASON_DISPLAY = get_current_season()
 
 FEATURES = [
     "home_xg",
@@ -146,9 +153,23 @@ def calculate_win_probabilities(pred_home, pred_away, margin=0.5):
 
 def get_current_season_matches(df):
     """Filter for current season matches."""
-    current_season = df[df["season"] == CURRENT_SEASON].copy()
-    print(f"\nCurrent season ({CURRENT_SEASON}) has {len(current_season)} matches")
-    return current_season
+    if df.empty:
+        return df
+
+    # Check if season column exists
+    if "season" not in df.columns:
+        print(f"\n⚠️  Warning: 'season' column not found in data")
+        print(f"   Available columns: {list(df.columns)}")
+        return pd.DataFrame()
+
+    current_season_df = df[df["season"] == CURRENT_SEASON].copy()
+    print(f"\nCurrent season ({CURRENT_SEASON}) has {len(current_season_df)} matches")
+
+    if current_season_df.empty:
+        print(f"⚠️  No matches found for season {CURRENT_SEASON}")
+        print(f"   Available seasons in data: {sorted(df['season'].unique())}")
+
+    return current_season_df
 
 
 def main():
@@ -157,7 +178,8 @@ def main():
     print("=" * 80)
 
     # Show current season
-    print(f"\n🏆 Current season: {CURRENT_SEASON}/{str(CURRENT_SEASON + 1)[-2:]}")
+    print(f"\n🏆 Current season: {SEASON_DISPLAY}")
+    print(f"   Season code: {CURRENT_SEASON}")
     print(f"   (Determined from current date: {datetime.now().strftime('%Y-%m-%d')})")
 
     # Load data
