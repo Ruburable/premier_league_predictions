@@ -33,14 +33,17 @@ def svg_to_base64(path: Path):
         return ""
 
 
-def group_by_gameweek(df):
-    """Group matches by gameweek based on dates."""
+def calculate_gameweek_number(df):
+    """
+    Calculate actual gameweek numbers from the start of the season.
+    Matches within 4 days are in the same gameweek.
+    """
     if df.empty:
-        return {}
+        return df
 
     df = df.sort_values("datetime").reset_index(drop=True)
+    df["gameweek"] = 0
 
-    gameweeks = {}
     current_gw = 1
     current_gw_start = df.iloc[0]["datetime"]
 
@@ -49,14 +52,26 @@ def group_by_gameweek(df):
 
         # If more than 4 days from current gameweek start, start new gameweek
         days_diff = (match_date - current_gw_start).total_seconds() / 86400
-        if days_diff > 4:
+        if days_diff > 4 and idx > 0:
             current_gw += 1
             current_gw_start = match_date
 
-        if current_gw not in gameweeks:
-            gameweeks[current_gw] = []
+        df.at[idx, "gameweek"] = current_gw
 
-        gameweeks[current_gw].append(row)
+    return df
+
+
+def group_by_gameweek(df):
+    """Group matches by gameweek with actual numbers."""
+    if df.empty:
+        return {}
+
+    df = calculate_gameweek_number(df)
+
+    gameweeks = {}
+    for gw_num in sorted(df["gameweek"].unique()):
+        matches = df[df["gameweek"] == gw_num].to_dict('records')
+        gameweeks[int(gw_num)] = matches
 
     return gameweeks
 
