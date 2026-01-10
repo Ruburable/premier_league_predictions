@@ -19,6 +19,7 @@ import sys
 # ------------------------------------------------------------------
 PREDICTIONS_UPCOMING = Path("output/predictions_upcoming.csv")
 PREDICTIONS_HISTORICAL = Path("output/predictions_historical.csv")
+PROJECTED_TABLE = Path("output/projected_table.csv")
 README_FILE = Path("README.md")
 
 
@@ -191,7 +192,7 @@ open output/predictions_dashboard.html
 """
 
 
-def generate_full_readme(upcoming_df: pd.DataFrame, historical_df: pd.DataFrame) -> str:
+def generate_full_readme(upcoming_df: pd.DataFrame, historical_df: pd.DataFrame, table_df: pd.DataFrame) -> str:
     """Generate complete README with predictions and statistics."""
     season_display = get_current_season()
     now = datetime.now().strftime("%Y-%m-%d %H:%M UTC")
@@ -210,6 +211,31 @@ Machine learning system for predicting Premier League match outcomes using XGBoo
 
 **Season:** {season_display}
 """
+
+    # Projected table
+    if not table_df.empty:
+        content += f"""
+---
+
+## Projected Final Table
+
+Based on actual results + most likely predicted outcomes:
+
+| Pos | Team | P | W | D | L | GF | GA | GD | Pts |
+|-----|------|---|---|---|---|----|----|----|----|
+"""
+        for _, row in table_df.head(20).iterrows():  # Show all 20 teams
+            pos_marker = ""
+            if row['Pos'] <= 4:
+                pos_marker = "🟢 "
+            elif row['Pos'] == 5:
+                pos_marker = "🟡 "
+            elif row['Pos'] >= 18:
+                pos_marker = "🔴 "
+
+            content += f"| {pos_marker}{row['Pos']} | {row['Team']} | {row['P']} | {row['W']} | {row['D']} | {row['L']} | {row['GF']} | {row['GA']} | {row['GD']:+d} | **{row['Pts']}** |\n"
+
+        content += "\n**Legend:** 🟢 Champions League | 🟡 Europa League | 🔴 Relegation\n"
 
     # Performance metrics
     if metrics:
@@ -517,11 +543,17 @@ def main():
         historical_df = pd.read_csv(PREDICTIONS_HISTORICAL,
                                     parse_dates=["datetime"]) if has_historical else pd.DataFrame()
 
+        # Load projected table if available
+        table_df = pd.DataFrame()
+        if PROJECTED_TABLE.exists():
+            table_df = pd.read_csv(PROJECTED_TABLE)
+            print(f"  - Projected table: {len(table_df)} teams")
+
         print(f"  - Upcoming predictions: {len(upcoming_df)}")
         print(f"  - Historical predictions: {len(historical_df)}")
 
         # Generate README
-        content = generate_full_readme(upcoming_df, historical_df)
+        content = generate_full_readme(upcoming_df, historical_df, table_df)
 
     # Write README
     README_FILE.write_text(content, encoding="utf-8")
