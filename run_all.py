@@ -26,7 +26,7 @@ import argparse
 # ------------------------------------------------------------------
 SCRIPTS = {
     "update_data": "update_data.py",
-    "predict": "predict_scores.py",  # Changed to enhanced version
+    "predict": "predict_scores.py",
     "visualize": "visualise.py",
     "readme": "generate_readme.py"
 }
