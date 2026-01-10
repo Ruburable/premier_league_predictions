@@ -115,28 +115,35 @@ def run_script(script_path, description):
 # ------------------------------------------------------------------
 def step_update_data():
     """Step 1: Update match data."""
-    print_step(1, 4, "Updating Match Data")
+    print_step(1, 5, "Updating Match Data")
     print("Downloading historical matches and identifying upcoming fixtures...\n")
     return run_script(SCRIPTS["update_data"], "Data update")
 
 
 def step_predict():
     """Step 2: Predict match scores."""
-    print_step(2, 4, "Predicting Match Scores")
+    print_step(2, 5, "Predicting Match Scores")
     print("Training model and generating predictions...\n")
     return run_script(SCRIPTS["predict"], "Score prediction")
 
 
+def step_table():
+    """Step 3: Project final table."""
+    print_step(3, 5, "Projecting Final Table")
+    print("Calculating projected league standings...\n")
+    return run_script(SCRIPTS["table"], "Table projection")
+
+
 def step_visualize():
-    """Step 3: Generate visualization."""
-    print_step(3, 4, "Generating Dashboard")
+    """Step 4: Generate visualization."""
+    print_step(4, 5, "Generating Dashboard")
     print("Creating HTML visualization...\n")
     return run_script(SCRIPTS["visualize"], "Visualization")
 
 
 def step_readme():
-    """Step 4: Generate README."""
-    print_step(4, 4, "Generating README")
+    """Step 5: Generate README."""
+    print_step(5, 5, "Generating README")
     print("Creating README with predictions...\n")
     return run_script(SCRIPTS["readme"], "README generation")
 
@@ -192,6 +199,10 @@ def run_pipeline(skip_logos=False):
     if Path("README.md").exists():
         print(f"{Colors.BOLD}📖 README updated with predictions:{Colors.END}")
         print(f"   {Colors.CYAN}README.md{Colors.END}\n")
+
+    if Path("output/projected_table.csv").exists():
+        print(f"{Colors.BOLD}📊 Projected table:{Colors.END}")
+        print(f"   {Colors.CYAN}output/projected_table.csv{Colors.END}\n")
 
     print(f"{Colors.BOLD}📁 Output files:{Colors.END}")
     output_dir = Path("output")

@@ -6,6 +6,37 @@ Machine learning system for predicting Premier League match outcomes using XGBoo
 
 ---
 
+## Projected Final Table
+
+Based on actual results + most likely predicted outcomes:
+
+| Pos | Team | P | W | D | L | GF | GA | GD | Pts |
+|-----|------|---|---|---|---|----|----|----|----|
+| 🟢 1 | Manchester City | 38 | 19 | 15 | 4 | 76 | 44 | +32 | **72** |
+| 🟢 2 | Arsenal | 38 | 18 | 18 | 2 | 73 | 44 | +29 | **72** |
+| 🟢 3 | Brentford | 38 | 18 | 11 | 9 | 71 | 56 | +15 | **65** |
+| 🟢 4 | Aston Villa | 38 | 16 | 16 | 6 | 64 | 54 | +10 | **64** |
+| 🟡 5 | Newcastle Utd | 38 | 15 | 16 | 7 | 65 | 54 | +11 | **61** |
+| 6 | Manchester Utd | 38 | 13 | 20 | 5 | 68 | 59 | +9 | **59** |
+| 7 | Liverpool | 38 | 14 | 17 | 7 | 59 | 52 | +7 | **59** |
+| 8 | Chelsea | 38 | 11 | 19 | 8 | 67 | 56 | +11 | **52** |
+| 9 | Fulham | 38 | 12 | 13 | 13 | 57 | 59 | -2 | **49** |
+| 10 | Tottenham | 38 | 9 | 20 | 9 | 53 | 49 | +4 | **47** |
+| 11 | Brighton | 38 | 8 | 22 | 8 | 61 | 59 | +2 | **46** |
+| 12 | Sunderland | 38 | 8 | 22 | 8 | 45 | 48 | -3 | **46** |
+| 13 | Bournemouth | 38 | 8 | 22 | 8 | 68 | 73 | -5 | **46** |
+| 14 | Crystal Palace | 38 | 9 | 18 | 11 | 51 | 54 | -3 | **45** |
+| 15 | Leeds United | 38 | 8 | 21 | 9 | 62 | 67 | -5 | **45** |
+| 16 | Everton | 38 | 8 | 12 | 18 | 43 | 55 | -12 | **36** |
+| 17 | Nott'ham Forest | 38 | 7 | 15 | 16 | 45 | 61 | -16 | **36** |
+| 🔴 18 | Wolves | 38 | 3 | 18 | 17 | 44 | 69 | -25 | **27** |
+| 🔴 19 | West Ham | 38 | 3 | 15 | 20 | 47 | 76 | -29 | **24** |
+| 🔴 20 | Burnley | 38 | 3 | 10 | 25 | 40 | 70 | -30 | **19** |
+
+**Legend:** 🟢 Champions League | 🟡 Europa League | 🔴 Relegation
+
+---
+
 ## Model Performance
 
 Current season (2025/26) statistics:
