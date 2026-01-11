@@ -10,8 +10,6 @@ Creates enhanced HTML dashboard with:
 
 import pandas as pd
 from pathlib import Path
-import base64
-import json
 from datetime import datetime, timedelta
 
 PRED_UPCOMING = Path("output/predictions_upcoming.csv")
@@ -77,6 +75,16 @@ def group_by_gameweek(df):
     return gameweeks
 
 
+def get_logo_path(team_name):
+    """Get relative path to team logo."""
+    # Check if logo exists
+    logo_path = LOGO_DIR / f"{team_name}.svg"
+    if logo_path.exists():
+        return f"logos/{team_name}.svg"
+    else:
+        return ""
+
+
 # --------------------------------------------------
 # Match card HTML for UPCOMING matches
 # --------------------------------------------------
@@ -106,10 +114,14 @@ def build_upcoming_match_html(row, logos):
         else "N/A"
     )
 
+    # Use relative paths instead of base64
+    home_logo = logos.get(home, "")
+    away_logo = logos.get(away, "")
+
     return f"""
     <div class="match-row">
       <div class="team team-left">
-        <img class="badge" src="data:image/svg+xml;base64,{logos.get(home, '')}" onerror="this.style.display='none'" />
+        <img class="badge" src="{home_logo}" onerror="this.style.display='none'" />
         <div class="team-name">{home}</div>
       </div>
 
@@ -120,7 +132,7 @@ def build_upcoming_match_html(row, logos):
       </div>
 
       <div class="team team-right">
-        <img class="badge" src="data:image/svg+xml;base64,{logos.get(away, '')}" onerror="this.style.display='none'" />
+        <img class="badge" src="{away_logo}" onerror="this.style.display='none'" />
         <div class="team-name">{away}</div>
       </div>
     </div>
@@ -171,10 +183,14 @@ def build_historical_match_html(row, logos):
         except:
             pass
 
+    # Use relative paths instead of base64
+    home_logo = logos.get(home, "")
+    away_logo = logos.get(away, "")
+
     return f"""
     <div class="match-row historical">
       <div class="team team-left">
-        <img class="badge" src="data:image/svg+xml;base64,{logos.get(home, '')}" onerror="this.style.display='none'" />
+        <img class="badge" src="{home_logo}" onerror="this.style.display='none'" />
         <div class="team-name">{home}</div>
         <div class="xg-display">xG: {xg_home:.2f}</div>
       </div>
@@ -187,7 +203,7 @@ def build_historical_match_html(row, logos):
       </div>
 
       <div class="team team-right">
-        <img class="badge" src="data:image/svg+xml;base64,{logos.get(away, '')}" onerror="this.style.display='none'" />
+        <img class="badge" src="{away_logo}" onerror="this.style.display='none'" />
         <div class="team-name">{away}</div>
         <div class="xg-display">xG: {xg_away:.2f}</div>
       </div>
@@ -802,7 +818,7 @@ def main():
     print(f"Loaded {len(historical_df)} historical predictions")
     print(f"Loaded projected table: {len(table_df)} teams" if not table_df.empty else "No projected table found")
 
-    # Load logos
+    # Get unique clubs and create logo path mapping
     clubs = set()
     if not upcoming_df.empty:
         clubs.update(upcoming_df["home_team"])
@@ -811,14 +827,16 @@ def main():
         clubs.update(historical_df["home_team"])
         clubs.update(historical_df["away_team"])
 
-    print(f"\nLoading logos for {len(clubs)} clubs...")
+    print(f"\nMapping logos for {len(clubs)} clubs...")
     logos = {}
     for c in clubs:
-        logo_path = LOGO_DIR / f"{c}.svg"
-        if logo_path.exists():
-            logos[c] = svg_to_base64(logo_path)
+        logo_path = get_logo_path(c)
+        if logo_path:
+            logos[c] = logo_path
+            print(f"  Found: {c}")
         else:
             logos[c] = ""
+            print(f"  Missing: {c}")
 
     # Build stats summary
     stats_html = ""
@@ -923,7 +941,15 @@ def main():
     OUT_HTML.parent.mkdir(exist_ok=True, parents=True)
     OUT_HTML.write_text(html_content, encoding="utf-8")
 
-    print(f"\n Enhanced dashboard created: {OUT_HTML.resolve()}")
+    # Get file size
+    file_size = OUT_HTML.stat().st_size / 1024  # KB
+    if file_size > 1024:
+        size_display = f"{file_size / 1024:.1f} MB"
+    else:
+        size_display = f"{file_size:.1f} KB"
+
+    print(f"\n✅ Enhanced dashboard created: {OUT_HTML.resolve()}")
+    print(f"   File size: {size_display}")
     print(f"\n    Dashboard sections:")
     print(f"      Season: {season_display}")
     print(f"      Past Performance: {len(historical_df)} matches")
@@ -932,6 +958,10 @@ def main():
         f"      Future Predictions: {len(upcoming_df) - len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
     print(
         f"      Projected Table: {len(table_df)} teams" if not table_df.empty else "      Projected Table: Not available")
+
+    print(f"\n💡 Note: Keep the 'logos' folder in the same directory as the HTML file")
+    print(f"   HTML location: output/predictions_dashboard.html")
+    print(f"   Logos location: output/logos/")
 
 
 if __name__ == "__main__":
