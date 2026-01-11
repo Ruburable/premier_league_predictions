@@ -12,11 +12,11 @@ Based on actual results + most likely predicted outcomes:
 
 | Pos | Team | P | W | D | L | GF | GA | GD | Pts |
 |-----|------|---|---|---|---|----|----|----|----|
-| 🟢 1 | Manchester City | 38 | 19 | 15 | 4 | 76 | 44 | +32 | **72** |
-| 🟢 2 | Arsenal | 38 | 18 | 18 | 2 | 73 | 44 | +29 | **72** |
-| 🟢 3 | Brentford | 38 | 18 | 11 | 9 | 71 | 56 | +15 | **65** |
-| 🟢 4 | Aston Villa | 38 | 16 | 16 | 6 | 64 | 54 | +10 | **64** |
-| 🟡 5 | Newcastle Utd | 38 | 15 | 16 | 7 | 65 | 54 | +11 | **61** |
+| [CL] 1 | Manchester City | 38 | 19 | 15 | 4 | 76 | 44 | +32 | **72** |
+| [CL] 2 | Arsenal | 38 | 18 | 18 | 2 | 73 | 44 | +29 | **72** |
+| [CL] 3 | Brentford | 38 | 18 | 11 | 9 | 71 | 56 | +15 | **65** |
+| [CL] 4 | Aston Villa | 38 | 16 | 16 | 6 | 64 | 54 | +10 | **64** |
+| [EL] 5 | Newcastle Utd | 38 | 15 | 16 | 7 | 65 | 54 | +11 | **61** |
 | 6 | Manchester Utd | 38 | 13 | 20 | 5 | 68 | 59 | +9 | **59** |
 | 7 | Liverpool | 38 | 14 | 17 | 7 | 59 | 52 | +7 | **59** |
 | 8 | Chelsea | 38 | 11 | 19 | 8 | 67 | 56 | +11 | **52** |
@@ -29,11 +29,11 @@ Based on actual results + most likely predicted outcomes:
 | 15 | Leeds United | 38 | 8 | 21 | 9 | 62 | 67 | -5 | **45** |
 | 16 | Everton | 38 | 8 | 12 | 18 | 43 | 55 | -12 | **36** |
 | 17 | Nott'ham Forest | 38 | 7 | 15 | 16 | 45 | 61 | -16 | **36** |
-| 🔴 18 | Wolves | 38 | 3 | 18 | 17 | 44 | 69 | -25 | **27** |
-| 🔴 19 | West Ham | 38 | 3 | 15 | 20 | 47 | 76 | -29 | **24** |
-| 🔴 20 | Burnley | 38 | 3 | 10 | 25 | 40 | 70 | -30 | **19** |
+| [R] 18 | Wolves | 38 | 3 | 18 | 17 | 44 | 69 | -25 | **27** |
+| [R] 19 | West Ham | 38 | 3 | 15 | 20 | 47 | 76 | -29 | **24** |
+| [R] 20 | Burnley | 38 | 3 | 10 | 25 | 40 | 70 | -30 | **19** |
 
-**Legend:** 🟢 Champions League | 🟡 Europa League | 🔴 Relegation
+**Legend:** [CL] Champions League | [EL] Europa League | [R] Relegation
 
 ---
 
@@ -54,7 +54,7 @@ Current season (2025/26) statistics:
 
 ## Next Gameweek Predictions
 
-**Gameweek 1** (10 matches)
+**Gameweek 1** (30 matches)
 
 | Home | Prediction | Away | Win Probability |
 |------|------------|------|----------------|
@@ -69,6 +69,8 @@ Current season (2025/26) statistics:
 | Wolves | 1.4 - 1.7 | Newcastle Utd | Draw 35% |
 | Brighton | 1.9 - 1.6 | Bournemouth | Draw 35% |
 
+*... and 20 more fixtures*
+
 ---
 
 ## Upcoming Fixtures Summary
@@ -77,23 +79,19 @@ Total fixtures predicted: **170**
 
 | Gameweek | Matches | Date Range |
 |----------|---------|------------|
-| 1 | 10 | 17 Jan - 19 Jan |
-| 2 | 10 | 24 Jan - 26 Jan |
-| 3 | 10 | 31 Jan - 02 Feb |
-| 4 | 14 | 06 Feb - 10 Feb |
-| 5 | 6 | 11 Feb - 12 Feb |
-| 6 | 10 | 21 Feb - 23 Feb |
-| 7 | 10 | 27 Feb - 01 Mar |
-| 8 | 10 | 04 Mar - 04 Mar |
-| 9 | 10 | 14 Mar - 14 Mar |
-| 10 | 10 | 21 Mar - 21 Mar |
-| 11 | 10 | 11 Apr - 11 Apr |
-| 12 | 10 | 18 Apr - 18 Apr |
-| 13 | 10 | 25 Apr - 25 Apr |
-| 14 | 10 | 02 May - 02 May |
-| 15 | 10 | 09 May - 09 May |
-| 16 | 10 | 17 May - 17 May |
-| 17 | 10 | 24 May - 24 May |
+| 1 | 30 | 17 Jan - 02 Feb |
+| 2 | 30 | 21 Feb - 04 Mar |
+| 3 | 10 | 14 Mar - 14 Mar |
+| 4 | 10 | 21 Mar - 21 Mar |
+| 5 | 10 | 11 Apr - 11 Apr |
+| 6 | 10 | 18 Apr - 18 Apr |
+| 7 | 10 | 25 Apr - 25 Apr |
+| 8 | 10 | 02 May - 02 May |
+| 9 | 10 | 09 May - 09 May |
+| 10 | 10 | 17 May - 17 May |
+| 11 | 10 | 24 May - 24 May |
+| 25 | 10 | 06 Feb - 08 Feb |
+| 26 | 10 | 10 Feb - 12 Feb |
 
 ---
 

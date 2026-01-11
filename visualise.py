@@ -35,25 +35,58 @@ def svg_to_base64(path: Path):
 def calculate_gameweek_number(df):
     """
     Calculate actual gameweek numbers from the start of the season.
-    Matches within 4 days are in the same gameweek.
+    Groups consecutive matches that are close together (within 5 days),
+    then creates new gameweek when there's a gap of 5+ days.
+
+    Manual overrides for specific date ranges.
     """
     if df.empty:
         return df
 
     df = df.sort_values("datetime").reset_index(drop=True)
-    df["gameweek"] = 0
+    df["gameweek"] = 1
 
+    # Manual gameweek definitions (override automatic detection)
+    manual_gameweeks = {
+        25: ("2026-02-06", "2026-02-08"),  # GW25: 6-8 Feb
+        26: ("2026-02-10", "2026-02-12"),  # GW26: 10-12 Feb
+    }
+
+    # First pass: apply manual overrides
+    for gw_num, (start_date, end_date) in manual_gameweeks.items():
+        start = pd.to_datetime(start_date, utc=True)
+        end = pd.to_datetime(end_date, utc=True) + pd.Timedelta(days=1)  # Include end date
+        mask = (df["datetime"] >= start) & (df["datetime"] < end)
+        df.loc[mask, "gameweek"] = gw_num
+
+    # Second pass: automatic detection for non-manual gameweeks
     current_gw = 1
-    current_gw_start = df.iloc[0]["datetime"]
+    manually_assigned = df[df["gameweek"] > 1].index
 
-    for idx, row in df.iterrows():
-        match_date = row["datetime"]
+    for idx in range(len(df)):
+        # Skip if already manually assigned
+        if idx in manually_assigned:
+            continue
 
-        # If more than 4 days from current gameweek start, start new gameweek
-        days_diff = (match_date - current_gw_start).total_seconds() / 86400
-        if days_diff > 4 and idx > 0:
-            current_gw += 1
-            current_gw_start = match_date
+        if idx == 0:
+            df.at[idx, "gameweek"] = current_gw
+            continue
+
+        # Find previous non-manual match
+        prev_idx = idx - 1
+        while prev_idx in manually_assigned and prev_idx >= 0:
+            prev_idx -= 1
+
+        if prev_idx >= 0:
+            prev_date = df.iloc[prev_idx]["datetime"]
+            curr_date = df.iloc[idx]["datetime"]
+
+            # Calculate days between matches
+            days_gap = (curr_date - prev_date).total_seconds() / 86400
+
+            # If gap is more than 5 days, start new gameweek
+            if days_gap > 5:
+                current_gw += 1
 
         df.at[idx, "gameweek"] = current_gw
 

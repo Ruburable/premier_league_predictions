@@ -37,28 +37,73 @@ def get_current_season():
     return f"{season_start}/{str(season_end)[-2:]}"
 
 
+def calculate_gameweek_number(df):
+    """
+    Calculate gameweek numbers for matches.
+    Groups consecutive matches that are close together (within 5 days).
+
+    Manual overrides for specific date ranges.
+    """
+    if df.empty:
+        return df
+
+    df = df.sort_values("datetime").reset_index(drop=True)
+    df["gameweek"] = 1
+
+    # Manual gameweek definitions (override automatic detection)
+    manual_gameweeks = {
+        25: ("2026-02-06", "2026-02-08"),  # GW25: 6-8 Feb
+        26: ("2026-02-10", "2026-02-12"),  # GW26: 10-12 Feb
+    }
+
+    # First pass: apply manual overrides
+    for gw_num, (start_date, end_date) in manual_gameweeks.items():
+        start = pd.to_datetime(start_date, utc=True)
+        end = pd.to_datetime(end_date, utc=True) + pd.Timedelta(days=1)
+        mask = (df["datetime"] >= start) & (df["datetime"] < end)
+        df.loc[mask, "gameweek"] = gw_num
+
+    # Second pass: automatic detection for non-manual gameweeks
+    current_gw = 1
+    manually_assigned = df[df["gameweek"] > 1].index
+
+    for idx in range(len(df)):
+        if idx in manually_assigned:
+            continue
+
+        if idx == 0:
+            df.at[idx, "gameweek"] = current_gw
+            continue
+
+        prev_idx = idx - 1
+        while prev_idx in manually_assigned and prev_idx >= 0:
+            prev_idx -= 1
+
+        if prev_idx >= 0:
+            prev_date = df.iloc[prev_idx]["datetime"]
+            curr_date = df.iloc[idx]["datetime"]
+            days_gap = (curr_date - prev_date).total_seconds() / 86400
+
+            if days_gap > 5:
+                current_gw += 1
+
+        df.at[idx, "gameweek"] = current_gw
+
+    return df
+
+
 def group_by_gameweek(df: pd.DataFrame) -> dict:
     """Group matches by gameweek based on dates."""
     if df.empty:
         return {}
 
-    df = df.sort_values("datetime").reset_index(drop=True)
+    # Calculate gameweek numbers
+    df = calculate_gameweek_number(df.copy())
 
     gameweeks = {}
-    current_gw = 1
-    current_gw_start = df.iloc[0]["datetime"]
-
-    for idx, row in df.iterrows():
-        match_date = row["datetime"]
-
-        if (match_date - current_gw_start).days > 4:
-            current_gw += 1
-            current_gw_start = match_date
-
-        if current_gw not in gameweeks:
-            gameweeks[current_gw] = []
-
-        gameweeks[current_gw].append(row)
+    for gw_num in sorted(df["gameweek"].unique()):
+        matches = df[df["gameweek"] == gw_num].to_dict('records')
+        gameweeks[int(gw_num)] = matches
 
     return gameweeks
 
@@ -532,7 +577,7 @@ def main():
     has_historical = PREDICTIONS_HISTORICAL.exists()
 
     if not has_upcoming and not has_historical:
-        print("\n No prediction files found")
+        print("\n⚠️  No prediction files found")
         print("Generating minimal README...")
         content = generate_empty_readme()
     else:
@@ -559,7 +604,7 @@ def main():
     README_FILE.write_text(content, encoding="utf-8")
 
     season_display = get_current_season()
-    print(f"\n Generated README.md")
+    print(f"\n✅ Generated README.md")
     print(f"   Season: {season_display}")
     print(f"   Path: {README_FILE.resolve()}")
 
