@@ -244,7 +244,7 @@ def build_gameweek_section(gw_num, matches, logos, is_historical=False):
     return header + matches_html
 
 
-def build_table_html(table_df):
+def build_table_html(table_df, logos):
     """Build HTML for the projected league table."""
     if table_df.empty:
         return '<div class="error">No table projection available. Run predict_final_table.py to generate.</div>'
@@ -252,6 +252,7 @@ def build_table_html(table_df):
     rows_html = ""
     for _, row in table_df.iterrows():
         pos = row['Pos']
+        team = row['Team']
 
         # Position indicator
         if pos <= 4:
@@ -272,10 +273,14 @@ def build_table_html(table_df):
         gd_class = 'positive' if gd > 0 else ('negative' if gd < 0 else '')
         gd_display = f"{gd:+d}" if gd != 0 else "0"
 
+        # Team logo
+        team_logo = logos.get(team, "")
+        logo_html = f'<img src="{team_logo}" class="team-logo" onclick="showTeamPage(\'{team}\')" />' if team_logo else ''
+
         rows_html += f"""
         <tr class="{indicator_class}">
             <td class="pos">{indicator}{pos}</td>
-            <td class="team-name">{row['Team']}</td>
+            <td class="team-name" onclick="showTeamPage('{team}')">{logo_html}{team}</td>
             <td style="text-align: center;">{row['P']}</td>
             <td style="text-align: center;">{row['W']}</td>
             <td style="text-align: center;">{row['D']}</td>
@@ -321,6 +326,75 @@ def build_table_html(table_df):
     """
 
 
+def build_team_pages_data(upcoming_df, historical_df, logos):
+    """Build JSON data for individual team pages."""
+    if upcoming_df.empty and historical_df.empty:
+        return "{}"
+
+    teams_data = {}
+
+    # Combine all teams
+    all_teams = set()
+    if not upcoming_df.empty:
+        all_teams.update(upcoming_df["home_team"])
+        all_teams.update(upcoming_df["away_team"])
+    if not historical_df.empty:
+        all_teams.update(historical_df["home_team"])
+        all_teams.update(historical_df["away_team"])
+
+    for team in all_teams:
+        team_matches = []
+
+        # Get historical matches
+        if not historical_df.empty:
+            team_historical = historical_df[
+                (historical_df["home_team"] == team) |
+                (historical_df["away_team"] == team)
+                ].copy()
+
+            for _, match in team_historical.iterrows():
+                is_home = match["home_team"] == team
+                team_matches.append({
+                    "type": "historical",
+                    "date": match["datetime"].strftime("%Y-%m-%d"),
+                    "opponent": match["away_team"] if is_home else match["home_team"],
+                    "venue": "Home" if is_home else "Away",
+                    "actual_score": f"{int(match['home_goals'])}-{int(match['away_goals'])}",
+                    "predicted_score": f"{match['pred_home_goals']:.1f}-{match['pred_away_goals']:.1f}",
+                    "result": "W" if (is_home and match['home_goals'] > match['away_goals']) or (
+                                not is_home and match['away_goals'] > match['home_goals']) else (
+                        "D" if match['home_goals'] == match['away_goals'] else "L")
+                })
+
+        # Get upcoming matches
+        if not upcoming_df.empty:
+            team_upcoming = upcoming_df[
+                (upcoming_df["home_team"] == team) |
+                (upcoming_df["away_team"] == team)
+                ].copy()
+
+            for _, match in team_upcoming.iterrows():
+                is_home = match["home_team"] == team
+                team_matches.append({
+                    "type": "upcoming",
+                    "date": match["datetime"].strftime("%Y-%m-%d"),
+                    "opponent": match["away_team"] if is_home else match["home_team"],
+                    "venue": "Home" if is_home else "Away",
+                    "predicted_score": f"{match['pred_home_goals']:.1f}-{match['pred_away_goals']:.1f}",
+                    "prob_win": match['prob_home'] if is_home else match['prob_away'],
+                    "prob_draw": match['prob_draw'],
+                    "prob_loss": match['prob_away'] if is_home else match['prob_home']
+                })
+
+        teams_data[team] = {
+            "matches": team_matches,
+            "logo": logos.get(team, "")
+        }
+
+    import json
+    return json.dumps(teams_data)
+
+
 def build_section_header(title, subtitle, icon):
     """Build HTML for a section header."""
     return f"""
@@ -334,7 +408,7 @@ def build_section_header(title, subtitle, icon):
 # --------------------------------------------------
 # Page shell
 # --------------------------------------------------
-def build_page(past_html, upcoming_html, future_html, table_html, stats_html, season_display):
+def build_page(past_html, upcoming_html, future_html, table_html, stats_html, season_display, teams_data_json):
     css = """
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
@@ -430,6 +504,23 @@ def build_page(past_html, upcoming_html, future_html, table_html, stats_html, se
     .league-table .team-name {
         font-weight: 600;
         color: #2c3e50;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+    .league-table .team-name:hover {
+        color: #667eea;
+        text-decoration: underline;
+    }
+    .league-table .team-logo {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        margin-right: 8px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .league-table .team-logo:hover {
+        transform: scale(1.2);
     }
     .league-table .pos {
         font-weight: 700;
@@ -477,6 +568,146 @@ def build_page(past_html, upcoming_html, future_html, table_html, stats_html, se
     .table-legend span {
         margin-right: 20px;
         display: inline-block;
+    }
+
+    /* Team overlay */
+    .team-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        overflow-y: auto;
+    }
+    .team-overlay.active {
+        opacity: 1;
+    }
+    .team-page {
+        max-width: 900px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    .team-page-header {
+        margin-bottom: 30px;
+    }
+    .back-button {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        transition: background 0.2s ease;
+    }
+    .back-button:hover {
+        background: #764ba2;
+    }
+    .team-title {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .team-title h2 {
+        margin: 0;
+        font-size: 32px;
+        color: #2c3e50;
+    }
+    .team-page-logo {
+        width: 60px;
+        height: 60px;
+    }
+    .team-matches h3 {
+        color: #2c3e50;
+        margin: 30px 0 15px 0;
+        font-size: 24px;
+    }
+    .matches-list {
+        display: grid;
+        gap: 15px;
+    }
+    .team-match {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 4px solid #ddd;
+    }
+    .team-match.upcoming {
+        border-left-color: #667eea;
+    }
+    .team-match.win {
+        border-left-color: #2E7D32;
+        background: #f1f8f4;
+    }
+    .team-match.draw {
+        border-left-color: #F9A825;
+        background: #fffbf0;
+    }
+    .team-match.loss {
+        border-left-color: #C62828;
+        background: #fef5f5;
+    }
+    .match-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        font-size: 13px;
+        color: #7f8c8d;
+    }
+    .match-result-badge {
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+    .match-result-badge.win {
+        background: #2E7D32;
+        color: white;
+    }
+    .match-result-badge.draw {
+        background: #F9A825;
+        color: white;
+    }
+    .match-result-badge.loss {
+        background: #C62828;
+        color: white;
+    }
+    .match-opponent {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    .match-prediction, .match-scores {
+        font-size: 14px;
+    }
+    .predicted-score {
+        font-weight: 600;
+        color: #667eea;
+        margin-bottom: 5px;
+    }
+    .match-probs {
+        font-size: 13px;
+        color: #7f8c8d;
+    }
+    .actual-score {
+        font-weight: 700;
+        font-size: 16px;
+        color: #2c3e50;
+        margin-bottom: 3px;
+    }
+    .predicted-score-small {
+        font-size: 13px;
+        color: #7f8c8d;
     }
 
     /* Main header */
@@ -764,6 +995,102 @@ def build_page(past_html, upcoming_html, future_html, table_html, stats_html, se
 </div>
 
 <script>
+// Team data embedded
+const teamsData = {teams_data_json};
+
+function showTeamPage(teamName) {{
+    const teamData = teamsData[teamName];
+    if (!teamData) {{
+        alert('No data available for ' + teamName);
+        return;
+    }}
+
+    // Build team page HTML
+    let html = `
+    <div class="team-page">
+        <div class="team-page-header">
+            <button class="back-button" onclick="closeTeamPage()">← Back to Table</button>
+            <div class="team-title">
+                ${{teamData.logo ? '<img src="' + teamData.logo + '" class="team-page-logo" />' : ''}}
+                <h2>${{teamName}}</h2>
+            </div>
+        </div>
+        <div class="team-matches">
+    `;
+
+    // Upcoming matches
+    const upcomingMatches = teamData.matches.filter(m => m.type === 'upcoming');
+    if (upcomingMatches.length > 0) {{
+        html += '<h3>Upcoming Fixtures</h3>';
+        html += '<div class="matches-list">';
+        upcomingMatches.forEach(match => {{
+            html += `
+            <div class="team-match upcoming">
+                <div class="match-header">
+                    <span class="match-date">${{match.date}}</span>
+                    <span class="match-venue">${{match.venue}}</span>
+                </div>
+                <div class="match-opponent">vs ${{match.opponent}}</div>
+                <div class="match-prediction">
+                    <div class="predicted-score">Predicted: ${{match.predicted_score}}</div>
+                    <div class="match-probs">
+                        Win: ${{(match.prob_win * 100).toFixed(0)}}% | 
+                        Draw: ${{(match.prob_draw * 100).toFixed(0)}}% | 
+                        Loss: ${{(match.prob_loss * 100).toFixed(0)}}%
+                    </div>
+                </div>
+            </div>
+            `;
+        }});
+        html += '</div>';
+    }}
+
+    // Historical matches
+    const historicalMatches = teamData.matches.filter(m => m.type === 'historical');
+    if (historicalMatches.length > 0) {{
+        html += '<h3>Recent Results</h3>';
+        html += '<div class="matches-list">';
+        historicalMatches.forEach(match => {{
+            const resultClass = match.result === 'W' ? 'win' : (match.result === 'D' ? 'draw' : 'loss');
+            html += `
+            <div class="team-match historical ${{resultClass}}">
+                <div class="match-header">
+                    <span class="match-date">${{match.date}}</span>
+                    <span class="match-venue">${{match.venue}}</span>
+                    <span class="match-result-badge ${{resultClass}}">${{match.result}}</span>
+                </div>
+                <div class="match-opponent">vs ${{match.opponent}}</div>
+                <div class="match-scores">
+                    <div class="actual-score">Result: ${{match.actual_score}}</div>
+                    <div class="predicted-score-small">Predicted: ${{match.predicted_score}}</div>
+                </div>
+            </div>
+            `;
+        }});
+        html += '</div>';
+    }}
+
+    html += '</div></div>';
+
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'team-overlay';
+    overlay.className = 'team-overlay';
+    overlay.innerHTML = html;
+    document.body.appendChild(overlay);
+
+    // Fade in
+    setTimeout(() => overlay.classList.add('active'), 10);
+}}
+
+function closeTeamPage() {{
+    const overlay = document.getElementById('team-overlay');
+    if (overlay) {{
+        overlay.classList.remove('active');
+        setTimeout(() => overlay.remove(), 300);
+    }}
+}}
+
 function switchTab(tab) {{
     // Update tab buttons
     const tabs = document.querySelectorAll('.tab');
@@ -934,10 +1261,14 @@ def main():
         upcoming_html = '<div class="error">No upcoming fixtures available. The season may have ended or there is a break in fixtures.</div>'
 
     # Build table section
-    table_html = build_table_html(table_df)
+    table_html = build_table_html(table_df, logos)
+
+    # Build team pages data
+    teams_data_json = build_team_pages_data(upcoming_df, historical_df, logos)
 
     # Generate page with season info and table
-    html_content = build_page(past_html, upcoming_html, future_html, table_html, stats_html, season_display)
+    html_content = build_page(past_html, upcoming_html, future_html, table_html, stats_html, season_display,
+                              teams_data_json)
 
     # Write output
     OUT_HTML.parent.mkdir(exist_ok=True, parents=True)
