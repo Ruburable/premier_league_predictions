@@ -445,13 +445,13 @@ def build_page(past_html, upcoming_html, future_html, table_html, stats_html, se
         margin-right: 8px;
     }
     .league-table .champions-league {
-        background: #4CAF50;
+        background: #81C784;
     }
     .league-table .europa-league {
-        background: #FFC107;
+        background: #FFD54F;
     }
     .league-table .relegation {
-        background: #F44336;
+        background: #E57373;
     }
     .league-table .points {
         font-weight: 700;
@@ -459,10 +459,12 @@ def build_page(past_html, upcoming_html, future_html, table_html, stats_html, se
         color: #667eea;
     }
     .league-table .positive {
-        color: #4CAF50;
+        color: #2E7D32;
+        font-weight: 600;
     }
     .league-table .negative {
-        color: #F44336;
+        color: #C62828;
+        font-weight: 600;
     }
     .table-legend {
         margin-top: 20px;
