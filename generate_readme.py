@@ -227,15 +227,15 @@ Based on actual results + most likely predicted outcomes:
         for _, row in table_df.head(20).iterrows():  # Show all 20 teams
             pos_marker = ""
             if row['Pos'] <= 4:
-                pos_marker = "🟢 "
+                pos_marker = "[CL] "
             elif row['Pos'] == 5:
-                pos_marker = "🟡 "
+                pos_marker = "[EL] "
             elif row['Pos'] >= 18:
-                pos_marker = "🔴 "
+                pos_marker = "[R] "
 
             content += f"| {pos_marker}{row['Pos']} | {row['Team']} | {row['P']} | {row['W']} | {row['D']} | {row['L']} | {row['GF']} | {row['GA']} | {row['GD']:+d} | **{row['Pts']}** |\n"
 
-        content += "\n**Legend:** 🟢 Champions League | 🟡 Europa League | 🔴 Relegation\n"
+        content += "\n**Legend:** [CL] Champions League | [EL] Europa League | [R] Relegation\n"
 
     # Performance metrics
     if metrics:
@@ -532,7 +532,7 @@ def main():
     has_historical = PREDICTIONS_HISTORICAL.exists()
 
     if not has_upcoming and not has_historical:
-        print("\n⚠️  No prediction files found")
+        print("\n No prediction files found")
         print("Generating minimal README...")
         content = generate_empty_readme()
     else:
@@ -559,7 +559,7 @@ def main():
     README_FILE.write_text(content, encoding="utf-8")
 
     season_display = get_current_season()
-    print(f"\n✅ Generated README.md")
+    print(f"\n Generated README.md")
     print(f"   Season: {season_display}")
     print(f"   Path: {README_FILE.resolve()}")
 

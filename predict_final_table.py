@@ -116,7 +116,7 @@ def build_current_table():
 
     # Load historical data
     if not HISTORICAL_DATA.exists():
-        print("⚠️  No historical data found")
+        print("No historical data found")
         return {}
 
     df = pd.read_csv(HISTORICAL_DATA, parse_dates=["datetime"])
@@ -125,7 +125,7 @@ def build_current_table():
     current_season_df = df[df["season"] == CURRENT_SEASON].copy()
 
     if current_season_df.empty:
-        print(f"⚠️  No matches found for season {CURRENT_SEASON}")
+        print(f"No matches found for season {CURRENT_SEASON}")
         return {}
 
     print(f"\n✓ Found {len(current_season_df)} completed matches")
@@ -151,13 +151,13 @@ def project_from_predictions(table):
     print("=" * 80)
 
     if not PRED_UPCOMING.exists():
-        print("⚠️  No predictions found")
+        print("No predictions found")
         return table
 
     df = pd.read_csv(PRED_UPCOMING)
 
     if df.empty:
-        print("⚠️  No upcoming matches to predict")
+        print("No upcoming matches to predict")
         return table
 
     print(f"\n✓ Processing {len(df)} predicted matches")
@@ -240,13 +240,13 @@ def print_table(df):
     for _, row in df.iterrows():
         pos = row['Pos']
 
-        # Color indicators
+        # Position indicators
         if pos <= 4:
-            indicator = "🟢"  # Champions League
+            indicator = "CL"  # Champions League
         elif pos == 5:
-            indicator = "🟡"  # Europa League
+            indicator = "EL"  # Europa League
         elif pos >= 18:
-            indicator = "🔴"  # Relegation
+            indicator = "RL"  # Relegation
         else:
             indicator = "  "
 
@@ -254,7 +254,7 @@ def print_table(df):
               f"{row['GF']:<5} {row['GA']:<5} {row['GD']:<+6} {row['Pts']:<5}")
 
     print()
-    print("🟢 Champions League  🟡 Europa League  🔴 Relegation")
+    print("CL = Champions League  |  EL = Europa League  |  RL = Relegation")
     print("=" * 80)
 
 
@@ -272,7 +272,7 @@ def main():
     table = build_current_table()
 
     if not table:
-        print("\n❌ No data available to build table")
+        print("\n No data available to build table")
         return 1
 
     # Project from predictions
@@ -286,7 +286,7 @@ def main():
     OUTPUT_TABLE.parent.mkdir(parents=True, exist_ok=True)
     df_table.to_csv(OUTPUT_TABLE, index=False)
 
-    print(f"\n✅ Table saved to: {OUTPUT_TABLE.resolve()}")
+    print(f"\n Table saved to: {OUTPUT_TABLE.resolve()}")
 
     # Show top and bottom
     print("\nTop 4 (Champions League):")
