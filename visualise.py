@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 
 PRED_UPCOMING = Path("output/predictions_upcoming.csv")
 PRED_HISTORICAL = Path("output/predictions_historical.csv")
+PROJECTED_TABLE = Path("output/projected_table.csv")
 LOGO_DIR = Path("output/logos")
 OUT_HTML = Path("output/predictions_dashboard.html")
 
@@ -227,6 +228,83 @@ def build_gameweek_section(gw_num, matches, logos, is_historical=False):
     return header + matches_html
 
 
+def build_table_html(table_df):
+    """Build HTML for the projected league table."""
+    if table_df.empty:
+        return '<div class="error">No table projection available. Run predict_final_table.py to generate.</div>'
+
+    rows_html = ""
+    for _, row in table_df.iterrows():
+        pos = row['Pos']
+
+        # Position indicator
+        if pos <= 4:
+            indicator = '<span class="pos-indicator champions-league"></span>'
+            indicator_class = 'champions-league'
+        elif pos == 5:
+            indicator = '<span class="pos-indicator europa-league"></span>'
+            indicator_class = 'europa-league'
+        elif pos >= 18:
+            indicator = '<span class="pos-indicator relegation"></span>'
+            indicator_class = 'relegation'
+        else:
+            indicator = '<span class="pos-indicator"></span>'
+            indicator_class = ''
+
+        # Goal difference color
+        gd = row['GD']
+        gd_class = 'positive' if gd > 0 else ('negative' if gd < 0 else '')
+        gd_display = f"{gd:+d}" if gd != 0 else "0"
+
+        rows_html += f"""
+        <tr class="{indicator_class}">
+            <td class="pos">{indicator}{pos}</td>
+            <td class="team-name">{row['Team']}</td>
+            <td style="text-align: center;">{row['P']}</td>
+            <td style="text-align: center;">{row['W']}</td>
+            <td style="text-align: center;">{row['D']}</td>
+            <td style="text-align: center;">{row['L']}</td>
+            <td style="text-align: center;">{row['GF']}</td>
+            <td style="text-align: center;">{row['GA']}</td>
+            <td style="text-align: center;" class="{gd_class}">{gd_display}</td>
+            <td class="points" style="text-align: center;">{row['Pts']}</td>
+        </tr>
+        """
+
+    legend_html = """
+    <div class="table-legend">
+        <span><span class="pos-indicator champions-league"></span> Champions League (Top 4)</span>
+        <span><span class="pos-indicator europa-league"></span> Europa League (5th)</span>
+        <span><span class="pos-indicator relegation"></span> Relegation (Bottom 3)</span>
+    </div>
+    """
+
+    return f"""
+    <div class="league-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Pos</th>
+                    <th>Team</th>
+                    <th style="text-align: center;">P</th>
+                    <th style="text-align: center;">W</th>
+                    <th style="text-align: center;">D</th>
+                    <th style="text-align: center;">L</th>
+                    <th style="text-align: center;">GF</th>
+                    <th style="text-align: center;">GA</th>
+                    <th style="text-align: center;">GD</th>
+                    <th style="text-align: center;">Pts</th>
+                </tr>
+            </thead>
+            <tbody>
+                {rows_html}
+            </tbody>
+        </table>
+        {legend_html}
+    </div>
+    """
+
+
 def build_section_header(title, subtitle, icon):
     """Build HTML for a section header."""
     return f"""
@@ -240,7 +318,7 @@ def build_section_header(title, subtitle, icon):
 # --------------------------------------------------
 # Page shell
 # --------------------------------------------------
-def build_page(past_html, upcoming_html, future_html, stats_html, season_display):
+def build_page(past_html, upcoming_html, future_html, table_html, stats_html, season_display):
     css = """
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
@@ -295,6 +373,92 @@ def build_page(past_html, upcoming_html, future_html, stats_html, season_display
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Table styles */
+    .league-table {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-top: 20px;
+    }
+    .league-table table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .league-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 10px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .league-table th:first-child {
+        border-radius: 8px 0 0 0;
+    }
+    .league-table th:last-child {
+        border-radius: 0 8px 0 0;
+    }
+    .league-table td {
+        padding: 14px 10px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+    }
+    .league-table tr:hover {
+        background: #f8f9fa;
+    }
+    .league-table .team-name {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+    .league-table .pos {
+        font-weight: 700;
+        font-size: 16px;
+        color: #7f8c8d;
+        width: 50px;
+    }
+    .league-table .pos-indicator {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+    .league-table .champions-league {
+        background: #4CAF50;
+    }
+    .league-table .europa-league {
+        background: #FFC107;
+    }
+    .league-table .relegation {
+        background: #F44336;
+    }
+    .league-table .points {
+        font-weight: 700;
+        font-size: 16px;
+        color: #667eea;
+    }
+    .league-table .positive {
+        color: #4CAF50;
+    }
+    .league-table .negative {
+        color: #F44336;
+    }
+    .table-legend {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #7f8c8d;
+    }
+    .table-legend span {
+        margin-right: 20px;
+        display: inline-block;
     }
 
     /* Main header */
@@ -563,16 +727,22 @@ def build_page(past_html, upcoming_html, future_html, stats_html, season_display
 
 <div class="tabs">
     <button class="tab {'active' if past_html else ''}" onclick="switchTab('past')">Past Performance</button>
-    <button class="tab {'active' if not past_html else ''}" onclick="switchTab('future')">Upcoming Fixtures</button>
+    <button class="tab {'active' if not past_html and not table_html else ''}" onclick="switchTab('future')">Upcoming Fixtures</button>
+    <button class="tab {'active' if not past_html and table_html else ''}" onclick="switchTab('table')">Projected Table</button>
 </div>
 
 <div id="past-content" class="tab-content {'active' if past_html else ''}">
 {past_html if past_html else '<div class="error">No historical data available. Run the pipeline to generate predictions for current season matches.</div>'}
 </div>
 
-<div id="future-content" class="tab-content {'active' if not past_html else ''}">
+<div id="future-content" class="tab-content {'active' if not past_html and not table_html else ''}">
 {upcoming_html}
 {future_html}
+</div>
+
+<div id="table-content" class="tab-content {'active' if not past_html and table_html else ''}">
+{build_section_header("Projected Final Table", f"{season_display} season - Based on actual results + predicted outcomes", "🏆")}
+{table_html}
 </div>
 
 <script>
@@ -588,9 +758,12 @@ function switchTab(tab) {{
     if (tab === 'past') {{
         tabs[0].classList.add('active');
         document.getElementById('past-content').classList.add('active');
-    }} else {{
+    }} else if (tab === 'future') {{
         tabs[1].classList.add('active');
         document.getElementById('future-content').classList.add('active');
+    }} else if (tab === 'table') {{
+        tabs[2].classList.add('active');
+        document.getElementById('table-content').classList.add('active');
     }}
 }}
 </script>
@@ -623,9 +796,11 @@ def main():
     upcoming_df = pd.read_csv(PRED_UPCOMING, parse_dates=["datetime"]) if PRED_UPCOMING.exists() else pd.DataFrame()
     historical_df = pd.read_csv(PRED_HISTORICAL,
                                 parse_dates=["datetime"]) if PRED_HISTORICAL.exists() else pd.DataFrame()
+    table_df = pd.read_csv(PROJECTED_TABLE) if PROJECTED_TABLE.exists() else pd.DataFrame()
 
     print(f"\nLoaded {len(upcoming_df)} upcoming predictions")
     print(f"Loaded {len(historical_df)} historical predictions")
+    print(f"Loaded projected table: {len(table_df)} teams" if not table_df.empty else "No projected table found")
 
     # Load logos
     clubs = set()
@@ -738,8 +913,11 @@ def main():
     else:
         upcoming_html = '<div class="error">No upcoming fixtures available. The season may have ended or there is a break in fixtures.</div>'
 
-    # Generate page with season info
-    html_content = build_page(past_html, upcoming_html, future_html, stats_html, season_display)
+    # Build table section
+    table_html = build_table_html(table_df)
+
+    # Generate page with season info and table
+    html_content = build_page(past_html, upcoming_html, future_html, table_html, stats_html, season_display)
 
     # Write output
     OUT_HTML.parent.mkdir(exist_ok=True, parents=True)
@@ -752,6 +930,8 @@ def main():
     print(f"   • Upcoming Gameweek: {len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
     print(
         f"   • Future Predictions: {len(upcoming_df) - len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
+    print(
+        f"   • Projected Table: {len(table_df)} teams" if not table_df.empty else "   • Projected Table: Not available")
 
 
 if __name__ == "__main__":
