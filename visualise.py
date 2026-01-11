@@ -309,7 +309,7 @@ def build_section_header(title, subtitle, icon):
     """Build HTML for a section header."""
     return f"""
     <div class="section-header">
-        <h2>{icon} {title}</h2>
+        <h2>{title}</h2>
         <p class="section-subtitle">{subtitle}</p>
     </div>
     """
@@ -718,7 +718,7 @@ def build_page(past_html, upcoming_html, future_html, table_html, stats_html, se
 <div class="container">
 
 <div class="main-header">
-<h1>⚽ Premier League Predictions</h1>
+<h1>Premier League Predictions</h1>
 <div class="subtitle">AI-powered match predictions using XGBoost and xG data</div>
 <div class="season-badge">Season {season_display}</div>
 </div>
@@ -741,7 +741,7 @@ def build_page(past_html, upcoming_html, future_html, table_html, stats_html, se
 </div>
 
 <div id="table-content" class="tab-content {'active' if not past_html and table_html else ''}">
-{build_section_header("Projected Final Table", f"{season_display} season - Based on actual results + predicted outcomes", "🏆")}
+{build_section_header("Projected Final Table", f"{season_display} season - Based on actual results + predicted outcomes", "")}
 {table_html}
 </div>
 
@@ -923,15 +923,15 @@ def main():
     OUT_HTML.parent.mkdir(exist_ok=True, parents=True)
     OUT_HTML.write_text(html_content, encoding="utf-8")
 
-    print(f"\n✅ Enhanced dashboard created: {OUT_HTML.resolve()}")
-    print(f"\n📊 Dashboard sections:")
-    print(f"   • Season: {season_display}")
-    print(f"   • Past Performance: {len(historical_df)} matches")
-    print(f"   • Upcoming Gameweek: {len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
+    print(f"\n Enhanced dashboard created: {OUT_HTML.resolve()}")
+    print(f"\n    Dashboard sections:")
+    print(f"      Season: {season_display}")
+    print(f"      Past Performance: {len(historical_df)} matches")
+    print(f"      Upcoming Gameweek: {len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
     print(
-        f"   • Future Predictions: {len(upcoming_df) - len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
+        f"      Future Predictions: {len(upcoming_df) - len(gameweeks.get(min(gameweeks.keys()), [])) if gameweeks else 0} matches")
     print(
-        f"   • Projected Table: {len(table_df)} teams" if not table_df.empty else "   • Projected Table: Not available")
+        f"      Projected Table: {len(table_df)} teams" if not table_df.empty else "      Projected Table: Not available")
 
 
 if __name__ == "__main__":
