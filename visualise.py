@@ -35,27 +35,18 @@ def svg_to_base64(path: Path):
 def calculate_gameweek_number(df):
     """
     Calculate actual gameweek numbers from the start of the season.
-    Matches within 4 days are in the same gameweek.
+    Uses 7-day periods from the first match of the season.
     """
     if df.empty:
         return df
 
     df = df.sort_values("datetime").reset_index(drop=True)
-    df["gameweek"] = 0
 
-    current_gw = 1
-    current_gw_start = df.iloc[0]["datetime"]
+    # Get the first match date as reference
+    first_match = df.iloc[0]["datetime"]
 
-    for idx, row in df.iterrows():
-        match_date = row["datetime"]
-
-        # If more than 4 days from current gameweek start, start new gameweek
-        days_diff = (match_date - current_gw_start).total_seconds() / 86400
-        if days_diff > 4 and idx > 0:
-            current_gw += 1
-            current_gw_start = match_date
-
-        df.at[idx, "gameweek"] = current_gw
+    # Calculate gameweek based on weeks since first match
+    df["gameweek"] = ((df["datetime"] - first_match).dt.total_seconds() / (7 * 24 * 3600)).astype(int) + 1
 
     return df
 
