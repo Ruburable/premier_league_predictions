@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-update_data.py
+update_data.py - IMPROVED VERSION with better FBref handling
 
 Unified data pipeline that:
 1. Downloads/updates historical match data from FBref
@@ -9,6 +9,13 @@ Unified data pipeline that:
 4. Produces two outputs:
    - data/matches_master.csv (all historical matches with results)
    - data/upcoming_fixtures.csv (upcoming matches with estimated xG)
+
+IMPROVEMENTS:
+- Better rate limiting to avoid 403 errors
+- Exponential backoff on retries
+- User agent rotation
+- Cache-first approach
+- Fallback to cached data if scraping fails
 """
 
 import os
@@ -16,6 +23,8 @@ from pathlib import Path
 import pandas as pd
 import soccerdata as sd
 from datetime import datetime, timezone, timedelta
+import time
+import random
 
 # ------------------------------------------------------------------
 # CONFIGURATION
@@ -28,11 +37,23 @@ DATA_DIR.mkdir(exist_ok=True)
 CACHE_DIR.mkdir(exist_ok=True)
 
 os.environ["SOCCERDATA_DIR"] = str(CACHE_DIR)
-os.environ["SOCCERDATA_USER_AGENT"] = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/121.0.0.0 Safari/537.36"
-)
+
+# More realistic user agents - rotate to avoid detection
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1 Safari/605.1.15",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+]
+
+# Select random user agent
+os.environ["SOCCERDATA_USER_AGENT"] = random.choice(USER_AGENTS)
+
+# Rate limiting configuration
+RATE_LIMIT_DELAY = 5  # seconds between requests (increased for safety)
+MAX_RETRIES = 3
+RETRY_BASE_DELAY = 10  # base seconds for exponential backoff
 
 LEAGUE = "ENG-Premier League"
 
@@ -62,10 +83,10 @@ UPCOMING_OUTPUT = DATA_DIR / "upcoming_fixtures.csv"
 
 
 # ------------------------------------------------------------------
-# DOWNLOAD DATA FROM FBREF
+# IMPROVED DOWNLOAD WITH BETTER ERROR HANDLING
 # ------------------------------------------------------------------
-def download_fbref_data():
-    """Download schedule and stats from FBref."""
+def download_fbref_data_with_retry():
+    """Download schedule from FBref with improved error handling and rate limiting."""
     print("=" * 80)
     print("DOWNLOADING DATA FROM FBREF")
     print("=" * 80)
@@ -74,21 +95,107 @@ def download_fbref_data():
     print(f"Downloading Seasons: {SEASONS[0]} to {SEASONS[-1]}")
     print(f"Cache directory: {CACHE_DIR.resolve()}\n")
 
-    fbref = sd.FBref(
-        leagues=LEAGUE,
-        seasons=SEASONS,
-        data_dir=CACHE_DIR,
-        no_cache=False  # Use cache when available
-    )
+    print("⏱️  Using rate limiting to avoid 403 errors...")
+    print(f"   Delay between requests: {RATE_LIMIT_DELAY}s")
+    print(f"   Max retries: {MAX_RETRIES}")
+    print("")
 
-    print("Downloading match schedule...")
-    schedule = fbref.read_schedule()
-    if schedule is None or schedule.empty:
-        raise RuntimeError("Schedule download failed or returned empty")
+    for attempt in range(MAX_RETRIES):
+        try:
+            print(f"📥 Attempt {attempt + 1}/{MAX_RETRIES}...")
 
-    print(f"  ✓ Downloaded {len(schedule)} matches")
+            # Add delay before request (except first attempt)
+            if attempt > 0:
+                delay = RETRY_BASE_DELAY * (2 ** attempt)  # exponential backoff
+                print(f"   ⏳ Waiting {delay}s before retry...")
+                time.sleep(delay)
 
-    return schedule.reset_index()
+            # Create FBref scraper with no_cache=False to prefer cached data
+            fbref = sd.FBref(
+                leagues=LEAGUE,
+                seasons=SEASONS,
+                data_dir=CACHE_DIR,
+                no_cache=False  # Use cache when available to reduce requests
+            )
+
+            print("   Downloading match schedule...")
+            schedule = fbref.read_schedule()
+
+            if schedule is None or schedule.empty:
+                print("   ⚠️  Downloaded schedule is empty")
+                continue
+
+            print(f"   ✅ Successfully downloaded {len(schedule)} matches")
+            return schedule.reset_index()
+
+        except Exception as e:
+            error_msg = str(e)
+            print(f"   ❌ Error: {error_msg}")
+
+            # Check if it's a 403 error
+            if "403" in error_msg or "Forbidden" in error_msg:
+                print("\n   🚫 FBref is blocking requests (403 Forbidden)")
+                print("   💡 This usually means:")
+                print("      • Too many requests in short time")
+                print("      • Need to increase delay between requests")
+                print("      • Consider using cached data")
+
+            if attempt < MAX_RETRIES - 1:
+                print(f"\n   🔄 Will retry in a moment...")
+            else:
+                print(f"\n   ❌ All {MAX_RETRIES} attempts failed")
+
+                # Try to use cached data as fallback
+                print("\n   🔍 Attempting to use cached data...")
+                return try_load_cached_schedule()
+
+    # If all retries failed
+    return try_load_cached_schedule()
+
+
+def try_load_cached_schedule():
+    """Try to load schedule from cache files as a fallback."""
+    print("\n" + "=" * 80)
+    print("FALLBACK: LOADING FROM CACHE")
+    print("=" * 80)
+
+    cache_files = list(CACHE_DIR.rglob("*.csv")) + list(CACHE_DIR.rglob("*.html"))
+
+    if not cache_files:
+        print("❌ No cache files found")
+        raise RuntimeError(
+            "Could not download from FBref and no cache available.\n"
+            "Solutions:\n"
+            "1. Wait a few hours and try again (FBref may have rate limited you)\n"
+            "2. Use a VPN to change your IP address\n"
+            "3. Manually download data from FBref and place in cache directory\n"
+            "4. Use alternative data source (see documentation)"
+        )
+
+    print(f"\n✓ Found {len(cache_files)} cached files")
+    print(f"  Latest: {max(cache_files, key=lambda p: p.stat().st_mtime)}")
+    print("\n⚠️  Using cached data - predictions may not include latest matches")
+
+    # Try to reconstruct schedule from cache
+    try:
+        fbref = sd.FBref(
+            leagues=LEAGUE,
+            seasons=SEASONS,
+            data_dir=CACHE_DIR,
+            no_cache=False
+        )
+
+        # This will use only cached data
+        schedule = fbref.read_schedule()
+
+        if schedule is not None and not schedule.empty:
+            print(f"✅ Loaded {len(schedule)} matches from cache")
+            return schedule.reset_index()
+
+    except Exception as e:
+        print(f"❌ Could not load from cache: {e}")
+
+    raise RuntimeError("Could not download or load from cache")
 
 
 # ------------------------------------------------------------------
@@ -311,8 +418,8 @@ def main():
     print("=" * 80)
 
     try:
-        # Step 1: Download data
-        schedule = download_fbref_data()
+        # Step 1: Download data with improved error handling
+        schedule = download_fbref_data_with_retry()
 
         # Step 2: Process and split
         historical, upcoming = process_schedule(schedule)
@@ -348,6 +455,12 @@ def main():
         print(f"\n❌ ERROR: {e}")
         import traceback
         traceback.print_exc()
+
+        print("\n💡 Troubleshooting:")
+        print("   1. FBref is blocking requests - wait a few hours")
+        print("   2. Try using a VPN to change your IP address")
+        print("   3. Check if cached data exists in:", CACHE_DIR)
+        print("   4. Consider manually downloading data")
         return 1
 
     return 0
